@@ -6,6 +6,8 @@ title: >-
 date: 2020-04-10 18:32:39
 tags: 学习
 mathjax: true
+top_img: https://raw.githubusercontent.com/clvsit/markdown-image/master/nlp/data_augmentation/EDA%20Table1.jpg
+cover: https://raw.githubusercontent.com/clvsit/markdown-image/master/nlp/data_augmentation/EDA%20Table1.jpg
 category:
 - 论文阅读
 ---
@@ -35,7 +37,7 @@ n = \alpha l
 $$
 其中，α 是一个参数，用以指示句子中需要变动单词的百分比。对于 RD 操作而言，将 α 设置为概率 p。
 
-此外，对于每个原始句子，都会生成 `$n_{avg}$` 个增强句子。表 1 显示了增强句子的示例。观察表格可知，同义词替换已经开始被使用，但随机插入，交换和删除尚未得到广泛研究。
+此外，对于每个原始句子，都会生成 $$n_{avg}$$ 个增强句子。表 1 显示了增强句子的示例。观察表格可知，同义词替换已经开始被使用，但随机插入，交换和删除尚未得到广泛研究。
 
 ![Table 1](https://raw.githubusercontent.com/clvsit/markdown-image/master/nlp/data_augmentation/EDA%20Table1.jpg)
 
@@ -50,7 +52,7 @@ $$
 - TREC：question type dataaset；
 - PC：Pro-Con dataset。
 
-此外，作者假设 EDA 对较小的数据集更有用，因此通过选择以下大小的数据集 `$N_{train} = {500, 2000, 5000, \text{所有可用数据}}$` 来作为完整训练集的随机子集。
+此外，作者假设 EDA 对较小的数据集更有用，因此通过选择以下大小的数据集 $$N_{train} = {500, 2000, 5000, \text{所有可用数据}}$$ 来作为完整训练集的随机子集。
 
 ### 文本分类模型
 作者针对文本分类中的两种流行模型进行了实验。 
