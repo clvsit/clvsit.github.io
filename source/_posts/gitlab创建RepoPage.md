@@ -2,6 +2,8 @@
 layout: 工具介绍
 title: gitlab创建RepoPage
 date: 2020-04-09 22:44:50
+top_img: https://raw.githubusercontent.com/clvsit/markdown-image/master/eigen/tools/20200409231825.jpg
+cover: https://raw.githubusercontent.com/clvsit/markdown-image/master/eigen/tools/20200409231825.jpg
 category:
 - 工具介绍
 ---
