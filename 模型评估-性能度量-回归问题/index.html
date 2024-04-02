@@ -1,0 +1,354 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>模型评估-性能度量(回归问题) | clvsit 个人博客</title><meta name="author" content="clvsit"><meta name="copyright" content="clvsit"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="对学习器的泛化性能进行评估，不仅需要有效可行的实验估计方法，还需要有衡量模型泛化能力的评价标准，这就是性能度量（performance measure）。 性能度量反映了任务需求，在对比不同模型的能力时，使用不同的性能度量往往会导致不同的评判结果，这意味着模型的“好坏”是相对的，什么样的模型是好的，不仅取决于算法和数据，还决定于任务需求。 在预测任务中，给定数据集 $D &#x3D; {(x_1,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模型评估-性能度量(回归问题)">
+<meta property="og:url" content="https://clvsit.github.io/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0-%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F-%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98/">
+<meta property="og:site_name" content="clvsit 个人博客">
+<meta property="og:description" content="对学习器的泛化性能进行评估，不仅需要有效可行的实验估计方法，还需要有衡量模型泛化能力的评价标准，这就是性能度量（performance measure）。 性能度量反映了任务需求，在对比不同模型的能力时，使用不同的性能度量往往会导致不同的评判结果，这意味着模型的“好坏”是相对的，什么样的模型是好的，不仅取决于算法和数据，还决定于任务需求。 在预测任务中，给定数据集 $D &#x3D; {(x_1,">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/ml/evaluation/%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98)%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.png">
+<meta property="article:published_time" content="2019-05-30T14:05:18.000Z">
+<meta property="article:modified_time" content="2024-03-22T09:26:46.644Z">
+<meta property="article:author" content="clvsit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/ml/evaluation/%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98)%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://clvsit.github.io/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0-%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F-%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '模型评估-性能度量(回归问题)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-22 17:26:46'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/ml/evaluation/%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98)%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.png')"><nav id="nav"><span id="blog-info"><a href="/" title="clvsit 个人博客"><span class="site-name">clvsit 个人博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">模型评估-性能度量(回归问题)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-05-30T14:05:18.000Z" title="发表于 2019-05-30 22:05:18">2019-05-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-22T09:26:46.644Z" title="更新于 2024-03-22 17:26:46">2024-03-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/">模型评估</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="模型评估-性能度量(回归问题)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>对学习器的泛化性能进行评估，不仅需要有效可行的<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43378396/article/details/90679140">实验估计方法</a>，还需要有衡量模型泛化能力的评价标准，这就是性能度量（performance measure）。</p>
+<p>性能度量反映了任务需求，在对比不同模型的能力时，使用不同的性能度量往往会导致不同的评判结果，这意味着模型的“好坏”是相对的，什么样的模型是好的，不仅取决于算法和数据，还决定于任务需求。</p>
+<p>在预测任务中，给定数据集 $D &#x3D; {(x_1, y_1), (x_2, y_2), \ldots, (x_m, y_m)}$，其中 $y_i$ 是示例 $x_i$ 的真实标记。要估计学习器 f 的性能，就要把学习器预测结果 $f(x)$ 与真实标记 y 进行比较。</p>
+<p>为了说明各性能度量指标，我们以波士顿房价数据集为例，模型选择决策树算法，通过 train_test_split() 划分数据集，最后评估各项性能指标。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_boston</span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeRegressor</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 引入数据集</span></span><br><span class="line">dataset = load_boston()</span><br><span class="line">data = dataset.data</span><br><span class="line">target = dataset.target</span><br><span class="line">features = dataset.feature_names</span><br><span class="line"></span><br><span class="line"><span class="comment"># 划分数据集以及模型训练</span></span><br><span class="line">data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=<span class="number">0.33</span>, random_state=<span class="number">7</span>)</span><br><span class="line">model = DecisionTreeRegressor()</span><br><span class="line">model.fit(data_train, target_train)</span><br></pre></td></tr></table></figure>
+
+<h2 id="均方误差"><a href="#均方误差" class="headerlink" title="均方误差"></a>均方误差</h2><p>均方误差（mean squared error）是回归问题中最常用的性能度量。</p>
+<p>【计算公式】：<br>$$<br>E(f; D) &#x3D; \frac{1}{m}\sum_{i&#x3D;1}^{m}(f(x_i) - y_i)^2<br>$$<br>均方误差计算过程中可以不用考虑 f(x) - y 的正负性，因为无论是正值还是负值，平方后都为正值。因此，均方误差可以简化计算过程。</p>
+<p>但均方误差也存在一个明显的缺陷：假设，现在有三个样本，它们的预测值与真实值的差分别为 3、4、5，通过均方误差的计算公式，我们可以分别计算出这三个样本的误差为 9、16 和 25；第三个样本的误差等于前两个样本的误差和，也就是说样本的预测值离真实值越远，误差也越大，且增长幅度越来越大，这相当于给误差大的样本更大的权重，你可以理解为在原有的误差上再乘以一个权重，而这个权重就是自身，例如差为 5，误差为 5 x 5；差为 4，误差为 4 x 4。</p>
+<p>模型为了降低误差，势必会想办法优先让偏差最大的样本尽可能靠近真实值。换言之，偏差越大的样本对模型的影响也越大，如果这个样本是噪声，那么这对模型的精度产生重大负面影响。简单地说，均方误差对噪声不鲁棒。</p>
+<p>【代码实现】：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(mean_squared_error(target_test, model.predict(data_test)))</span><br><span class="line"><span class="comment"># 输出：23.77700598802395</span></span><br></pre></td></tr></table></figure>
+<p>关于 mean_squared_error 更多内容请参考官方文档 <a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html#">传送门</a></p>
+<h2 id="平均绝对误差"><a href="#平均绝对误差" class="headerlink" title="平均绝对误差"></a>平均绝对误差</h2><p>平均绝对误差（mean absolute error）的计算公式如下：<br>$$<br>E(f; D) &#x3D; \frac{1}{m}\sum_{i&#x3D;1}^{m}|f(x_i) - y_i|<br>$$</p>
+<p>相比均方误差，平均绝对误差对噪声鲁棒，因为无论样本的预测值与真实值的偏差是大还是小，其权重都是相同的。但平均绝对误差也存在一个缺陷，即 |f(x) - y| 函数整体不连续，下图是一个 |x - 1| &#x3D; y 的绝对值函数。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/4d1db98c06977fbb0e21adefb1ec696a.png" alt="绝对值函数.png"></p>
+<p>可以看到，绝对值函数关于 1 对称，在 $[1, +\infty)$ 以及 $(-\infty, 1]$ 区间内连续，但在整个区间上不连续，这会产生什么影响呢？</p>
+<ul>
+<li>相比均方误差不需要考虑正负性，平均绝对误差需要考虑计算结果的正负性，并将计算结果做绝对值处理；</li>
+<li>因为平均绝对误差在整个区间上不连续，因此在使用梯度下降算法优化时，如果恰好落在对称轴所在的位置处（上图该点为 (1, 0)），该点的导数为 0，</li>
+</ul>
+<p>【代码实现】：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_absolute_error</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mean_absolute_error(target_test, model.predict(data_test))</span><br><span class="line"><span class="comment"># 输出：3.3149700598802405</span></span><br></pre></td></tr></table></figure>
+
+<p>关于 mean_absolute_error 的更多用法请参考官方文档 <a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_absolute_error.html#sklearn.metrics.mean_absolute_error">传送门</a></p>
+<h2 id="均方对数误差"><a href="#均方对数误差" class="headerlink" title="均方对数误差"></a>均方对数误差</h2><p>均方对数误差（mean squared log error），计算公式如下：<br>$$<br>E(f; D) &#x3D; \frac{1}{m}\sum_{i&#x3D;1}^{m}(log(1 + f(x_i)) - log(1 + y_i))^2<br>$$</p>
+<p>均方对数误差对噪声鲁棒，且在整体区间上连续。</p>
+<p>【代码实现】：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_log_error</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(mean_squared_log_error(target_test, model.predict(data_test)))</span><br><span class="line"><span class="comment"># 输出：0.049787561024740724</span></span><br></pre></td></tr></table></figure>
+
+<p>关于 mean_squared_log_error 的更多用法请参考官方文档 <a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_log_error.html#sklearn.metrics.mean_squared_log_error">传送门</a></p>
+<h2 id="决定系数"><a href="#决定系数" class="headerlink" title="决定系数"></a>决定系数</h2><p>决定系数，反映因变量的全部变异能通过回归关系被自变量解释的比例。拟合优度越大，自变量对因变量的解释程度越高，自变量引起的变动占总变动的百分比越高，观察点在回归直线附近越密集。如 R2（可决系数） 为 0.8，则表示回归关系可以解释因变量 80% 的变异。换句话说，如果我们能控制自变量不变，则因变量的变异程度会减少 80%。</p>
+<p>【决定系数的特点】：</p>
+<ul>
+<li>可决系数是非负的统计量。</li>
+<li>可决系数的取值范围：0 &lt;&#x3D; R2 &lt;&#x3D; 1。</li>
+<li>可决系数是样本观测值的函数，是因随机抽样而变动的随机变量。为此，对可决系数的统计的可靠性也应进行检验。</li>
+</ul>
+<p>【代码实现】：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> r2_score</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(r2_score(target_test, model.predict(data_test)))</span><br><span class="line"><span class="comment"># 输出：0.6866725568139921</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>除了从 sklearn.metrics 包中调用相应的方法外，还可以在 cross_val_score() 中通过指定 scoring 参数来实现，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> KFold</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">kfold = KFold(n_splits=<span class="number">10</span>, random_state=<span class="number">7</span>)</span><br><span class="line"><span class="built_in">print</span>(cross_val_score(model, data_test, target_test, cv=kfold, scoring=<span class="string">&#x27;r2&#x27;</span>))</span><br><span class="line"><span class="comment"># 输出：</span></span><br><span class="line">array([ <span class="number">0.75188518</span>,  <span class="number">0.12123666</span>,  <span class="number">0.6575216</span> ,  <span class="number">0.68733528</span>, -<span class="number">0.3255725</span> ,</span><br><span class="line">        <span class="number">0.63977947</span>,  <span class="number">0.46980397</span>,  <span class="number">0.44631556</span>,  <span class="number">0.66207059</span>,  <span class="number">0.8873598</span> ])</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/clvsit/Machine-Learning-Note/blob/master/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0(%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98).ipynb">https://github.com/clvsit/Machine-Learning-Note/blob/master/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0(%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98).ipynb</a></p>
+<h3 id="scoring-参数表"><a href="#scoring-参数表" class="headerlink" title="scoring 参数表"></a>scoring 参数表</h3><table>
+<thead>
+<tr>
+<th>Scoring</th>
+<th>Function</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Classification</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Accuracy</td>
+<td>metrics.accuracy_score</td>
+<td></td>
+</tr>
+<tr>
+<td>average_precision</td>
+<td>metrics.average_precision_score</td>
+<td></td>
+</tr>
+<tr>
+<td>f1</td>
+<td>metrics.f1_score</td>
+<td>for binary targets</td>
+</tr>
+<tr>
+<td>f1_micro</td>
+<td>metrics.f1_score</td>
+<td>micro-averaged</td>
+</tr>
+<tr>
+<td>f1_macro</td>
+<td>metrics.f1_score</td>
+<td>macro-averaged</td>
+</tr>
+<tr>
+<td>f1_weighted</td>
+<td>metrics.f1_score</td>
+<td>weighted average</td>
+</tr>
+<tr>
+<td>f1_samples</td>
+<td>metrics.f1_score</td>
+<td>by multilabel sample</td>
+</tr>
+<tr>
+<td>neg_log_loss</td>
+<td>metrics.log_loss</td>
+<td>requires predict_proba support</td>
+</tr>
+<tr>
+<td>precision etc.</td>
+<td>metrics.precision_score</td>
+<td>suffixes apply as with f1</td>
+</tr>
+<tr>
+<td>recall etc.</td>
+<td>metrics.recall_score</td>
+<td>suffixes apply as with f1</td>
+</tr>
+<tr>
+<td>roc_auc</td>
+<td>metrics.roc_auc_score</td>
+<td></td>
+</tr>
+<tr>
+<td>Clustering</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>adjusted_mutual_info_score</td>
+<td>metrics.adjusted_mutual_info_score</td>
+<td></td>
+</tr>
+<tr>
+<td>adjusted_rand_score</td>
+<td>metrics.adjusted_rand_score</td>
+<td></td>
+</tr>
+<tr>
+<td>completeness_score</td>
+<td>metrics.completeness_score</td>
+<td></td>
+</tr>
+<tr>
+<td>fowlkes_mallows_score</td>
+<td>metrics.fowlkes_mallows_score</td>
+<td></td>
+</tr>
+<tr>
+<td>homogeneity_score</td>
+<td>metrics.homogeneity_score</td>
+<td></td>
+</tr>
+<tr>
+<td>mutual_info_score</td>
+<td>metrics.mutual_info_score</td>
+<td></td>
+</tr>
+<tr>
+<td>normalized_mutual_info_score</td>
+<td>metrics.normalized_mutual_info_score</td>
+<td></td>
+</tr>
+<tr>
+<td>v_measure_score</td>
+<td>metrics.v_measure_score</td>
+<td></td>
+</tr>
+<tr>
+<td>Regression</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>explained_variance</td>
+<td>metrics.explained_variance_score</td>
+<td></td>
+</tr>
+<tr>
+<td>neg_mean_absolute_error</td>
+<td>metrics.mean_absolute_error</td>
+<td></td>
+</tr>
+<tr>
+<td>neg_mean_squared_error</td>
+<td>metrics.mean_squared_error</td>
+<td></td>
+</tr>
+<tr>
+<td>neg_mean_squared_log_error</td>
+<td>metrics.mean_squared_log_error</td>
+<td></td>
+</tr>
+<tr>
+<td>neg_median_absolute_error</td>
+<td>metrics.median_absolute_error</td>
+<td></td>
+</tr>
+<tr>
+<td>r2</td>
+<td>metrics.r2_score</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/ml/evaluation/%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98)%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.png" alt="思维导图"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>《机器学习Python实践》</li>
+<li>sklearn 官方文档</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://clvsit.github.io">clvsit</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://clvsit.github.io/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0-%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F-%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98/">https://clvsit.github.io/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0-%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F-%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://clvsit.github.io" target="_blank">clvsit 个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/ml/evaluation/%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98)%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/" title="模型评估"><img class="cover" src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/ml/evaluation/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">模型评估</div></div></a></div><div class="next-post pull-right"><a href="/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0-%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F-%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/" title="模型评估-性能度量(分类问题)"><img class="cover" src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/ml/evaluation/%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98)%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">模型评估-性能度量(分类问题)</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">clvsit</div><div class="author-info__description">人生不是戏剧，而我亦非主角</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/clvsit" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%87%E6%96%B9%E8%AF%AF%E5%B7%AE"><span class="toc-number">1.</span> <span class="toc-text">均方误差</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B3%E5%9D%87%E7%BB%9D%E5%AF%B9%E8%AF%AF%E5%B7%AE"><span class="toc-number">2.</span> <span class="toc-text">平均绝对误差</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%87%E6%96%B9%E5%AF%B9%E6%95%B0%E8%AF%AF%E5%B7%AE"><span class="toc-number">3.</span> <span class="toc-text">均方对数误差</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E5%AE%9A%E7%B3%BB%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">决定系数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#scoring-%E5%8F%82%E6%95%B0%E8%A1%A8"><span class="toc-number">5.1.</span> <span class="toc-text">scoring 参数表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/prompt-%E5%B7%A5%E7%A8%8B%E8%B0%83%E7%A0%94/" title="prompt 工程调研">prompt 工程调研</a><time datetime="2024-04-02T15:51:51.000Z" title="发表于 2024-04-02 23:51:51">2024-04-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/%E5%9F%BA%E4%BA%8E-BK-%E6%A0%91%E7%9A%84%E4%B8%AD%E6%96%87%E6%8B%BC%E5%86%99%E7%BA%A0%E9%94%99%E5%80%99%E9%80%89%E5%8F%AC%E5%9B%9E/" title="基于 BK 树的中文拼写纠错候选召回"><img src="https://img-blog.csdnimg.cn/20210322223322776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzM3ODM5Ng==,size_16,color_FFFFFF,t_70" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于 BK 树的中文拼写纠错候选召回"/></a><div class="content"><a class="title" href="/%E5%9F%BA%E4%BA%8E-BK-%E6%A0%91%E7%9A%84%E4%B8%AD%E6%96%87%E6%8B%BC%E5%86%99%E7%BA%A0%E9%94%99%E5%80%99%E9%80%89%E5%8F%AC%E5%9B%9E/" title="基于 BK 树的中文拼写纠错候选召回">基于 BK 树的中文拼写纠错候选召回</a><time datetime="2021-03-22T15:11:00.000Z" title="发表于 2021-03-22 23:11:00">2021-03-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Alibaba-at-IJCNLP-2017-Task-1/" title="Alibaba at IJCNLP-2017 Task 1">Alibaba at IJCNLP-2017 Task 1</a><time datetime="2021-03-15T08:30:03.000Z" title="发表于 2021-03-15 16:30:03">2021-03-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/%E5%BF%AB%E9%80%9F%E5%8A%A0%E8%BD%BD%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E9%9B%86/" title="快速加载常用数据集">快速加载常用数据集</a><time datetime="2021-03-03T03:18:32.000Z" title="发表于 2021-03-03 11:18:32">2021-03-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/%E8%B0%90%E9%9F%B3%E5%AD%97%E5%85%B8%E6%9E%84%E5%BB%BA%E6%96%B9%E6%A1%88/" title="谐音字典构建方案">谐音字典构建方案</a><time datetime="2021-03-01T03:17:14.000Z" title="发表于 2021-03-01 11:17:14">2021-03-01</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/ml/evaluation/%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98)%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By clvsit</div><div class="footer_custom_text">城南芳草城北溪，池塘烟柳归鸟栖。忽听窗外风吹雨，一梦花落月近西。</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

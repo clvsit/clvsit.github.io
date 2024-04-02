@@ -1,0 +1,326 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>clvsit 个人博客</title><meta name="author" content="clvsit"><meta name="copyright" content="clvsit"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="人生不是戏剧，而我亦非主角">
+<meta property="og:type" content="website">
+<meta property="og:title" content="clvsit 个人博客">
+<meta property="og:url" content="https://clvsit.github.io/">
+<meta property="og:site_name" content="clvsit 个人博客">
+<meta property="og:description" content="人生不是戏剧，而我亦非主角">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://clvsit.github.io/img/avatar.jpg">
+<meta property="article:author" content="clvsit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://clvsit.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://clvsit.github.io/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'clvsit 个人博客',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-04-03 00:00:32'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/img/banner.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="clvsit 个人博客"><span class="site-name">clvsit 个人博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">clvsit 个人博客</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/clvsit" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/prompt-%E5%B7%A5%E7%A8%8B%E8%B0%83%E7%A0%94/" title="prompt 工程调研">prompt 工程调研</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-02T15:51:51.000Z" title="发表于 2024-04-02 23:51:51">2024-04-02</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/prompt-engineer/">prompt-engineer</a></span></div><div class="content">提示工程（Prompt Engineering）关注提示词开发和优化，帮助用户将大语言模型（Large Language Model，LLM）用于各场景和研究领域。
+prompt 为人类与通用模型（如 LLM）的交互和使用提供了一个自然和直观的界面。由于其灵活性，prompt 已被广泛用作 NLP 任务的通用方法。然而，LLMs 需要细致的 prompt 工程，无论是手动还是自动，因为模型似乎不能像人类那样理解 prompt。尽管许多成功的 prompt 调整方法使用基于梯度的方法在连续空间上进行优化，但随着规模的扩大，这变得不太实际，因为计算梯度变得越来越昂贵，对模型的访问转向可能不提供梯度访问的 API。
+窃以为人类与 LLM 的交互无非两种，人类主动去配合 LLM，找出与 LLM 沟通的有效方式；另一种是 LLM 去配合人类，学会人类的沟通方式和行为习惯。前者是 prompt 工程，后者是 SFT 和 RLHF。在以完成业务目标的前提下，两者没有优劣之分，不可尊一贬一。
+SFT + RLHF 的道路是已经被证实可走通，例如 OpenAI 的 GPT 系列，以及最近一石惊起千层浪的 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/%E5%9F%BA%E4%BA%8E-BK-%E6%A0%91%E7%9A%84%E4%B8%AD%E6%96%87%E6%8B%BC%E5%86%99%E7%BA%A0%E9%94%99%E5%80%99%E9%80%89%E5%8F%AC%E5%9B%9E/" title="基于 BK 树的中文拼写纠错候选召回"><img class="post-bg" src="https://img-blog.csdnimg.cn/20210322223322776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzM3ODM5Ng==,size_16,color_FFFFFF,t_70" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于 BK 树的中文拼写纠错候选召回"></a></div><div class="recent-post-info"><a class="article-title" href="/%E5%9F%BA%E4%BA%8E-BK-%E6%A0%91%E7%9A%84%E4%B8%AD%E6%96%87%E6%8B%BC%E5%86%99%E7%BA%A0%E9%94%99%E5%80%99%E9%80%89%E5%8F%AC%E5%9B%9E/" title="基于 BK 树的中文拼写纠错候选召回">基于 BK 树的中文拼写纠错候选召回</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-03-22T15:11:00.000Z" title="发表于 2021-03-22 23:11:00">2021-03-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/%E4%B8%AD%E6%96%87%E6%8B%BC%E5%86%99%E7%BA%A0%E9%94%99/">中文拼写纠错</a></span></div><div class="content">最近在研究中文拼写纠错，在查阅资料的时候看到了这篇文章《从编辑距离、BK树到文本纠错 - JadePeng - 博客园》，觉得 BK 树挺有意思的，决定深入研究一下，并在其基础上重新整理一遍，希望能够对各位读者大大们有所帮助。
+前置知识本节介绍实现基于 BK 树的中文拼写纠错候选召回所需要的前置知识，包括文本纠错的主流方案、编辑距离和 BK 树等相关概念。
+文本纠错目前业界主流的方案仍然是以 pipeline 的方式：“错误检测 -&gt; 候选召回 -&gt; 候选排序”的步骤依次进行。以平安寿险纠错方案（《NLP上层应用的关键一环——中文纠错技术简述》）为例，其系统整体架构如下图所示（侵权则删）：整体上，平安寿险团队将纠错流程分解为错误检测 -&gt; 候选召回 -&gt; 候选排序三个关键步骤。
+
+错误检测：为了解决资源受限问题以及音近错误问题，提出了基于字音混合语言模型的错误检测算法。该模型可以通过未标注的无监督原始语料进行训练，同时利用字音混合特征限制预测概率分布。
+候选召回：结合双数组字典树以及 CSR 存储架构优化整体字典存储方案，同时优化内存空间及索引效果。此外，提出创 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/Alibaba-at-IJCNLP-2017-Task-1/" title="Alibaba at IJCNLP-2017 Task 1">Alibaba at IJCNLP-2017 Task 1</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-03-15T08:30:03.000Z" title="发表于 2021-03-15 16:30:03">2021-03-15</time></span></div><div class="content">
+
+发布时间：2017
+论文作者：阿里巴巴 NLP 团队
+
+
+本篇论文介绍阿里巴巴 NLP 团队在 IJCNLP 2017 任务 No. 1 中文语法错误诊断（CGED）的做法。任务是诊断四种语法错误，即冗余词语（R）、缺失词语（M）、错误词语（S）和乱序词语（W）。作者将该任务视作序列标注问题，并设计了一些手工特征来解决这个问题。作者的系统主要基于 LSTM-CRF 模型，并应用 3 种集成策略来提高性能。
+1. 介绍CGED 任务为中国 NLP 研究人员提供了构建和开发中文语法错误诊断系统，比较其结果并交流学习方法的机会。本篇论文的组织结构如下：
+
+第 2 节：介绍了任务的细节；
+第 3 节：介绍了一些相关的中英文著作；
+第 4 节：介绍了作者提出的方法，包括特征生成、模型架构和集成策略。
+第 5 节：显示评估数据集上的数据分析和最终结果；
+第 6 节：总结并展望了未来的工作。
+
+2. 中文语法错误诊断NLPTea CGED 自 2014 年以来一直举办，它提供了几套由中文外语学习者编写的训练数据。在这些训练数据集中，已标记了 4 种 错误：
+
+R：冗余词语；
+S：错误词语；
+M： ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/%E5%BF%AB%E9%80%9F%E5%8A%A0%E8%BD%BD%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E9%9B%86/" title="快速加载常用数据集">快速加载常用数据集</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-03-03T03:18:32.000Z" title="发表于 2021-03-03 11:18:32">2021-03-03</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">数据处理</a></span></div><div class="content">快速加载常用数据集通常情况下，我们会针对不同的数据格式采用不同的数据读取方式，例如使用 json 来读取 .json 文件，使用 jsonlines 来读取 .jsonl 文件，使用 pandas 或者 Python 的文件读取方式来获取 .csv 文件。但这些方法的读取时间各不相同，有快有慢，具体可参考《Python 数据读取方式以及时间比对》。
+本文主要介绍如何快速加载常用的数据集。
+jsonlines 读取数据集此时，我们有一个 13G jsonlines 格式的数据集，我们使用 jsonlines 包进行读取。
+
+读取代码：
+
+1234%%timefile = &quot;/data/xueyou/data/taobao_note/redbook/0516/data.json&quot;with open(file, &quot;r&quot;, encoding=&quot;utf-8&quot;) as file:    datasets_redbook = [line for line in jsonlines.Reader(file)]
+
+
+所需时间：
+
+12CPU t ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/%E8%B0%90%E9%9F%B3%E5%AD%97%E5%85%B8%E6%9E%84%E5%BB%BA%E6%96%B9%E6%A1%88/" title="谐音字典构建方案">谐音字典构建方案</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-03-01T03:17:14.000Z" title="发表于 2021-03-01 11:17:14">2021-03-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E8%A7%86%E9%A2%91%E9%A1%B9%E7%9B%AE/">视频项目</a></span></div><div class="content">谐音字典构建方案计算词语与词语之间的音距，将音距相近的词语聚到一块，从而构造出一个谐音字典。通过该谐音字典，我们可以快速获取指定词语 top k 个谐音词语。
+要达成这个目标，我们首先要有一个词典。通过整合目前已有的全部数据集，并对数据集进行清洗，包括去除重复的数据，滤除特殊符号、表情等。然后再对清洗后的数据进行分词、词频过滤，最终得到一个尽可能完备的词典。
+
+全部数据集：&#x2F;nfs&#x2F;users&#x2F;chenxu&#x2F;project&#x2F;OpenNMT-tf&#x2F;asr_correct&#x2F;data&#x2F;food_redbook_wiki_dataset.txt
+分词后结果：&#x2F;nfs&#x2F;users&#x2F;chenxu&#x2F;project&#x2F;OpenNMT-tf&#x2F;asr_correct&#x2F;data&#x2F;data_word_list.json
+词频过滤后结果：&#x2F;nfs&#x2F;users&#x2F;chenxu&#x2F;project&#x2F;OpenNMT-t ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/%E5%9F%BA%E4%BA%8E%E8%AF%8D%E5%90%91%E9%87%8F%E7%9A%84%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%9F%AD%E8%AF%AD%E6%8C%96%E6%8E%98/" title="基于词向量的相似度短语挖掘"><img class="post-bg" src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9tYXJrZG93bi1waWN0dXJlLWNsdnNpdC5vc3MtY24taGFuZ3pob3UuYWxpeXVuY3MuY29tL21sL0RCU0NBTi8lRTclOUYlQUQlRTglQUYlQUQlRTYlOEMlOTYlRTYlOEUlOTguanBn?x-oss-process=image/format,png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于词向量的相似度短语挖掘"></a></div><div class="recent-post-info"><a class="article-title" href="/%E5%9F%BA%E4%BA%8E%E8%AF%8D%E5%90%91%E9%87%8F%E7%9A%84%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%9F%AD%E8%AF%AD%E6%8C%96%E6%8E%98/" title="基于词向量的相似度短语挖掘">基于词向量的相似度短语挖掘</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-06-09T06:41:00.000Z" title="发表于 2020-06-09 14:41:00">2020-06-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a></span></div><div class="content">短语挖掘在应用层面上与新词发现有重叠部分，关于新词发现的内容可以参考我的这篇博客《新词发现》。如果我们希望能够从一大段文本中挖掘出新的短语，那么短语挖掘的做法与新词发现相差不大，通过凝聚程度、自由程度等指标对文本片段进行划分，找出新的文本片段作为新的短语。
+另一个应用是根据已有的短语从文本中找出语义相似的短语，本篇博客主要介绍这一应用的一个简单实践。
+实现思路
+首先，我们可以借助分词工具对文本进行分词；
+然后，将分词后的词列表映射到词向量空间；
+接着，把已有的短语视为启动词，依次便利每个启动词，以启动词在词向量空间中的位置和指定长度半径寻找相似的新词语；
+重复第三个步骤，将找到的新词语作为启动词继续挖掘，但这次减小半径长度；
+不断重复第 3 和第 4 步骤，直到找不到新的词语。
+
+上述做法与聚类算法中的 DBSCAN（可以参考这篇博客《聚类算法之DBSCAN算法之一：经典DBSCAN》）类似，区别在于 DBSCAN 的半径保持不变，而上述做法中的半径会随着迭代逐渐减小。
+【问】：为什么要在迭代的过程中减小半径呢？
+【答】：如果按照固定的半径不断寻找新的词语，那么就会发生下图所示的问题， ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/Google-Bert-%E6%A1%86%E6%9E%B6%E8%AE%AD%E7%BB%83%E3%80%81%E9%AA%8C%E8%AF%81%E3%80%81%E6%8E%A8%E6%96%AD%E5%92%8C%E5%AF%BC%E5%87%BA%E7%AE%80%E5%8D%95%E8%AF%B4%E6%98%8E/" title="Google Bert 框架训练、验证、推断和导出简单说明">Google Bert 框架训练、验证、推断和导出简单说明</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-05-24T06:45:37.000Z" title="发表于 2020-05-24 14:45:37">2020-05-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a></span></div><div class="content">实习的这段期间，在公司做了不少 NLP 分类任务，歧义车系判断、字词重复纠错等等，期间有用过 Google 开源的 Bert 框架，也用过公司大佬制作的 T5 模型。但无论使用什么，起手 Bert 仿佛已经成为了一种“本能”（笑哭.jpg），Bert NLP 算法工程师的至交好友。
+写这篇博客的目的一是为了记录先前工作的经验，此外也简单地介绍一下如何使用 Google 官方开源的 Bert 框架，因为目前很少有博客会讲如何将 Bert 训练得到的 checkpoint 转换为 savedModel，这何尝不是一种遗憾，因此我打算将这遗憾填补。对于第一次使用 Bert 框架的读者，我建议从头开始看，若已经有熟练的使用经验，只想了解如何导出模型和使用，可以直接跳到模型导出和使用。
+【项目地址】：https://github.com/clvsit/bert-simple-use
+准备工作首先，到 GitHub 上 clone Bert 源代码。
+
+google-research&#x2F;bert：https://github.com/google-research/bert
+
+然后下载预训 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/python-%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E6%97%B6%E9%97%B4%E6%AF%94%E8%BE%83/" title="python 数据读取方式以及时间比较">python 数据读取方式以及时间比较</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-05-16T14:32:12.000Z" title="发表于 2020-05-16 22:32:12">2020-05-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">数据处理</a></span></div><div class="content">先前一直在做汽车项目的数据 Pipeline 搭建，目前终于告一段落，于是打算将这段期间的工作做个总结，整理自身的最佳实践外，也希望能够帮助到有相同需求的读者们。
+这篇博客主要介绍几类常见的数据读取方式以及时间比对，json、jsonlines、csv、tsv、pandas 等。后续如果接触到更多的存储形式，则会继续完善这篇博客。需要注意的是，我仅站在使用者的角度去度量这些数据读取方式，对于其内部的运行原理则没有完整的了解，如有错误请麻烦各种大佬不吝指出。
+首先，我准备了一批数据，将这批数据分别存储为 json、jsonl、csv、hdf5。
+
+接下来，在 jupyter 中测试 json、jsonlines、pandas、vaex 这四个包的数据读取速度。
+json 读取首先，导入 json 包。
+1import json
+
+然后，读取 dataset_test.json 文件。
+123%%timewith open(os.path.join(project_path, &quot;dataset_test.json&quot;), &quot;r&quot;, encoding=& ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/DFA-%E7%AE%97%E6%B3%95/" title="DFA 算法"><img class="post-bg" src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zczAuYmRzdGF0aWMuY29tLzcwY0Z2SFNoX1ExWW54R2twb1dLMUhGNmhoeS9pdC91PTI4MjkyNDkzMzQsOTQ1MjgzNTMyJmZtPTExJmdwPTAuanBn?x-oss-process=image/format,png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DFA 算法"></a></div><div class="recent-post-info"><a class="article-title" href="/DFA-%E7%AE%97%E6%B3%95/" title="DFA 算法">DFA 算法</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-05-03T14:43:02.000Z" title="发表于 2020-05-03 22:43:02">2020-05-03</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a></span></div><div class="content">DFA，全称 Deterministic Finite Automaton 即确定有穷自动机：从一个状态通过一系列的事件转换到另一个状态，即 state -&gt; event -&gt; state。
+
+确定：状态以及引起状态转换的事件都是可确定的，不存在“意外”。
+有穷：状态以及事件的数量都是可穷举的。
+
+计算机操作系统中的进程状态与切换可以作为 DFA 算法的一种近似理解。如下图所示，其中椭圆表示状态，状态之间的连线表示事件，进程的状态以及事件都是可确定的，且都可以穷举。
+
+DFA 算法具有多种应用，在此先介绍在匹配关键词领域的应用。
+匹配关键词我们可以将每个文本片段作为状态，例如“匹配关键词”可拆分为“匹”、“匹配”、“匹配关”、“匹配关键”和“匹配关键词”五个文本片段。
+
+【过程】：
+
+初始状态为空，当触发事件“匹”时转换到状态“匹”；
+触发事件“配”，转换到状态“匹配”；
+依次类推，直到转换为最后一个状态“匹配关键词”。
+
+再让我们考虑多个关键词的情况，例如“匹配算法”、“匹配关键词”以及“信息抽取”。
+
+可以看到上图的状态图类似树形结构，也正是因为这个结构，使得 DFA  ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/EDA-Easy-Data-Augmentation-Techniques-for-Boosting-Performance-on-Text-Classific/" title="EDA:Easy Data Augmentation Techniques for Boosting Performance on Text Classific"><img class="post-bg" src="https://raw.githubusercontent.com/clvsit/markdown-image/master/nlp/data_augmentation/EDA%20Table1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="EDA:Easy Data Augmentation Techniques for Boosting Performance on Text Classific"></a></div><div class="recent-post-info"><a class="article-title" href="/EDA-Easy-Data-Augmentation-Techniques-for-Boosting-Performance-on-Text-Classific/" title="EDA:Easy Data Augmentation Techniques for Boosting Performance on Text Classific">EDA:Easy Data Augmentation Techniques for Boosting Performance on Text Classific</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-04-10T10:32:39.000Z" title="发表于 2020-04-10 18:32:39">2020-04-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></span></div><div class="content">EDA 包含四个简单但功能强大的操作：同义词替换，随机插入，随机交换和随机删除。在五个文本分类任务上，作者表明 EDA 可以提高卷积神经网络和循环神经网络的性能。EDA 对较小的数据集显示出特别强的结果。平均而言，在五个数据集上，仅使用 50％ 的可用训练集进行 EDA 训练就可以获得与使用所有可用数据进行的正常训练得到相同的准确性。此外，作者还进行了广泛的消融研究，并提出了实用的参数。
+介绍机器学习和深度学习已在从情感分析到主题分类的任务上实现了很高的准确性，但是高性能通常取决于训练数据的大小和质量，而这往往很难收集。自动数据增强通常用于计算机视觉和语音，可以帮助训练更强大的模型，尤其是在使用较小的数据集时。但是，提出通用的语言转换规则比较困难，因此尚未充分探索 NLP 中的通用数据增强技术。
+先前已有相关的研究提出了一些在 NLP 中用于数据增强的技术：
+
+通过翻译来生成新的数据，例如将中文先翻译成英文，然后再将英文翻译成中文，此时就可以生成一份与原句近似语义的新句。
+将数据噪声来平滑（smoothing）数据集。
+将预测语言模型用作同义词替换。
+
+尽管这些技术是有效的，但实际上它 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/gitlab%E5%88%9B%E5%BB%BARepoPage/" title="gitlab创建RepoPage"><img class="post-bg" src="https://raw.githubusercontent.com/clvsit/markdown-image/master/eigen/tools/20200409231825.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="gitlab创建RepoPage"></a></div><div class="recent-post-info"><a class="article-title" href="/gitlab%E5%88%9B%E5%BB%BARepoPage/" title="gitlab创建RepoPage">gitlab创建RepoPage</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-04-09T14:44:50.000Z" title="发表于 2020-04-09 22:44:50">2020-04-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/">工具介绍</a></span></div><div class="content">步骤 1：创建项目打开 gitlab，点击上方的“+”号按钮，在显示的页面中填入 repo 相关的信息，例如 Project name 和 description。最后，点击 Create project 按钮。
+
+步骤 2：添加 License在斌哥提供的 Youtubu 教程中需要创建 License，但我在实践的过程中发现该步骤非必需。
+创建项目后会自动跳转到 repo 的 detail 页面，在该页面的正中央有一排按钮组，点击“Add License”。
+
+然后，在调整后的页面中，选择 Template -&gt; Apache License 2.0。
+
+步骤 3：添加 .gitlab-ci 配置文件完成 License 添加后，回退到 repo detail 页面，此时已有 LICENSE 文件。
+
+然后按图所示，创建一个新的文件。
+
+在创建新文件的页面中，先在左侧的 Template 下拉框中选择 .gitlab-ci.yml，然后在右侧的下拉框中选择 HTML。最后，点击 Commit changes。
+此时，我们查看左侧栏的 CI&#x2F;CD -&gt; Pipe ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/%E6%96%B0%E8%AF%8D%E5%8F%91%E7%8E%B0/" title="新词发现"><img class="post-bg" src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2NsdnNpdC9tYXJrZG93bi1pbWFnZS9tYXN0ZXIvbmxwL3dvcmRfZmluZC8yMDIwMDEwNzE2MDk1Ni5qcGc?x-oss-process=image/format,png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="新词发现"></a></div><div class="recent-post-info"><a class="article-title" href="/%E6%96%B0%E8%AF%8D%E5%8F%91%E7%8E%B0/" title="新词发现">新词发现</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-01-05T14:39:07.000Z" title="发表于 2020-01-05 22:39:07">2020-01-05</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a></span></div><div class="content">新词发现是 NLP 的基础任务之一，通过对已有语料进行挖掘，从中识别出新词。新词发现也可称为未登录词识别，严格来讲，新词是指随时代发展而新出现或旧词新用的词语。同时，我认为特定领域的专有名词也可归属于新词的范畴。何出此言呢？通常我们会很容易找到通用领域的词表，但要找到某个具体领域的专有名词则非常困难，因此特定领域的专有名词相对于通用领域的词语即为新词。换言之，“新”并非只是时间上的概念，同样可以迁移到领域或空间上。因此，新词发现不仅可以挖掘随时间变化而产生的新词，也可以挖掘不同领域的专有名词。
+接下来，让我们开始一场新词发现的探索之旅吧。首先，对于“新词发现”这个标题，我们可将其拆分为“发现”和“新词”两个步骤：
+
+“发现”：依据某种手段或方法，从文本中挖掘词语，组成新词表；
+“新词”：借助挖掘得到的新词表，和之前已有的旧词表进行比对，不在旧词表中的词语即可认为是新词。
+
+“新词发现”的难点主要在于“发现”的过程——如何从文本中挖掘到词语？那么有办法回避这个问题吗？让我们思索一下“新词”的过程：比对挖掘得到的新词表和旧词表，从代码的角度来说。
+123for 新词 in 新词表:     ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/n-gram-%E8%AF%8D%E9%A2%91%E7%BB%9F%E8%AE%A1/" title="n-gram 词频统计">n-gram 词频统计</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-12-15T06:33:01.000Z" title="发表于 2019-12-15 14:33:01">2019-12-15</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">数据处理</a></span></div><div class="content">n-gram 词频统计借助 sklearn 提供的 CountVectorizer 可以实现 n-gram 的词频统计。
+实现过程首先，导入所需的包以及数据。
+1234567from sklearn.feature_extraction.text import CountVectorizerfrom collections import ChainMapimport tqdmwith open(&quot;/nfs/users/chenxu/common_word_mining/dataset_word_cut_small.json&quot;, &quot;r&quot;, encoding=&quot;utf-8&quot;) as file:    content_list = json.load(file)
+
+然后，调用 CountVectorizer，以获得每段文本的文本向量。
+12vectorizer = CountVectorizer(token_pattern=r&quot;(?u)\b\w+\b&quot;, ngram_range=(2,2), min_df=5)X ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/%E5%87%BD%E6%95%B0%E6%B3%A8%E9%87%8A%E5%8F%8A%E5%85%B6%E5%A6%99%E7%94%A8/" title="函数注释及其妙用">函数注释及其妙用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-10-24T06:39:15.000Z" title="发表于 2019-10-24 14:39:15">2019-10-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC/">编程风格</a></span></div><div class="content">注释函数注释【示例】：
+123456789101112@staticmethoddef report_info_add(report_a: dict, report_b: dict, key: str) -&gt; int:    &quot;&quot;&quot;    报告信息相加    :param report_a: dict 报告信息字典 A    :param report_b: dict 报告信息字典 B    :param key:      str  指定 key 值    :return: int 相加后的数值    &quot;&quot;&quot;    report_a_value = report_a[key] if key in report_a else 0    report_b_value = report_b[key] if key in report_b else 0    return report_a_value + report_b_value
+
+在函数声明中 report_a 是参数，: 冒号后 dict 是参数 report_a 的 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/" title="模型优化"><img class="post-bg" src="https://img-blog.csdnimg.cn/img_convert/58657b64d39f6d8e48dd5f695b6065a4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="模型优化"></a></div><div class="recent-post-info"><a class="article-title" href="/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/" title="模型优化">模型优化</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-05-31T13:43:03.000Z" title="发表于 2019-05-31 21:43:03">2019-05-31</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/">模型优化</a></span></div><div class="content">优化是应用数学的一个分支，也是机器学习的核心组成部分。实际上，机器学习算法 &#x3D; 模型表征 + 模型评估 + 模型优化。其中，模型优化所做的事情就是在模型表征空间（假设空间）中找到模型评估指标最好的模型。需要注意的是不同的优化算法对应的模型表征和评估指标不尽相同。
+先前，我很纠结是把损失函数放在模型评估中，还是放在模型优化这一篇博客中。准确地说，损失函数是用来作为模型评估的标准，不同的模型有不同的损失函数，例如逻辑回归使用交叉熵损失函数，线性回归使用均方误差损失函数。我们统计模型的损失，从而评估模型的优劣。因此，损失函数放到模型评估中是顺理成章的事情。但是，损失函数在模型优化中同样起到非常重要的作用。
+很少有模型从一开始就是完美的，我们需要不断地优化模型，让模型逐渐达到理论最优值，而我们优化的目标就是损失函数——让损失函数达到最小值。从这角度来讲，将损失函数放到模型优化中似乎也非常有道理，因此我最终还是将损失函数放到模型优化这一篇博客中。
+在本篇博客中除了讲述损失函数外，还包括机器学习中经典的优化算法、模型调参等相关知识，内容主要来源于博主阅读的书籍以及博主的个人领悟，若有偏驳 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/" title="模型评估"><img class="post-bg" src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/ml/evaluation/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="模型评估"></a></div><div class="recent-post-info"><a class="article-title" href="/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/" title="模型评估">模型评估</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-05-30T14:24:53.000Z" title="发表于 2019-05-30 22:24:53">2019-05-30</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/">模型评估</a></span></div><div class="content">只有选择与问题相匹配的评估方法，才能快速地发现模型选择或训练过程中出现的问题，迭代地对模型进行优化。针对分类、排序、回归、序列预测等不同类型的机器学习问题，评估指标的选择也有所不同。知道每种评估指标的精确定义、有针对性地选择合适的评估指标、根据评估指标的反馈进行模型调整，这些都是机器学习在模型评估阶段的关键问题。
+首先，我们先来了解一下关于模型评估的基础概念。
+【误差(error)】：学习器的预测输出与样本的真实输出之间的差异。根据产生误差的数据集，可分为：
+
+训练误差(training error)：又称为经验误差(empirical error)，学习器在训练集上的误差。
+测试误差(test error)：学习器在测试集上的误差。
+泛化误差(generalization error)：学习器在未知新样本上的误差。
+
+需要注意的是，上述所说的“误差”均指误差期望，排除数据集大小的影响。
+【目的】：得到泛化误差小的学习器。然而，事先并不知道新样本，实际能做的是努力使经验误差最小化。但需要明确一点，即使分类错误率为 0，精度为 100% 的学习器，也不一定能够在新样本上取得好的预测结果。 ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">clvsit</div><div class="author-info__description">人生不是戏剧，而我亦非主角</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/clvsit" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/prompt-%E5%B7%A5%E7%A8%8B%E8%B0%83%E7%A0%94/" title="prompt 工程调研">prompt 工程调研</a><time datetime="2024-04-02T15:51:51.000Z" title="发表于 2024-04-02 23:51:51">2024-04-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/%E5%9F%BA%E4%BA%8E-BK-%E6%A0%91%E7%9A%84%E4%B8%AD%E6%96%87%E6%8B%BC%E5%86%99%E7%BA%A0%E9%94%99%E5%80%99%E9%80%89%E5%8F%AC%E5%9B%9E/" title="基于 BK 树的中文拼写纠错候选召回"><img src="https://img-blog.csdnimg.cn/20210322223322776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzM3ODM5Ng==,size_16,color_FFFFFF,t_70" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于 BK 树的中文拼写纠错候选召回"/></a><div class="content"><a class="title" href="/%E5%9F%BA%E4%BA%8E-BK-%E6%A0%91%E7%9A%84%E4%B8%AD%E6%96%87%E6%8B%BC%E5%86%99%E7%BA%A0%E9%94%99%E5%80%99%E9%80%89%E5%8F%AC%E5%9B%9E/" title="基于 BK 树的中文拼写纠错候选召回">基于 BK 树的中文拼写纠错候选召回</a><time datetime="2021-03-22T15:11:00.000Z" title="发表于 2021-03-22 23:11:00">2021-03-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Alibaba-at-IJCNLP-2017-Task-1/" title="Alibaba at IJCNLP-2017 Task 1">Alibaba at IJCNLP-2017 Task 1</a><time datetime="2021-03-15T08:30:03.000Z" title="发表于 2021-03-15 16:30:03">2021-03-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/%E5%BF%AB%E9%80%9F%E5%8A%A0%E8%BD%BD%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E9%9B%86/" title="快速加载常用数据集">快速加载常用数据集</a><time datetime="2021-03-03T03:18:32.000Z" title="发表于 2021-03-03 11:18:32">2021-03-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/%E8%B0%90%E9%9F%B3%E5%AD%97%E5%85%B8%E6%9E%84%E5%BB%BA%E6%96%B9%E6%A1%88/" title="谐音字典构建方案">谐音字典构建方案</a><time datetime="2021-03-01T03:17:14.000Z" title="发表于 2021-03-01 11:17:14">2021-03-01</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a>
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/prompt-engineer/"><span class="card-category-list-name">prompt-engineer</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/"><span class="card-category-list-name">工具介绍</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"><span class="card-category-list-name">数据处理</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">机器学习</span><span class="card-category-list-count">13</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/"><span class="card-category-list-name">模型优化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/"><span class="card-category-list-name">模型评估</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/"><span class="card-category-list-name">特征工程</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/"><span class="card-category-list-name">特征选择</span><span class="card-category-list-count">1</span></a></li></ul></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 1.1em; color: #999">学习</a> <a href="/tags/%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB/" style="font-size: 1.1em; color: #999">层次聚类</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/04/"><span class="card-archive-list-date">四月 2024</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/03/"><span class="card-archive-list-date">三月 2021</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/06/"><span class="card-archive-list-date">六月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/05/"><span class="card-archive-list-date">五月 2020</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/04/"><span class="card-archive-list-date">四月 2020</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/01/"><span class="card-archive-list-date">一月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/12/"><span class="card-archive-list-date">十二月 2019</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/10/"><span class="card-archive-list-date">十月 2019</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">27</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">71.5k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-04-02T16:00:32.286Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/banner.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By clvsit</div><div class="footer_custom_text">城南芳草城北溪，池塘烟柳归鸟栖。忽听窗外风吹雨，一梦花落月近西。</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: (str) => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, null))
+  },
+  run: (subtitleType) => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        getScript('https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  }
+}
+</script><script>function subtitleType () {
+  if (true) {
+    typedJSFn.init("sadasd")
+  } else {
+    document.getElementById("subtitle").textContent = "s"
+  }
+}
+typedJSFn.run(subtitleType)</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
