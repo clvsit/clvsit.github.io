@@ -121,3 +121,22 @@ CoT 一系列研究，给我的感觉像是将数据结构中的链表、树和�
 - **2022-10**：Measuring and Narrowing the Compositionality Gap in Language Models：提出了 self-ask 的方式，不断将复杂、多跳问题拆分为子问题，然后依次解决子问题，最后回答完整问题。在解决子问题的过程中，可借助搜索引擎来获取事实性知识。
 - **2022-10**：ReAct: Synergizing Reasoning and Acting in Language Models：提出了 ReAct 框架。
 - **2023-06**：Let's Verify Step by Step：在数学推理领域，过程监督可以用来训练比结果监督更可靠的奖励模型。主动学习可以用来降低人类数据收集的成本。
+
+# 相关工具
+
+|**名称**|**链接**|
+|-|-|
+|awesome-chatgpt-prompts-zh|[https://github.com/PlexPt/awesome-chatgpt-prompts-zh](https://github.com/PlexPt/awesome-chatgpt-prompts-zh)|
+|snackprompt|[https://snackprompt.com/](https://snackprompt.com/)|
+|flowgpt|[https://flowgpt.com/](https://flowgpt.com/)|
+|prompthero|[https://prompthero.com/](https://prompthero.com/)|
+|publicprompts.art|[https://publicprompts.art/](https://publicprompts.art/)|
+|guidance|[https://github.com/guidance-ai/guidance](https://github.com/guidance-ai/guidance)|
+|Synapse_CoR|[https://github.com/ProfSynapse/Synapse_CoR](https://github.com/ProfSynapse/Synapse_CoR)|
+|PromptInject|[https://github.com/agencyenterprise/PromptInject](https://github.com/agencyenterprise/PromptInject)|
+
+
+# 参考资料
+
+- 工程指南：https://www.promptingguide.ai/zh
+- prompt 学习：https://learningprompt.wiki/
