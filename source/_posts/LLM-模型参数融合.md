@@ -22,47 +22,39 @@ category:
 
 > 模型量化，例如 int4、int8 如果对于模型输出的效果影响不大，也可以理解为参数的略微变化并不会对结果影响太大。
 
-## 方法优点
+# 方法优点
 
 1. **无需训练**，只需要将现有的基于相同基底的模型进行融合即可。
 2. 针对单独一个领域训练“偏科”的模型要比训练通用模型要容易得多，不需要考虑数据集内部各类型数据的配比情况，也不需要考虑数据顺序和采样，训练的过程也容易得多，甚至过拟合也未尝不可。
 3. “查漏补缺”，哪里不行补哪里。
 
-## 方法缺点
+# 方法缺点
 
 不一定有用（滑稽.jpg）。
 
-## DARE
+# DARE
 
 阿里提出了一种名为 DARE 的方法，用来将具备不同能力的多个模型融合成拥有全部能力的单个模型。
-
-https://zhuanlan.zhihu.com/p/668152236
-
-**论文地址**：[https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2311.03099](https://link.zhihu.com/?target=https://arxiv.org/abs/2311.03099)
+- **参考链接**：https://zhuanlan.zhihu.com/p/668152236
+- **论文地址**：[https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2311.03099](https://link.zhihu.com/?target=https://arxiv.org/abs/2311.03099)
+- **GitHub 地址**：GitHub 地址：https://github.com/yule-BUAA/MergeLM/tree/main
 
 作者发现基于编码器或解码器的语言模型可以通过**吸收同源模型的参数来获得新的能力，而无需重新训练**。通常，LMs 的新能力可以通过 SFT 实现，这反映在微调后模型参数与预训练参数（即 delta 参数）之间的差距上。作者提出 DARE（Drop And REscale）方法，将大部分的 delta 参数设置为 0，这并不会影响 SFT LM 的能力，并且越大的模型的可以 drop 更多的参数。基于这一观察结果，使用 DARE 进一步稀疏多个 SFT 同源模型的 delta 参数，然后通过参数平均将它们合并为一个模型。
 
-### 使用方式
+## 使用方式
+> **注意事项**：在调用 `merge_llms_instruct_math_code.py` 脚本执行模型参数融合时，无需进行融合后模型指标的评测（这需要下载评测数据集，评测速度很慢，完全没有必要），可以将 `get_merge_performance()` 函数内的 `test_alpaca_eval()` 等评测函数相关的代码区域全部注释（见下图）。
 
-#### 官方代码
+![](https://secure2.wostatic.cn/static/YHX2r7Y4cPwuK7K2Nc2Ca/image.png?auth_key=1712332372-5FzefMFTrqqjcWNovXsbyC-0-ecdfb141d8ae1346fae7681ee6f0cdb9)
 
-https://github.com/yule-BUAA/MergeLM/tree/main
+最后，将函数尾部的删除模型的代码注释。
 
-> **注意实现**：在调用 `merge_llms_instruct_math_code.py` 脚本执行模型参数融合时，无需进行融合后模型指标的评测（这需要下载评测数据集，评测速度很慢，完全没有必要），可以将 `get_merge_performance()` 函数内的 `test_alpaca_eval()` 等评测函数相关的代码区域全部注释（见下图）。
+## 实验结果
+使用 mt-bench 基准进行评测。
 
-  ![](https://secure2.wostatic.cn/static/YHX2r7Y4cPwuK7K2Nc2Ca/image.png?auth_key=1712332372-5FzefMFTrqqjcWNovXsbyC-0-ecdfb141d8ae1346fae7681ee6f0cdb9)
-
-  最后，将函数尾部的删除模型的代码注释。
-
-  ![](https://fuhgh5u28j.feishu.cn/space/api/box/stream/download/asynccode/?code=YzdhYTA2M2IwMzA2MTQ2ZjQ1N2Q1MzYyYTg2MjBkMzJfYTZXeWxmVndYM0xHMFZFMG1rZmE5R3VCMVVUTEtvbHFfVG9rZW46WEFjRmJwOTA1b05XRmd4TTRVUmNOQzRKbmJiXzE3MDU0NzUyMTU6MTcwNTQ3ODgxNV9WNA)
-
-### 实验结果
-
-|||||||||||
-|-|-|-|-|-|-|-|-|-|-|
 |模型名称|mt_bench 总分|writing|roleplay|reasoning|math|coding|extraction|stem|humanities|
+|-|-|-|-|-|-|-|-|-|-|
 |GPT-3.5-turbo|7.944|9.200|8.400|5.650|6.300|6.900|8.850|8.700|9.550|
-|融合刘琳训练的 ep_04 模型||||||||||
+|融合同事训练的 ep_04（Yi-34B） 模型||||||||||
 |ep_04_merge_v1|7.834|9.275|8.175|6.500|6.025|5.850|8.000|9.000|9.850|
 |ep_04|7.257|8.553|7.737|6.250|4.300|5.750|7.342|8.425|9.700|
 |基础实验：在 mistral-7B 模型上验证参数融合是否有效||||||||||
@@ -70,21 +62,16 @@ https://github.com/yule-BUAA/MergeLM/tree/main
 |mistral-7b-instruct-v0.1|6.772|8.250|7.450|6.150|4.150|4.300|6.600|7.675|9.600|
 |mistral-7b-math|4.456|3.725|4.900|4.100|5.050|2.350|4.350|5.275|5.900|
 
-
 首先，是在 mistral-7B 模型上进行模型参数融合实验，验证 DARE 方法是否有效，将基于 mistral-7B 微调的 mistral-7b-instruct-v0.1 和数学能力较强的 mistral-7b-math 进行融合。观察 mt_bench 各项指标，融合后的模型的 math 能力得到了极大的提升，说明 DARE 方法切实有效。
 
-因此，将目前最强的自研模型 ep_04（刘琳训练）和当前最强的基于 mistral-7b 微调的数学模型进行融合，最后将 mt_bench 从 7.257 提升至 7.834，超过 openchat-3.5。
+因此，将目前最强的自研模型 ep_04（同事训练）和当前最强的基于 mistral-7b 微调的数学模型进行融合，最后将 mt_bench 从 7.257 提升至 7.834，超过 openchat-3.5。
 
-## mergekit
+# mergekit
+- **GitHub 地址**：https://github.com/cg123/mergekit
 
-### 使用方式
+## 使用方式
 
-#### 官方代码
-
-https://github.com/cg123/mergekit
-
-
-
+### 融合为 MoE
 使用 mergekit 融合多个模型，作为 MoE。
 
 ```YAML
