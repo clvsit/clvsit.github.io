@@ -36,7 +36,7 @@ category:
 
 阿里提出了一种名为 DARE 的方法，用来将具备不同能力的多个模型融合成拥有全部能力的单个模型。
 - **参考链接**：https://zhuanlan.zhihu.com/p/668152236
-- **论文地址**：[https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2311.03099](https://link.zhihu.com/?target=https://arxiv.org/abs/2311.03099)
+- **论文地址**：[《Language Models are Super Mario: Absorbing Abilities from Homologous Models as a Free Lunch》](https://arxiv.org/abs/2311.03099)
 - **GitHub 地址**：GitHub 地址：https://github.com/yule-BUAA/MergeLM/tree/main
 
 作者发现基于编码器或解码器的语言模型可以通过**吸收同源模型的参数来获得新的能力，而无需重新训练**。通常，LMs 的新能力可以通过 SFT 实现，这反映在微调后模型参数与预训练参数（即 delta 参数）之间的差距上。作者提出 DARE（Drop And REscale）方法，将大部分的 delta 参数设置为 0，这并不会影响 SFT LM 的能力，并且越大的模型的可以 drop 更多的参数。基于这一观察结果，使用 DARE 进一步稀疏多个 SFT 同源模型的 delta 参数，然后通过参数平均将它们合并为一个模型。
