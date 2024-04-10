@@ -199,8 +199,7 @@
 <li>Adjacent Word Collocation：在训练数据中，作者发现相邻词语之间的搭配错误。基于此观察，作者使用 Gigawords 数据集为每个相邻词语对计算了 point-wise 互信息（PMI）分数。例如“&lt;锻炼, 动力&gt;”的 PMI 分数较低，而“&lt;锻炼, 能力&gt;”的 PMI 分数较高。同样，“&lt;一部, 电影&gt;”的 PMI 分数要高于“&lt;一台, 电影&gt;”。作者将离散的 PMI 分数嵌入的低维向量中，作为 LSTM-CRF 模型的输入特征之一。因为是在字级别处理任务，因此将位置指示器添加到了离散的 PMI 分数中。</li>
 </ul>
 <p>计算 PMI 分数的公式如下所示：</p>
-<p>$$PMI(w_1, w_2) &#x3D; log(\frac{p(w_1, w_2)}{p(w_1) * p(w_2)}) \quad (1)$$</p>
-<ul>
+<script type="math/tex; mode=display">PMI(w_1, w_2) = log(\frac{p(w_1, w_2)}{p(w_1) * p(w_2)}) \quad (1)</script><ul>
 <li>Dependent Word Collocation：相邻词 PMI 分数表示相邻词之间的搭配。然而，搭配关系不限于相邻词。例如，“一个”在句子“他刚刚出版了一个新的小说”用于修饰词语“小说”。通过使用依赖分析器，我们可以获得每个词语的依赖性词语。在每个位置，作者通过子网络为搭配关系特征建模。子网络的输入是词嵌入、依赖词嵌入和依赖类型的连接（concate）。图 3 显示了子网络。</li>
 </ul>
 <p><img src="http://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/csc/Alibaba%20CSC%20Figure%203.jpg" alt="Figure 3"></p>
