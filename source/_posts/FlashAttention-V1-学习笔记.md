@@ -96,6 +96,12 @@ Flash Attention V1 考虑如何以较少的 HBM 读写次数计算精确注意�
 
 主要思路是将输入的 Q、K 和 V 矩阵分割成更小的块，从相对 SRAM 更慢的 HBM 加载到 SRAM，依次来减少在 HBM 上的读写次数（用皮卡送货比限速电瓶车送货更快）。然后计算这些块的注意力输出，并用正确的归一化因子对其进行缩放。最后将每个块的输出相加。
 
+**问题**：那么是如何减少在 HBM 上的读写次数呢？
+
+结合对 GPU 内部存储的理解，标准的 Attention 计算公式中，首先从 HBM（片下存储）将 Q 和 K 矩阵加载到片上存储（SRAM），计算$S=QK^T$，并将 S 矩阵写回到 HBM。接着，又将 S 矩阵从 HBM 加载到片上存储计算 softmax。有没有什么办法可以不写回 S 矩阵，直接计算 softmax 呢？这样就可以减少写回的性能开销。
+
+片上存储的空间有限（A100 L2 Cache 最多能够设置 40MB 的持续化数据），无法完全存下 S 矩阵，一个朴素的想法是将 Q 和 K 矩阵分块，然后存下分块后的 S' 矩阵。但新的问题诞生了，softmax 操作的分母是求和项，需要完整的 S 矩阵。于是，考虑有没有什么办法可以动态地更新 softmax 输出值？平铺技术！
+
 ## 平铺技术（Tiling）
 
 FlashAttention 的核心是对标准的 Attention 操作进行分块计算。对于矩阵乘法来说，可以直接通过分块来达到分块计算的目的，但 self-attention 中存在 softmax 操作，而 softmax 函数的分母项包含与所有元素相关的求和，所以真正难点在于对 softmax 的分块计算。
@@ -223,7 +229,7 @@ $$
 
 当 M 越接近 Nd 时，FlashAttention 的总复杂度就近似$\Theta(Nd)$，远比标准 Attention 快。并且 A100 显卡的 SRAM 大小为 192KB，远大于 d，因此 FlashAttention 的总复杂度要低于标准 Attention。
 
-![](https://secure2.wostatic.cn/static/sEf1Bnfv2exnqU9eNqPTJH/image.png?auth_key=1712758678-dCFc2aFuZbXv4RsqykSebX-0-87e9260e775842df612acc96b51e0b03)
+![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/dl/Attention/FlashAttentionV1/%E4%B8%A4%E8%80%85%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83.png)
 
 # Q & A 相关
 
