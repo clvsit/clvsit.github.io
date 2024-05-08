@@ -1,7 +1,11 @@
 ---
 title: 论文阅读：《Sequence can Secretly Tell You What to Discard》，减少推理阶段的 kv cache
 date: 2024-05-04 19:50:09
+mathjax: true
 tags:
+category:
+- 推理加速
+- kv cache
 ---
 
 目前各类大模型都支持长文本，例如 kimi chat 以及 gemini pro，都支持 100K 以及更高的上下文长度。但越长的上下文，在推理过程中需要存储的 kv cache 也越多。假设，数据的批次用 b 表示，输入序列的长度仍然用 s 表示，输出序列的长度用 n 表示，隐藏层维度用 h 表示，层数用 l 表示。kv cache 的峰值显存占用大小 = $b * (s + n) * h * l * 2 * 2 = 4blh(s + n)$，这里的第一个 2 表示 k 和 v cache，第二个 2 表示 float16 数据格式存储 kv cache，每个元素占 2 bytes。
@@ -61,7 +65,9 @@ $$
 **定义 1（重要 key）**：当且仅当 $\alpha_{t, i} \geq \frac{1}{t}$，key $k_i$ 在步骤 t 中被视为重要 key，否则被视为 minor（次要）key。
 
 作者在 PG-19 测试集上使用 LLaMA2-7B 模型进行 zero-shot 推断。绘制了注意力区块内的 layer-wise 稀疏度和head-wise 稀疏度，结果如图 1 所示。
-![](https://img-blog.csdnimg.cn/img_convert/9e7ab32fb0ebc1a4ca25fcc75ba44e95.png)
+
+![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Sequence%20can%20Secretly%20Tell%20You%20What%20to%20Discard/Figure%201.png)
+
 > 图 1：LLaMA2-7B 的注意力稀疏度。(a) layer-wise 注意力稀疏度。(b) 第 0 层和第 1 层的 head-wise 注意力稀疏度。
 
 结果显示，底层相对密集，而其他层高度稀疏，稀疏度超过 90%。这说明在生成过程中只需要使用一小部分 kv cache 就可以尽量维持原始的生成结果。
@@ -83,7 +89,7 @@ $$
 
 虽然在实际情况中，$cosine\_similarity(q_i, q_j) = 1$ 几乎是不可能的，但可以提出这样的假设：两个相似的 query 可能对 key 有相似的关注。为了验证这一假设，使用 LLaMA2-7B 提供了两个从 PG-19 中随机抽取的句子的注意力图，如图 2 所示。
 
-![](https://img-blog.csdnimg.cn/img_convert/2c7a06302c96ceec00244dc184b28fbd.png)
+![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Sequence%20can%20Secretly%20Tell%20You%20What%20to%20Discard/Figure%202.png)
 
 > 图 2：相似的 query 对 key 有相似的关注。作者绘制了一个句子中两个不同层的注意力图。将注意力分数离散化，重要的 key 显示为亮绿色。每个注意力图都有两条红色边框，底边显示当前 query 实际关注的重要 key，另一条边框显示最相似 query 关注的重要 key。
 
@@ -99,7 +105,7 @@ $$
 ## query 向量的相似性探索
 上一节已经验证了两个相似的 query 对 key 有相似的关注，因此还需要验证，在每一步中，是否能找到与当前 query state 足够相似的同层同头的前一个 query state。为了验证这一点，作者对同一序列中 query 向量的余弦相似度进行了可视化处理，如图 3 所示。
 
-![](https://img-blog.csdnimg.cn/img_convert/0ed39c79678814b11f48d0843a368cdb.png)
+![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Sequence%20can%20Secretly%20Tell%20You%20What%20to%20Discard/Figure%203.png)
 
 > 图 3：一个长度为 1024 的句子的 query 向量余弦相似度可视化图。图中第 i 行表示第 i 个 query 与之前所有 query 的余弦相似度。该图显示，在大多数情况下，当前 query 与最近的 query 最为相似。
 
@@ -118,16 +124,17 @@ $$
 
 CORM 将有一个大小为 w 的最近窗口来记录最近 w 次的 query 信息，并将始终保持最近 r 个 key 不被删除，以防止因观察不足而过早丢弃。在生成过程中，一旦 $k_i$ 被视为 long-term minor key，$k_i, v_i$ 将被丢弃。直观地说，w 越大，保存的 key 和 value 越多，压缩率越小，性能越好；反之，w 越小，保存的 key 和 value 越少，压缩率越大，性能越差。因此，性能和压缩率之间需要权衡。
 
-![](https://img-blog.csdnimg.cn/img_convert/d312795d7fdf93d8eb049e1fcc94372d.png)
+![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Sequence%20can%20Secretly%20Tell%20You%20What%20to%20Discard/Algorithm%201.png)
+
 判断某一位置的 key 是否与未来（滑动窗口大小）query 的注意力分数都低于定义 1 的阈值，如果是则说明该 key 是个 minor key，它对于生成提供的信息有限，那么它就可以被“驱逐”。被“驱逐”的 key（value 也一同被“驱逐”）越多，需要参与到注意力计算的 key 也就越少，需要缓存的 kv 对也就越少。
 # 实验结果
 对 4K 长文本的 LLaMA2-7B-Chat 进行了评估。表 1 和表 2 总结了 LLaMA2-7B-Chat 的结果。
 
-![](https://img-blog.csdnimg.cn/img_convert/90bd453500ff37e01cbe932d7d2321ce.png)
+![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Sequence%20can%20Secretly%20Tell%20You%20What%20to%20Discard/Table%201.png)
 
 > 表 1： 单文档 QA、多文档 QA 和摘要任务的结果（%）。“Full”指使用完整 KV Cache 的 LLaMA2-7B-Chat，“StreamLLM”配置为 4+1020，“Scissorhands”配置为 768+256（窗口大小 = 256），“H2O”配置为 768+256，“CORM”配置为 256+256，以便进行公平比较。为简洁起见，在此使用 ID 表示数据集，ID 与数据集的映射关系见附录 B。
 
-![](https://img-blog.csdnimg.cn/img_convert/3e4a0f3ae797f3e16f2c026ae1137e05.png)
+![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Sequence%20can%20Secretly%20Tell%20You%20What%20to%20Discard/Table%202.png)
 
 > 表 2： few-shot learning、合成和代码任务的结果（%）。“Overall”按主要任务类别的宏观平均值计算。这是按英文（EN）任务、中文（ZH）任务和所有（All）任务计算的，两种语言都包括代码任务。
 
@@ -141,11 +148,13 @@ CORM 将有一个大小为 w 的最近窗口来记录最近 w 次的 query 信�
 看到这篇论文，联想起去年的 EMNLP 的最佳论文《Label Words are Anchors：An Information Flow Perspective for Understanding In-Context Learning》，大家有兴趣的可以去阅读下。同时，似乎也能和 prompt 压缩相关的方法产生关联（具体如何联系，我得重温下相关的论文，看看它们是如何过滤 token），例如 selective context 和微软的 LLMLingua。它们更多地是减少 prompt 的长度，降低调用 API 的费用，在过滤低信息的 token 时，也会改变保留后 token 的相对位置。在实际使用过程中，性能会有所损失。
 
 这篇论文讲述推理阶段，最近另一篇论文[《RHO-1：Not All Tokens Are What You Need》](https://www.wolai.com/rM88shfYbARnP6xgWaj45o)，则从训练角度论证了“**并非语料库中的所有 token 对语言模型训练都同样重要**”，初步分析深入研究了语言模型的 token 级训练动态，揭示了不同 token 的不同损失模式。利用这些见解，推出了一种名为 RHO-1 的新语言模型，采用了选择性语言建模 (SLM)，即有选择地对符合预期分布的有用 token 进行训练。这与最近的数据子集挑选方法（[论文阅读：A Survey on Data Selection for LLM Instruction Tuning](https://clvsit.github.io/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AA-Survey-on-Data-Selection-for-LLM-Instruction-Tuning/)，以对话、文本为粒度挑选高质量训练子集）和 selective context 也能关联上。
+
 ## 内存开销分析 
 为了减少 KV Cache 的内存开销，最近信息缓存引入了额外的内存开销。我们需要存储最近的 query 信息，这增加了内存开销。不过，这些开销远小于压缩 KV Cache，我们可以使用一小部分内存来避免维持完整的 KV Cache 内存，而不会明显降低性能。另一方面，如图 4 所示，压缩率会随着序列长度的增加而增加，因此相比之下，该组件的内存开销较低。
 
-![](https://img-blog.csdnimg.cn/img_convert/ac5241b087a37fb0d24e0dec029d3ece.png)
+![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Sequence%20can%20Secretly%20Tell%20You%20What%20to%20Discard/Figure%204.png)
 
 > 图 4：压缩率与序列长度之间的关系。从图中可以看出，LLaMA2-7B-Chat 在 CORM 为“256+256”和预算 = 1024 时的压缩率比较接近。
+
 # 总结
 本文研究了 LLM 部署中的一个关键内存瓶颈——KV Cache。受相似 query 对 key 有相似关注以及最近 query 足够相似的启发，作者提出了一种无预算的 KV Cache 驱逐策略 CORM，通过重复使用最近的 query 注意力信息来显著减少显存占用。通过广泛的评估，作者证明 CORM 可以将 KV Cache 的推理显存使用量减少多达 70%，而在各种任务中不会出现明显的性能下降。
