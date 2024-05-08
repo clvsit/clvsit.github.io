@@ -240,5 +240,6 @@ $$
 
 
 # 参考资料
+- 论文地址：https://arxiv.org/pdf/2205.14135.pdf
 - [FlashAttention V1论文粗读](https://zhuanlan.zhihu.com/p/671750465)
 - [FlashAttention 的速度优化原理是怎样的？](https://www.zhihu.com/question/611236756/answer/3132304304)
