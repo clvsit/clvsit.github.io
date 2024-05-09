@@ -3,6 +3,7 @@ title: 论文阅读：《Sequence can Secretly Tell You What to Discard》，减
 date: 2024-05-04 19:50:09
 mathjax: true
 tags:
+- 论文阅读
 category:
 - 推理加速
 - kv cache
