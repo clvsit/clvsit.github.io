@@ -2,7 +2,7 @@
 title: >-
   论文阅读：Self-Evolved Diverse Data Sampling for Efficient Instruction Tuning
   数据子集挑选方法
-date: 2024-05-13 23:31:34
+date: 2024-05-12 23:31:34
 cover: https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Self-Evolved%20Diverse%20Data%20Sampling%20for%20Efficient%20Instruction%20Tuning/Figure%201.png
 mathjax: true
 tags:
