@@ -1,0 +1,248 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AI 情感聊天机器人工作之旅 —— 与复读机问题的相遇与别离 | clvsit 个人博客</title><meta name="author" content="clvsit"><meta name="copyright" content="clvsit"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言：先前在杭州的一家大模型公司从事海外闲聊机器人产品，目前已经离职，文章主要讨论在闲聊场景下遇到的“复读机”问题以及一些我个人的思考和解决方案。文章内部已经对相关公司和人员信息做了去敏，如仍涉及到机密等情况，可删除。 meta 开源 Llama2 后，我们立马将基座模型从 Llama1 更换为了 Llama2。很重要的一个原因在于 Llama2 的 context length 是 4k，是 L">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 情感聊天机器人工作之旅 —— 与复读机问题的相遇与别离">
+<meta property="og:url" content="https://clvsit.github.io/AI-%E6%83%85%E6%84%9F%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B7%A5%E4%BD%9C%E4%B9%8B%E6%97%85-%E2%80%94%E2%80%94-%E4%B8%8E%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E7%9B%B8%E9%81%87%E4%B8%8E%E5%88%AB%E7%A6%BB/">
+<meta property="og:site_name" content="clvsit 个人博客">
+<meta property="og:description" content="前言：先前在杭州的一家大模型公司从事海外闲聊机器人产品，目前已经离职，文章主要讨论在闲聊场景下遇到的“复读机”问题以及一些我个人的思考和解决方案。文章内部已经对相关公司和人员信息做了去敏，如仍涉及到机密等情况，可删除。 meta 开源 Llama2 后，我们立马将基座模型从 Llama1 更换为了 Llama2。很重要的一个原因在于 Llama2 的 context length 是 4k，是 L">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/task/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0%E4%B8%8E%E8%A7%A3%E5%86%B3.png">
+<meta property="article:published_time" content="2024-05-13T15:29:22.000Z">
+<meta property="article:modified_time" content="2024-05-14T03:52:24.553Z">
+<meta property="article:author" content="clvsit">
+<meta property="article:tag" content="工作内容">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/task/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0%E4%B8%8E%E8%A7%A3%E5%86%B3.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://clvsit.github.io/AI-%E6%83%85%E6%84%9F%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B7%A5%E4%BD%9C%E4%B9%8B%E6%97%85-%E2%80%94%E2%80%94-%E4%B8%8E%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E7%9B%B8%E9%81%87%E4%B8%8E%E5%88%AB%E7%A6%BB/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'AI 情感聊天机器人工作之旅 —— 与复读机问题的相遇与别离',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-05-14 11:52:24'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">31</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/task/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0%E4%B8%8E%E8%A7%A3%E5%86%B3.png')"><nav id="nav"><span id="blog-info"><a href="/" title="clvsit 个人博客"><span class="site-name">clvsit 个人博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">AI 情感聊天机器人工作之旅 —— 与复读机问题的相遇与别离</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-05-13T15:29:22.000Z" title="发表于 2024-05-13 23:29:22">2024-05-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-05-14T03:52:24.553Z" title="更新于 2024-05-14 11:52:24">2024-05-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B8%9A%E5%8A%A1%E7%9B%B8%E5%85%B3/">业务相关</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B8%9A%E5%8A%A1%E7%9B%B8%E5%85%B3/%E9%97%B2%E8%81%8A%E5%9C%BA%E6%99%AF/">闲聊场景</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="AI 情感聊天机器人工作之旅 —— 与复读机问题的相遇与别离"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>前言</strong>：先前在杭州的一家大模型公司从事海外闲聊机器人产品，目前已经离职，文章主要讨论在闲聊场景下遇到的“复读机”问题以及一些我个人的思考和解决方案。文章内部已经对相关公司和人员信息做了去敏，如仍涉及到机密等情况，可删除。</p>
+<p>meta 开源 Llama2 后，我们立马将基座模型从 Llama1 更换为了 Llama2。很重要的一个原因在于 Llama2 的 context length 是 4k，是 Llama1 的 2 倍，对于日益增长的角色人设 prompt 来说，2k 已经不满足线上产品使用。</p>
+<p>在将 base 模型从 Llama1 “升级”到 Llama2 后出现了单句重复问题，该问题也被业界定义为“复读机问题”——模型会在一轮回复中不断重复某一相同或语义相似的子句，直到 <code>max_new_tokens</code>（最大输出长度）。</p>
+<blockquote>
+<p>PS：Llama1 有没有这个问题已经无法追溯，其一，当时还没有在 sentry 查看日志链路的习惯；其二，产品和社区没有反馈该类问题，产品妹子们更多地是反馈多轮重复问题——模型在多轮对话中重复相同的内容。</p>
+</blockquote>
+<p>由于当时尚处于 8 月份，vLLM 框架的集成以及后续将部署服务代码改造成 continuous batching 都仍处于“未来时”，模型直接使用 HuggingFace Transformers 库加载并流式输出。？B 大小的模型，其推理速度在 <code>max_new_tokens = 500</code> 场景下很容易超时（20 秒），即使不超时，也会占用消费者 worker 大量时间，出现消息队列拥堵，因此 sentry 报警的信息非常多，让我们注意到了这个问题。此外，社区与产品也反馈了该问题。</p>
+<p>从 9 月 8 日开始，我参与到 BUG 的修复工作中。面对该问题，第一反应是训练数据中是否存在大量的重复，导致模型在训练过程中学到了这种重复的模式？检查了相关的训练数据集，的确发现存在大量重复的语句，用户在不断地说着同样或类似的话，而角色回复的内容也有大量的短语级的重复，再加上我们训练时，只训练角色回复且多 epoch，会强化这一倾向。论文《<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.00297">Understanding In-Context Learning from Repetitions</a>》对表面特征在文本生成中的作用进行了定量研究，并根据经验确定 token 共现强化的存在，<strong>任何两个 token 构成一个 token 强化循环，在该循环中，任何两个 token 都可以通过多次重复出现而形成紧密联系</strong>。这是一种基于上下文共现强化两个 token 之间关系的原理。</p>
+<p>但我们对训练数据集做了去重操作，但上线后仍然存在该问题。也就是说，复读机问题并不是在 SFT 阶段引入，base 模型本身就已经存在该问题，即使我们将 SFT 训练数据集的重复以及相近的数据都过滤，仍然有一定概率会触发。</p>
+<p>陆陆续续地尝试了一些方法：</p>
+<ul>
+<li><p>2023 年 9 月 08 日：对比解码的方式不能解决单句生成重复的问题，反而会因为避免生成重复 token 而选择一些“奇怪”的 token，从而生成更加离谱的回复</p>
+</li>
+<li><p>2023 年 9 月 11 日：另一种方法是在 SFT 阶段用高质量数据继续训练，用更多的“高质量”数据集训练更长时间后，在 42 个单句短语重复的 bad case 上测了下，可以解掉 22 个。</p>
+<p>  <img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/task/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0%E4%B8%8E%E8%A7%A3%E5%86%B3.png" alt="在这里插入图片描述"></p>
+<p>  9 月 11 日得出的结论和研究员 4 的结论相同，通过更多的训练数据来让模型 cover 更多 context 下的输出，避免预训练阶段存在的问题（特定 context 下输出分布有问题，导致存在一个子串，反复生成该子串可以提高 PPL，例如成语接龙中“为所欲为”可以不停地循环）。</p>
+</li>
+<li><p>具体时间已经忘记，当时想到可以调整 prompt 格式。</p>
+<ul>
+<li>依据：当前轮的输出会受到历史对话（尤其是最近几轮）的影响，结合大模型的 ICL 能力（多轮对话的格式和 ICL 非常相像，instruction + 多轮用户-角色对，类似 few-shot），推测是 prompt 的影响。</li>
+<li>做法：以格式化的方式组织历史对话内容，但该方法与 SFT 阶段的 template 不一致，自研模型在输出时会出现意想不到的现象。后续尝试对历史对话进行总结，然后将总结拼接到 instruction，该方案可以有效地缓解单句重复问题，但成本较高（需要有额外的总结模型）。</li>
+<li>本质：仍然是训练数据的问题，使得模型在特定 context 下加剧“复读机”问题。调整 prompt 格式，只是改变了这个 context，使模型有可能跳出这个重复的循环，可以作为一种后处理的方式。例如，当模型的生成出现“复读机”问题时，走 prompt 总结 + 重新生成。</li>
+</ul>
+</li>
+</ul>
+<p>后续，随着预训练组推出更多的 continued pretraining 模型，问题已经得到缓解，更多的持续预训练填补了 Llama2 本身预训练不充分的问题（Llama2 距离 Llama1 发布的时间太短，<a target="_blank" rel="noopener" href="https://www.reddit.com/r/LocalLLaMA/comments/155vy0k/llama_2_too_repetitive/?rdt=54276">reddit 上也有不少反映 Llama2 复读机问题的帖子</a>。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://clvsit.github.io">clvsit</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://clvsit.github.io/AI-%E6%83%85%E6%84%9F%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B7%A5%E4%BD%9C%E4%B9%8B%E6%97%85-%E2%80%94%E2%80%94-%E4%B8%8E%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E7%9B%B8%E9%81%87%E4%B8%8E%E5%88%AB%E7%A6%BB/">https://clvsit.github.io/AI-%E6%83%85%E6%84%9F%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B7%A5%E4%BD%9C%E4%B9%8B%E6%97%85-%E2%80%94%E2%80%94-%E4%B8%8E%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E7%9B%B8%E9%81%87%E4%B8%8E%E5%88%AB%E7%A6%BB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://clvsit.github.io" target="_blank">clvsit 个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AE%B9/">工作内容</a></div><div class="post_share"><div class="social-share" data-image="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/task/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0%E4%B8%8E%E8%A7%A3%E5%86%B3.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ASelf-Evolved-Diverse-Data-Sampling-for-Efficient-Instruction-Tuning-%E6%95%B0%E6%8D%AE%E5%AD%90%E9%9B%86%E6%8C%91%E9%80%89%E6%96%B9%E6%B3%95/" title="论文阅读：Self-Evolved Diverse Data Sampling for Efficient Instruction Tuning 数据子集挑选方法"><img class="cover" src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Self-Evolved%20Diverse%20Data%20Sampling%20for%20Efficient%20Instruction%20Tuning/Figure%201.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">论文阅读：Self-Evolved Diverse Data Sampling for Efficient Instruction Tuning 数据子集挑选方法</div></div></a></div><div class="next-post pull-right"><a href="/%E5%B1%82%E5%89%AA%E6%9E%9D%E4%B8%8E%E6%A8%A1%E5%9E%8B%E5%AB%81%E6%8E%A5%E7%9A%84%E2%80%9C%E5%8F%8C%E7%94%9F%E8%8A%B1%E2%80%9D/" title="论文阅读：The Unreasonable Ineffectiveness of the Deeper Layers 层剪枝与模型嫁接的“双生花”"><img class="cover" src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/The%20Unreasonable%20Ineffectiveness%20of%20the%20Deeper%20Layers/Figure%201.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">论文阅读：The Unreasonable Ineffectiveness of the Deeper Layers 层剪枝与模型嫁接的“双生花”</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">clvsit</div><div class="author-info__description">人生不是戏剧，而我亦非主角</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">31</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/clvsit" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ASelf-Evolved-Diverse-Data-Sampling-for-Efficient-Instruction-Tuning-%E6%95%B0%E6%8D%AE%E5%AD%90%E9%9B%86%E6%8C%91%E9%80%89%E6%96%B9%E6%B3%95/" title="论文阅读：Self-Evolved Diverse Data Sampling for Efficient Instruction Tuning 数据子集挑选方法"><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Self-Evolved%20Diverse%20Data%20Sampling%20for%20Efficient%20Instruction%20Tuning/Figure%201.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文阅读：Self-Evolved Diverse Data Sampling for Efficient Instruction Tuning 数据子集挑选方法"/></a><div class="content"><a class="title" href="/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ASelf-Evolved-Diverse-Data-Sampling-for-Efficient-Instruction-Tuning-%E6%95%B0%E6%8D%AE%E5%AD%90%E9%9B%86%E6%8C%91%E9%80%89%E6%96%B9%E6%B3%95/" title="论文阅读：Self-Evolved Diverse Data Sampling for Efficient Instruction Tuning 数据子集挑选方法">论文阅读：Self-Evolved Diverse Data Sampling for Efficient Instruction Tuning 数据子集挑选方法</a><time datetime="2024-05-13T15:31:34.000Z" title="发表于 2024-05-13 23:31:34">2024-05-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/AI-%E6%83%85%E6%84%9F%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B7%A5%E4%BD%9C%E4%B9%8B%E6%97%85-%E2%80%94%E2%80%94-%E4%B8%8E%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E7%9B%B8%E9%81%87%E4%B8%8E%E5%88%AB%E7%A6%BB/" title="AI 情感聊天机器人工作之旅 —— 与复读机问题的相遇与别离"><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/task/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0%E4%B8%8E%E8%A7%A3%E5%86%B3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 情感聊天机器人工作之旅 —— 与复读机问题的相遇与别离"/></a><div class="content"><a class="title" href="/AI-%E6%83%85%E6%84%9F%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B7%A5%E4%BD%9C%E4%B9%8B%E6%97%85-%E2%80%94%E2%80%94-%E4%B8%8E%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E7%9B%B8%E9%81%87%E4%B8%8E%E5%88%AB%E7%A6%BB/" title="AI 情感聊天机器人工作之旅 —— 与复读机问题的相遇与别离">AI 情感聊天机器人工作之旅 —— 与复读机问题的相遇与别离</a><time datetime="2024-05-13T15:29:22.000Z" title="发表于 2024-05-13 23:29:22">2024-05-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/%E5%B1%82%E5%89%AA%E6%9E%9D%E4%B8%8E%E6%A8%A1%E5%9E%8B%E5%AB%81%E6%8E%A5%E7%9A%84%E2%80%9C%E5%8F%8C%E7%94%9F%E8%8A%B1%E2%80%9D/" title="论文阅读：The Unreasonable Ineffectiveness of the Deeper Layers 层剪枝与模型嫁接的“双生花”"><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/The%20Unreasonable%20Ineffectiveness%20of%20the%20Deeper%20Layers/Figure%201.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文阅读：The Unreasonable Ineffectiveness of the Deeper Layers 层剪枝与模型嫁接的“双生花”"/></a><div class="content"><a class="title" href="/%E5%B1%82%E5%89%AA%E6%9E%9D%E4%B8%8E%E6%A8%A1%E5%9E%8B%E5%AB%81%E6%8E%A5%E7%9A%84%E2%80%9C%E5%8F%8C%E7%94%9F%E8%8A%B1%E2%80%9D/" title="论文阅读：The Unreasonable Ineffectiveness of the Deeper Layers 层剪枝与模型嫁接的“双生花”">论文阅读：The Unreasonable Ineffectiveness of the Deeper Layers 层剪枝与模型嫁接的“双生花”</a><time datetime="2024-05-10T14:06:15.000Z" title="发表于 2024-05-10 22:06:15">2024-05-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ARHO-1%EF%BC%9ANot-All-Tokens-Are-What-You-Need-%E9%80%89%E6%8B%A9%E4%BD%A0%E9%9C%80%E8%A6%81%E7%9A%84-Tokens-%E5%8F%82%E4%B8%8E%E8%AE%AD%E7%BB%83/" title="论文阅读：RHO-1：Not All Tokens Are What You Need 选择你需要的 Tokens 参与训练"><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/RHO-1%20Not%20All%20Tokens%20Are%20What%20You%20Need/Figure%202.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文阅读：RHO-1：Not All Tokens Are What You Need 选择你需要的 Tokens 参与训练"/></a><div class="content"><a class="title" href="/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ARHO-1%EF%BC%9ANot-All-Tokens-Are-What-You-Need-%E9%80%89%E6%8B%A9%E4%BD%A0%E9%9C%80%E8%A6%81%E7%9A%84-Tokens-%E5%8F%82%E4%B8%8E%E8%AE%AD%E7%BB%83/" title="论文阅读：RHO-1：Not All Tokens Are What You Need 选择你需要的 Tokens 参与训练">论文阅读：RHO-1：Not All Tokens Are What You Need 选择你需要的 Tokens 参与训练</a><time datetime="2024-05-05T08:39:37.000Z" title="发表于 2024-05-05 16:39:37">2024-05-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9A%E3%80%8ASequence-can-Secretly-Tell-You-What-to-Discard%E3%80%8B%EF%BC%8C%E5%87%8F%E5%B0%91%E6%8E%A8%E7%90%86%E9%98%B6%E6%AE%B5%E7%9A%84-kv-cache/" title="论文阅读：《Sequence can Secretly Tell You What to Discard》，减少推理阶段的 kv cache">论文阅读：《Sequence can Secretly Tell You What to Discard》，减少推理阶段的 kv cache</a><time datetime="2024-05-04T11:50:09.000Z" title="发表于 2024-05-04 19:50:09">2024-05-04</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/task/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98/%E5%A4%8D%E8%AF%BB%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0%E4%B8%8E%E8%A7%A3%E5%86%B3.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By clvsit</div><div class="footer_custom_text">城南芳草城北溪，池塘烟柳归鸟栖。忽听窗外风吹雨，一梦花落月近西。</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/music/"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
