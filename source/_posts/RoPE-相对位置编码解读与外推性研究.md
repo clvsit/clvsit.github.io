@@ -1,6 +1,7 @@
 ---
 title: RoPE 相对位置编码解读与外推性研究
-date: 2024-05-18 15:04:38
+date: 2024-05-17 17:45:06
+cover: https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/dl/pos_embedding/RoPE/base%E5%8F%96%E4%B8%8D%E5%90%8C%E5%80%BC%E6%97%B6%E7%9A%84%E8%BF%9C%E7%A8%8B%E8%A1%B0%E5%87%8F.png
 mathjax: true
 tags:
 - 位置编码
