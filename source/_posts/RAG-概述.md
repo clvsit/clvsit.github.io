@@ -123,6 +123,7 @@ Naive（Vanilla）RAG 的处理流程如上图所示：
 ### 检索环节
 
 - [RAG-查询检索模块-检索-混合检索](https://clvsit.github.io/RAG-%E6%9F%A5%E8%AF%A2%E6%A3%80%E7%B4%A2%E6%A8%A1%E5%9D%97-%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2/)
+- [ConvRAG：通过细粒度检索增强和自我检查提升大模型对话式问答能力](https://clvsit.github.io/ConvRAG%EF%BC%9A%E9%80%9A%E8%BF%87%E7%BB%86%E7%B2%92%E5%BA%A6%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E5%92%8C%E8%87%AA%E6%88%91%E6%A3%80%E6%9F%A5%E6%8F%90%E5%8D%87%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%AF%B9%E8%AF%9D%E5%BC%8F%E9%97%AE%E7%AD%94%E8%83%BD%E5%8A%9B/)
 
 ### 后处理环节
 
