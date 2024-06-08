@@ -1,5 +1,5 @@
 ---
-title: RAG 概述
+title: RAG
 date: 2024-04-04 00:08:23
 tags:
 category:
@@ -98,6 +98,9 @@ Naive（Vanilla）RAG 的处理流程如上图所示：
 
 承接 LLM Agents 抽取或者爬虫以及人为标注的内容，对其进行清洗转换、并根据规则或其他 Agents 进行过滤和改写，确保信息的质量和完整。
 
+- [RAG 查询检索模块 - 后处理 - 重排序](https://clvsit.github.io/RAG-%E6%9F%A5%E8%AF%A2%E6%A3%80%E7%B4%A2%E6%A8%A1%E5%9D%97-%E5%90%8E%E5%A4%84%E7%90%86-%E9%87%8D%E6%8E%92%E5%BA%8F/)
+- [RAG 查询检索模块 - 后处理 - 合并挑选](https://clvsit.github.io/RAG-%E6%9F%A5%E8%AF%A2%E6%A3%80%E7%B4%A2%E6%A8%A1%E5%9D%97-%E5%90%8E%E5%A4%84%E7%90%86-%E5%90%88%E5%B9%B6%E6%8C%91%E9%80%89/)
+
 #### 清洗转换
 
 存储的数据和信息决定了 RAG 答案的质量，因此在入库（建立索引）之前，需要对得到的数据做清洗或者格式上的转换处理，来保证数据的质量，以及方便下游的检索工作。
@@ -158,7 +161,10 @@ RAG 的评估方法多样，主要包括三个质量评分：上下文相关性�
 - [谷歌中科院：CRAG - 可矫正的检索增强生成](https://mp.weixin.qq.com/s/t5DKn936gzTfuFpbHxo8bQ)
 
 # 相关工具
-- [**ChunkViz**](https://chunkviz.up.railway.app/)
+- [**ChunkViz**](https://chunkviz.up.railway.app/)：一个可视化 chunk 的在线工具。
 - [**Reader**](https://github.com/jina-ai/reader)：是一个可以将任何 URL 转换成适合 LLM 输入格式的工具，在 URL 前添加前缀“https://r.jina.ai/”来实现。
 - [**Tiktokenizer**](https://tiktokenizer.vercel.app/)：在线计算 tokens 的工具。
 
+# 参考资料
+- https://github.com/Wang-Shuo/A-Guide-to-Retrieval-Augmented-LLM
+- [RAG框架 万字长文综述看这篇就够了](https://zhuanlan.zhihu.com/p/683651359)
