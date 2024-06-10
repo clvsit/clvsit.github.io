@@ -165,6 +165,8 @@ RAG 的评估方法多样，主要包括三个质量评分：上下文相关性�
 - [**ChunkViz**](https://chunkviz.up.railway.app/)：一个可视化 chunk 的在线工具。
 - [**Reader**](https://github.com/jina-ai/reader)：是一个可以将任何 URL 转换成适合 LLM 输入格式的工具，在 URL 前添加前缀“https://r.jina.ai/”来实现。
 - [**Tiktokenizer**](https://tiktokenizer.vercel.app/)：在线计算 tokens 的工具。
+- [**Open-Parse**](https://github.com/Filimoa/open-parse)：提供了一个灵活易用的库，能够直观地辨别文档布局并有效地对其进行分块，是任何 RAG 系统的基础。
+- [**unstructured**](https://github.com/Unstructured-IO/unstructured)：非结构化库提供了用于摄取和预处理图像和文本文档（如 PDF、HTML、Word 文档等）的开源组件。非结构化库的用例围绕着简化和优化 LLM 的数据处理工作流程。非结构化库的模块化功能和连接器形成了一个内聚系统，简化了数据摄取和预处理，使其能够适应不同的平台，并高效地将非结构化数据转化为结构化输出。
 
 # 参考资料
 - https://github.com/Wang-Shuo/A-Guide-to-Retrieval-Augmented-LLM

@@ -1,6 +1,6 @@
 ---
 title: RoPE 相对位置编码解读与外推性研究
-date: 2024-05-17 17:45:06
+date: 2024-01-28 19:47:06
 cover: https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/dl/pos_embedding/RoPE/base%E5%8F%96%E4%B8%8D%E5%90%8C%E5%80%BC%E6%97%B6%E7%9A%84%E8%BF%9C%E7%A8%8B%E8%A1%B0%E5%87%8F.png
 mathjax: true
 tags:
@@ -47,6 +47,8 @@ $$
 
 在二维空间中，存在一个旋转矩阵 $M(\theta)$（即公式 4 中的 $R_m$），当一个二维向量左乘旋转矩阵时，该向量即可实现弧度为 $\theta$ 的逆时针旋转操作。常量 $\theta$ 可以理解为用来控制旋转的幅度，通常会固定为一个超参数，例如和 Sinusoidal 位置编码的 $\theta$ 一样，设置为 $1/10000^{2i/d}$。
 
+![](https://secure2.wostatic.cn/static/meGVqjPRo1cUQb9d4yPVM3/image.png?auth_key=1718031200-4BzXY3kYpkxKutGpvkSY3h-0-b3813c5f14a809181d3da2c050090a94)
+
 以二维向量 (1, 0) 为例，将其逆时针旋转 45°，弧度为 $\pi / 4$，得到新的二维向量 ($\sqrt{2}/2, \sqrt{2}/2$)，向量的模长没有发生改变，仍然是 1。计算过程如下所示：
 
 $$
@@ -88,6 +90,26 @@ $$
 $$
 \left(\begin{array}{c}q_{0} \\ q_{1} \\ q_{2} \\ q_{3} \\ \vdots \\ q_{d-2} \\ q_{d-1}\end{array}\right) \otimes\left(\begin{array}{c}\cos m \theta_{0} \\ \cos m \theta_{0} \\ \cos m \theta_{1} \\ \cos m \theta_{1} \\ \vdots \\ \cos m \theta_{d / 2-1} \\ \cos m \theta_{d / 2-1}\end{array}\right)+\left(\begin{array}{c}-q_{1} \\ q_{0} \\ -q_{3} \\ q_{2} \\ \vdots \\ -q_{d-1} \\ q_{d-2}\end{array}\right) \otimes\left(\begin{array}{c}\sin m \theta_{0} \\ \sin m \theta_{0} \\ \sin m \theta_{1} \\ \sin m \theta_{1} \\ \vdots \\ \sin m \theta_{d / 2-1} \\ \sin m \theta_{d / 2-1}\end{array}\right) \tag{9}
 $$
+
+其中 $\theta_i$ 是预定义的参数，通常选择为 $\theta_i = 1/(10000^{(2i / d)})$，这样可以保证不同维度（分量）的旋转频率不同，从而捕获不同尺度的位置信息。
+
+## $\theta_i$ 分量的研究
+
+根据 $\theta_i = 1/(base^{(2i / d)})$ 的计算公式（base 通常设置为 10000，与 Sinusoidal 位置编码相同），可知随着 i 的增大，$\theta_i$ 的取值越小，也就是说旋转的角度（频率）越小。i 是维度的索引，从 1 到 d/2，我们一般称较小的 i 为低维度，较大的 i 为高维度。换言之，低维度的旋转角度大（相对于高维度），频率高；高维度的旋转角度小（相对于低维度），频率低。
+
+关于高频、低频与维度和旋转角度的关系可参考 [百面LLM-47 - swtheking的文章 - 知乎](https://zhuanlan.zhihu.com/p/701139936)。
+
+这种设计可以诱导模型在学习时，让隐藏状态（hidden states）的不同维度关注不同范围的依赖关系。模型可以自然地在低维度学习到近距离、局部的依赖，而在高维度学习到远距离、全局的依赖。这种特性是由 RoPE 中$\theta_i$参数随着维度索引 i 的增加而减少所决定。
+
+![](https://secure2.wostatic.cn/static/PDeXqCJiFAWNbFgmVhgqW/image.png?auth_key=1718031200-dsTw9TngrspLQXYmqase4b-0-21b90373521dbcff0115c23ec72f2b75)
+
+我们可以绘制 $\theta_i = 1/(base^{(2i / d)})$ 公式的曲线图，可知其本质上是一个 exp(-x) 图，最大值 1 在 i = 0 时取到；随着 i 的增大，函数值逐渐减小，且减少幅度越来越小。
+
+**问题**：为什么低维度学习到的是近距离的依赖，而高维度学习到的是远距离的依赖？
+
+**回答**：低维度由于 $\theta_i$ 较大，旋转角度变化快，这使得低维度的隐藏状态对相邻位置的变化更敏感，因此更适合捕捉局部或短距离的依赖关系。高维度随着 $\theta_i$ 减小，旋转角度变化慢，高维度的隐藏状态对距离较远的 token 之间的交互更加敏感，因此更适合捕捉全局或长距离的依赖关系。
+
+因此，后续的一系列改进（例如，NTK-aware RoPE、Dynamic NTK、YaRN 等等）围绕$\theta_i$分量的调整，使 RoPE 相对位置编码能够更好地捕捉到局部依赖关系，从而实现外推的效果。
 
 # 代码实现
 
@@ -166,6 +188,37 @@ class LlamaRotaryEmbedding(nn.Module):
 ![在这里插入图片描述](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/dl/pos_embedding/RoPE/base%E5%8F%96%E4%B8%8D%E5%90%8C%E5%80%BC%E6%97%B6%E7%9A%84%E8%BF%9C%E7%A8%8B%E8%A1%B0%E5%87%8F.png)
 
 当 base 大于 500 时，随着 base 的提升，远程衰减的程度会逐渐削弱。但太小的 base 也会破坏注意力远程衰减的性质，例如 base = 10 或 100 时，注意力分数不再随着相对位置的增大呈现出震荡下降的趋势。更极端的情况下，当 base = 1 时（第一个实验的图示），将完全失去远程衰减的特性。
+
+结合 **$\theta_i$****分量的研究** 这一节内容的研究，当 base 增大时，相同 i 的 $\theta_i$ 值会越来越小。如下图所示，橙色的曲线是 base = 100000 时的 $\theta_i$ 在不同 i 下的值，相比 base = 10000 时，低维度区域下降得更快。
+
+![](https://secure2.wostatic.cn/static/cxEvTGtYDzs6SbSYAmH4pf/image.png?auth_key=1718031200-wcdksUzRg1WXXvBtvxACYR-0-6ba0eda08f91927d0d3c496b9c1c2f62)
+
+高维度区域由于值过小，在图中难以显示差异，我们可以通过代码进行比较。
+
+```Python
+def get_theta(dim, base):
+    base = base
+    inv_freq = 1.0 / (base ** (torch.arange(0, dim, 2, dtype=torch.int64).float().to("cpu") / dim))
+    
+    return inv_freq
+
+indices = [0, 1, 2, -3, -2, -1]
+theta_1 = get_theta(128, 10000)
+theta_2 = get_theta(128, 100000)
+print(theta_1 - theta_2)
+"""
+tensor([0.0000, 0.0306, 0.0521, 0.0664, 0.0754, 0.0802, 0.0819, 0.0813, 0.0791,
+        0.0757, 0.0717, 0.0671, 0.0623, 0.0575, 0.0528, 0.0482, 0.0438, 0.0396,
+        0.0357, 0.0322, 0.0288, 0.0258, 0.0231, 0.0206, 0.0183, 0.0162, 0.0144,
+        0.0128, 0.0113, 0.0100, 0.0088, 0.0078, 0.0068, 0.0060, 0.0053, 0.0047,
+        0.0041, 0.0036, 0.0031, 0.0028, 0.0024, 0.0021, 0.0018, 0.0016, 0.0014,
+        0.0012, 0.0011, 0.0009, 0.0008, 0.0007, 0.0006, 0.0005, 0.0005, 0.0004,
+        0.0004, 0.0003, 0.0003, 0.0002, 0.0002, 0.0002, 0.0002, 0.0001, 0.0001,
+        0.0001])
+"""
+```
+
+可以看到，除了 i = 0 外，其余分量上 base = 100000 的值都要比 base = 10000 小。高维度区域的差值很小，也就是说调大 base 后，高维特征几乎没有变化，这对于注意力权重的影响几乎可以忽略不计。
 
 对于 base 性质的研究，与大模型的长度外推息息相关，后续的很多方法都是对 base 做操作，从而影响每个位置对应的旋转角度，进而影响模型的位置编码信息，最终达到长度外推的目的。目前大多长度外推的工作都是通过放大 base 以提升模型的输入长度。
 
