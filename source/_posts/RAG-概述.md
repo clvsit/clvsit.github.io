@@ -162,6 +162,11 @@ RAG 的评估方法多样，主要包括三个质量评分：上下文相关性�
 - [谷歌中科院：CRAG - 可矫正的检索增强生成](https://mp.weixin.qq.com/s/t5DKn936gzTfuFpbHxo8bQ)
 
 # 相关工具
+
+## RAG 库
+- [**FlashRAG**](https://github.com/RUC-NLPIR/FlashRAG)：FlashRAG 是一个 Python 工具包，用于再现和开发检索增强生成（RAG）研究。该工具包包括 32 个经过预处理的基准 RAG 数据集和 12 种最先进的 RAG 算法。
+
+## 辅助工具
 - [**ChunkViz**](https://chunkviz.up.railway.app/)：一个可视化 chunk 的在线工具。
 - [**Reader**](https://github.com/jina-ai/reader)：是一个可以将任何 URL 转换成适合 LLM 输入格式的工具，在 URL 前添加前缀“https://r.jina.ai/”来实现。
 - [**Tiktokenizer**](https://tiktokenizer.vercel.app/)：在线计算 tokens 的工具。
