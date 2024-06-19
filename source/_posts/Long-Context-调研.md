@@ -15,8 +15,6 @@ tags:
 
 但是，随着序列长度增大，需要缓存的 kv cache 呈线性增长，占用大量显存。针对这一问题，之前的工作设计策略是对 kv cache 进行压缩。
 
-
-
 [论文阅读：《Sequence can Secretly Tell You What to Discard》，减少推理阶段的 kv cache](https://clvsit.github.io/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9A%E3%80%8ASequence-can-Secretly-Tell-You-What-to-Discard%E3%80%8B%EF%BC%8C%E5%87%8F%E5%B0%91%E6%8E%A8%E7%90%86%E9%98%B6%E6%AE%B5%E7%9A%84-kv-cache/)
 - **论文地址**：https://arxiv.org/abs/2404.15949
 - **发表日期**：2024-04-24
