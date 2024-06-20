@@ -165,6 +165,7 @@ RAG 的评估方法多样，主要包括三个质量评分：上下文相关性�
 
 ## RAG 库
 - [**FlashRAG**](https://github.com/RUC-NLPIR/FlashRAG)：FlashRAG 是一个 Python 工具包，用于再现和开发检索增强生成（RAG）研究。该工具包包括 32 个经过预处理的基准 RAG 数据集和 12 种最先进的 RAG 算法。
+- [**GoMate**](https://github.com/gomate-community/GoMate)：是一款配置化模块化的Retrieval-Augmented Generation (RAG) 框架，旨在提供**可靠的输入与可信的输出**，确保用户在检索问答场景中能够获得高质量且可信赖的结果。该框架的设计核心在于其**高度的可配置性和模块化**，使得用户可以根据具体需求灵活调整和优化各个组件，以满足各种应用场景的要求。
 
 ## 辅助工具
 - [**ChunkViz**](https://chunkviz.up.railway.app/)：一个可视化 chunk 的在线工具。
