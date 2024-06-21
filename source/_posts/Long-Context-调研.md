@@ -26,6 +26,7 @@ GQA：[论文阅读：GQA: Training Generalized Multi-Query Transformer Models f
 MLA：[缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA](https://kexue.fm/archives/10091)
 
 > PS：MLA 是深度求索公司 deepseek-v2 论文中提出的注意力机制。个人建议可以先看苏神的这篇博客，深入浅出地从 MHA、MQA、GQA 到 MLA 的发展路径以及 MLA 的思想讲述了一遍。
+
 - **论文地址**：https://arxiv.org/abs/2405.04434
 - **发表日期**：2024-05-07
 - **GitHub 仓库**：https://github.com/deepseek-ai/DeepSeek-V2

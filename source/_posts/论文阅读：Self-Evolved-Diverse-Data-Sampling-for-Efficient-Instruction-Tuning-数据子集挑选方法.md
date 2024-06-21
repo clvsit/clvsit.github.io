@@ -7,8 +7,10 @@ cover: https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Se
 mathjax: true
 tags:
 - 论文阅读
+- 数据子集挑选
 category:
 - LLM
+- 数据增强
 - 数据子集挑选
 ---
 
