@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>RTX 4090Ti 部署 7B、13B 模型的性能测评 | clvsit 个人博客</title><meta name="author" content="clvsit"><meta name="copyright" content="clvsit"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="推理速度测评实验参数：  batch_size: 1 avg num input tokens: 1719.29 stream: False 预测⽅式：接⼝预测  测试结果：    推理框架 模型 TP（模型并⾏） Throughput（token&#x2F;s） avg num output tokens    vllm vicuna-7b-v1.5 1 53.02 122.31   vllm">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>RTX 4090Ti 部署 7B、13B 模型的性能测评 | clvsit 个人博客</title><meta name="author" content="clvsit"><meta name="copyright" content="clvsit"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="推理速度测评实验参数：  batch_size: 1 avg num input tokens: 1719.29 stream: False 预测⽅式：接⼝预测  测试结果：     推理框架 模型 TP（模型并⾏） Throughput（token&#x2F;s） avg num output tokens     vllm vicuna-7b-v1.5 1 53.02 122.31   vllm vic">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RTX 4090Ti 部署 7B、13B 模型的性能测评">
 <meta property="og:url" content="https://clvsit.github.io/RTX-4090Ti-%E9%83%A8%E7%BD%B2-7B%E3%80%8113B-%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%84/">
 <meta property="og:site_name" content="clvsit 个人博客">
-<meta property="og:description" content="推理速度测评实验参数：  batch_size: 1 avg num input tokens: 1719.29 stream: False 预测⽅式：接⼝预测  测试结果：    推理框架 模型 TP（模型并⾏） Throughput（token&#x2F;s） avg num output tokens    vllm vicuna-7b-v1.5 1 53.02 122.31   vllm">
+<meta property="og:description" content="推理速度测评实验参数：  batch_size: 1 avg num input tokens: 1719.29 stream: False 预测⽅式：接⼝预测  测试结果：     推理框架 模型 TP（模型并⾏） Throughput（token&#x2F;s） avg num output tokens     vllm vicuna-7b-v1.5 1 53.02 122.31   vllm vic">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://clvsit.github.io/img/avatar.jpg">
 <meta property="article:published_time" content="2023-11-06T05:48:20.000Z">
@@ -153,7 +153,7 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">62</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">48</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/tag_banner.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="clvsit 个人博客"><span class="site-name">clvsit 个人博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RTX 4090Ti 部署 7B、13B 模型的性能测评</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-11-06T05:48:20.000Z" title="发表于 2023-11-06 13:48:20">2023-11-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-06T16:05:22.838Z" title="更新于 2024-06-07 00:05:22">2024-06-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LLM/">LLM</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LLM/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/">模型部署</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LLM/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/%E6%98%BE%E5%8D%A1%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%84/">显卡性能测评</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">395</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="RTX 4090Ti 部署 7B、13B 模型的性能测评"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="推理速度测评"><a href="#推理速度测评" class="headerlink" title="推理速度测评"></a>推理速度测评</h2><p><strong>实验参数</strong>：</p>
+    })(window)</script><meta name="generator" content="Hexo 7.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">62</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">48</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/tag_banner.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="clvsit 个人博客"><span class="site-name">clvsit 个人博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RTX 4090Ti 部署 7B、13B 模型的性能测评</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-11-06T05:48:20.000Z" title="发表于 2023-11-06 13:48:20">2023-11-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-06T16:05:22.838Z" title="更新于 2024-06-07 00:05:22">2024-06-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LLM/">LLM</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LLM/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/">模型部署</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LLM/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/%E6%98%BE%E5%8D%A1%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%84/">显卡性能测评</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">375</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="RTX 4090Ti 部署 7B、13B 模型的性能测评"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="推理速度测评"><a href="#推理速度测评" class="headerlink" title="推理速度测评"></a>推理速度测评</h2><p><strong>实验参数</strong>：</p>
 <ul>
 <li>batch_size: 1</li>
 <li>avg num input tokens: 1719.29</li>
@@ -161,17 +161,19 @@
 <li>预测⽅式：接⼝预测</li>
 </ul>
 <p><strong>测试结果</strong>：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
 <th>推理框架</th>
 <th>模型</th>
 <th>TP（模型并⾏）</th>
-<th>Throughput（token&#x2F;s）</th>
+<th>Throughput（token/s）</th>
 <th>avg num output tokens</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>vllm</td>
 <td>vicuna-7b-v1.5</td>
 <td>1</td>
@@ -192,8 +194,11 @@
 <td>32.77</td>
 <td>160.15</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="动态-batching-测评"><a href="#动态-batching-测评" class="headerlink" title="动态 batching 测评"></a>动态 batching 测评</h2><p>测试⽅式：借助 ApiFox ⼯具的⾃动化测试，循环 10 轮，每轮启动 3 个线程来调⽤模型服务。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -203,127 +208,14 @@
 <th>平均接⼝请求耗时(毫秒)</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>1 x RTX4090 vicuna-7b-v1.5</td>
-<td></td>
-<td></td>
+<tbody>
+<tr>
 <td></td>
 </tr>
-<tr>
-<td>1</td>
-<td>132.325</td>
-<td>129.96</td>
-<td>4332</td>
-</tr>
-<tr>
-<td>2</td>
-<td>89.52</td>
-<td>83.1</td>
-<td>2770</td>
-</tr>
-<tr>
-<td>3</td>
-<td>70.938</td>
-<td>63.93</td>
-<td>2131</td>
-</tr>
-<tr>
-<td>2 x RTX4090 vicuna-13b-v1.5</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>1</td>
-<td>200.638</td>
-<td>198.78</td>
-<td>6626</td>
-</tr>
-<tr>
-<td>2</td>
-<td>113.198</td>
-<td>106.26</td>
-<td>3542</td>
-</tr>
-<tr>
-<td>3</td>
-<td>95.591</td>
-<td>83.25</td>
-<td>2775</td>
-</tr>
-<tr>
-<td>4 x RTX4090 vicuna-13b-v1.5</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>1</td>
-<td>252.859</td>
-<td>250.86</td>
-<td>8362</td>
-</tr>
-<tr>
-<td>2</td>
-<td>145.762</td>
-<td>143.28</td>
-<td>4776</td>
-</tr>
-<tr>
-<td>3</td>
-<td>125.113</td>
-<td>122.49</td>
-<td>4083</td>
-</tr>
-<tr>
-<td>1 X A100 vicuna-7b-v1.5</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>1</td>
-<td>128.601</td>
-<td>124.8</td>
-<td>4160</td>
-</tr>
-<tr>
-<td>2</td>
-<td>77.334</td>
-<td>67.89</td>
-<td>2263</td>
-</tr>
-<tr>
-<td>3</td>
-<td>65.931</td>
-<td>52.77</td>
-<td>1759</td>
-</tr>
-<tr>
-<td>1 X A100 vicuna-13b-v1.5</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>1</td>
-<td>146.562</td>
-<td>144.36</td>
-<td>4812</td>
-</tr>
-<tr>
-<td>2</td>
-<td>79.535</td>
-<td>75.09</td>
-<td>2503</td>
-</tr>
-<tr>
-<td>3</td>
-<td>78.642</td>
-<td>67.32</td>
-<td>2244</td>
-</tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
+<p>1 x RTX4090 vicuna-7b-v1.5<br>1 | 132.325 | 129.96 | 4332<br>2 | 89.52 | 83.1 | 2770<br>3 | 70.938 | 63.93 | 2131<br>2 x RTX4090 vicuna-13b-v1.5<br>1 | 200.638 | 198.78 | 6626<br>2 | 113.198 | 106.26 | 3542<br>3 | 95.591 | 83.25 | 2775<br>4 x RTX4090 vicuna-13b-v1.5<br>1 | 252.859 | 250.86 | 8362<br>2 | 145.762 | 143.28 | 4776<br>3 | 125.113 | 122.49 | 4083<br>1 X A100 vicuna-7b-v1.5<br>1 | 128.601 | 124.8 | 4160<br>2 | 77.334 | 67.89 | 2263<br>3 | 65.931 | 52.77 | 1759<br>1 X A100 vicuna-13b-v1.5<br>1 | 146.562 | 144.36 | 4812<br>2 | 79.535 | 75.09 | 2503<br>3 | 78.642 | 67.32 | 2244</p>
 <h2 id="测评结论"><a href="#测评结论" class="headerlink" title="测评结论"></a>测评结论</h2><ul>
 <li>vLLM 多卡部署模型的 throughput、接⼝请求耗时都有明显下降，推测是进程间通信的开销，张量并⾏越多，下降得约为明显。同样都是单卡部署 vicuna-7b-v1.5，A100 相⽐ RTX4090 的提升并没有特别明显。</li>
 <li>RTX4090 的显存有限，半精度部署 13B 模型⾄少得⽤ 2 张卡进⾏部署，进程间通信的开销不可避免。相⽐ A100，接⼝调⽤的时延没有明显增加，加上流式输出，对于⽤⼾的体验不会有太⼤的影响。</li>
