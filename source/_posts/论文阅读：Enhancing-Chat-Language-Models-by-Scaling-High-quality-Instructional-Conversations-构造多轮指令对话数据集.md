@@ -3,6 +3,7 @@ title: >-
   论文阅读：Enhancing Chat Language Models by Scaling High-quality Instructional
   Conversations 构造多轮指令对话数据集
 date: 2023-09-03 23:09:59
+cover: https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Enhancing%20Chat%20Language%20Models%20by%20Scaling%20High-quality%20Instructional%20Conversations/Table%207.png
 tags:
 - 论文阅读
 - 数据构造
