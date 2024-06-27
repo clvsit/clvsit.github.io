@@ -1,7 +1,14 @@
 ---
 title: AWS SageMaker 推理方案
-date: 2024-06-27 16:08:54
+date: 2023-11-25 16:08:54
+cover: https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/LLM/deploy/aws/%E6%89%B9%E5%A4%84%E7%90%86%E6%8A%80%E6%9C%AF.jpg
 tags:
+- LLM 推理相关
+- LLM 推理服务
+category:
+- LLM
+- 推理相关
+- 推理服务
 ---
 
 总体而言，LLM 的生成推理有三大挑战（根据 Pope 等人 2022 年的研究）：
