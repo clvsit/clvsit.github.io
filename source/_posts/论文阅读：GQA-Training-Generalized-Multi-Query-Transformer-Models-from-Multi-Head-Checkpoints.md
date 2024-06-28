@@ -7,6 +7,7 @@ mathjax: true
 cover: https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/GQA%20Training%20Generalized%20Multi-Query%20Transformer%20Models%20from%20Multi-Head%20Checkpoints/Figure%202.png
 tags:
 - 论文阅读
+- 注意力机制
 category:
 - 模型架构
 - 注意力机制
