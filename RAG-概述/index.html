@@ -154,7 +154,7 @@
       detectApple()
     })(window)</script><meta name="generator" content="Hexo 7.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">72</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">57</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/tag_banner.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="clvsit 个人博客"><span class="site-name">clvsit 个人博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RAG</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-04-03T16:08:23.000Z" title="发表于 2024-04-04 00:08:23">2024-04-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-19T15:34:51.604Z" title="更新于 2024-06-19 23:34:51">2024-06-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/RAG/">RAG</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="RAG"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>检索增强 LLM（Retrieval Augmented LLM），简单来说，给 LLM 提供外部数据库，对于用户问题（Query），通过一些信息检索（Information Retrieval，IR）的技术，先从外部数据库中检索出和用户问题相关的信息，然后让 LLM 结合这些相关信息来生成结果。这种模式有时也被称为检索增强生成（Retrieval Augmented Generation，RAG）。</p>
 <p><strong>目的</strong>：幻觉问题（Hallucinations）仍然是当前 LLM 面临的一个重要挑战。简单来说，幻觉问题是指 LLM 在生成不正确、荒谬或者与事实不符的结果。此外，数据新鲜度（Data Freshness）也是 LLM 在生成结果时出现的另外一个问题，即 LLM 对于一些时效性比较强的问题可能给不出或者给出过时的答案。RALLM 通过检索外部相关信息的方式来增强 LLM 的生成结果是当前解决以上问题的一种流行方案。</p>
-<p>传统的信息检索工具，比如 Google&#x2F;Bing 这样的搜索引擎，只有检索能力（Retrieval-only），现在 LLM 通过预训练过程，将海量数据和知识嵌入到其巨大的模型参数中，具有记忆能力（Memory-only）。从这个角度看，检索增强 LLM 处于中间，将 LLM 和传统的信息检索相结合，通过一些信息检索技术将相关信息加载到 LLM 的工作内存（Working Memory）中，即 LLM 的上下文窗口（Context Window），亦即 LLM 单次生成时能接受的最大文本输入。</p>
+<p>传统的信息检索工具，比如 Google/Bing 这样的搜索引擎，只有检索能力（Retrieval-only），现在 LLM 通过预训练过程，将海量数据和知识嵌入到其巨大的模型参数中，具有记忆能力（Memory-only）。从这个角度看，检索增强 LLM 处于中间，将 LLM 和传统的信息检索相结合，通过一些信息检索技术将相关信息加载到 LLM 的工作内存（Working Memory）中，即 LLM 的上下文窗口（Context Window），亦即 LLM 单次生成时能接受的最大文本输入。</p>
 <ul>
 <li>主题<ul>
 <li>目的</li>
@@ -171,14 +171,14 @@
 </ul>
 <h1 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h1><p>为什么要结合传统的信息检索系统来增强 LLM？换句话说，基于检索增强的 LLM 主要解决的问题和应用场景是什么？</p>
 <h2 id="主要解决问题"><a href="#主要解决问题" class="headerlink" title="主要解决问题"></a>主要解决问题</h2><h3 id="长尾知识"><a href="#长尾知识" class="headerlink" title="长尾知识"></a>长尾知识</h3><p>虽然当前 LLM 的训练数据量已经非常庞大，动辄几百 GB 级别的数据量，万亿级别的 token 数量，比如 GPT-3 的预训练数据使用了 3000 亿量级的 token，LLaMA 使用了 1.4 万亿量级的 token。训练数据的来源也十分丰富，比如维基百科、书籍、论坛、代码等。LLM 的模型参数量也十分巨大，从几十亿、百亿到千亿量级，但让 LLM 在有限的参数中记住所有知识或者信息是不现实的，训练数据的涵盖范围也是有限的，总会有一些长尾知识在训练数据中不能覆盖到。</p>
-<p>对于一些相对通用和大众的知识，LLM 通常能生成比较准确的结果，而对于一些长尾知识，LLM 生成的回复通常并不可靠。ICML 会议上的这篇论文 <a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2211.08411">[Large Language Models Struggle to Learn Long-Tail Knowledge]</a> 就研究了 LLM 对基于事实的回答的准确性和预训练数据中相关领域文档数量的关系，发现有很强的相关性，即预训练数据中相关文档数量越多，LLM 对事实性问答的回复准确性就越高。从这个研究中可以得出一个简单的结论——LLM 对长尾知识的学习能力比较弱。</p>
+<p>对于一些相对通用和大众的知识，LLM 通常能生成比较准确的结果，而对于一些长尾知识，LLM 生成的回复通常并不可靠。ICML 会议上的这篇论文 <a href="https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2211.08411">[Large Language Models Struggle to Learn Long-Tail Knowledge]</a> 就研究了 LLM 对基于事实的回答的准确性和预训练数据中相关领域文档数量的关系，发现有很强的相关性，即预训练数据中相关文档数量越多，LLM 对事实性问答的回复准确性就越高。从这个研究中可以得出一个简单的结论——LLM 对长尾知识的学习能力比较弱。</p>
 <p>为了提升 LLM 对长尾知识的学习能力，除了在训练数据中加入更多的相关长尾知识，或者增大模型的参数量外（这两种方法确实都有一定的效果，但不经济，需要很大的训练数据量级和模型参数才能大幅度提升 LLM 对长尾知识的回复准确性），通过检索的方法把相关信息在 LLM 推断时作为上下文（Context）给出，既能达到一个比较好的回复准确性，也是一种比较经济的方式。</p>
 <h3 id="私有数据"><a href="#私有数据" class="headerlink" title="私有数据"></a>私有数据</h3><p>通用 LLM 预训练阶段使用的大部分都是公开的数据，不包含私有数据，因此对于一些私有领域的知识是欠缺的。比如某个企业内部的规章制度等等。虽然可以在预训练阶段加入私有数据或者利用私有数据进行微调，但训练和迭代成本很高。此外，通过一些特定的攻击手法可以让 LLM 泄露训练数据，如果训练数据中包含一些私有ixnxi，则很可能会发生隐私信息泄露。</p>
 <p>如果把私有数据作为一个外部数据库，让 LLM 在回答基于私有数据的问题时，直接从外部数据库中检索出相关信息，再结合检索出的相关信息进行回答。这样就不用通过预训练或者微调的方法让 LLM 在参数中记住私有知识，既节省了训练或者微调成本，也一定程度上避免了私有数据的泄露风险。</p>
 <h3 id="数据新鲜度"><a href="#数据新鲜度" class="headerlink" title="数据新鲜度"></a>数据新鲜度</h3><p>由于 LLM 中学习的知识来自于训练数据，虽然大部分知识的更新周期不会很快，但依然会有一些知识或者信息更新得很频繁。LLM 通过从预训练数据中学到的这部分信息就很容易过时。比如，GPT-4 模型使用的是截至 2021-09 的预训练数据，因此涉及这个日期之后的事件或者信息，它会拒绝回答或者给出的回复是过时或者不准确的。</p>
 <p>如果把频繁更新的知识作为外部数据库，供 LLM 在必要的时候进行检索，就可以实现在不重新训练 LLM 的情况下对 LLM 的知识进行更新和拓展，从而解决 LLM 数据新鲜度的问题。</p>
 <h3 id="来源验证和可解释性"><a href="#来源验证和可解释性" class="headerlink" title="来源验证和可解释性"></a>来源验证和可解释性</h3><p>通常情况下，LLM 生成的输出不会给出其来源，比较难解释为什么会这么生成。而通过给 LLM 提供外部数据源，让其基于检索出的相关信息进行生成，就在生成的结果和信息来源之间建立了关联，因此生成的结果就可以追溯参考来源，可解释性和可控性就大大增强。即可以知道 LLM 是基于什么相关信息来生成的回复。利用检索来增强 LLM 的输出，其中很重要的一步是通过一些检索相关的技术从外部数据中找出相关信息片段，然后把相关信息片段作为上下文供 LLM 在生成回复时参考。</p>
-<h1 id="框架设计"><a href="#框架设计" class="headerlink" title="框架设计"></a>框架设计</h1><h2 id="Naive-RAG"><a href="#Naive-RAG" class="headerlink" title="Naive RAG"></a>Naive RAG</h2><p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/LLM/AugmentedLLM/RAG/naive_rag.png"></p>
+<h1 id="框架设计"><a href="#框架设计" class="headerlink" title="框架设计"></a>框架设计</h1><h2 id="Naive-RAG"><a href="#Naive-RAG" class="headerlink" title="Naive RAG"></a>Naive RAG</h2><p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/LLM/AugmentedLLM/RAG/naive_rag.png" alt=""></p>
 <p>Naive（Vanilla）RAG 的处理流程如上图所示：</p>
 <ol>
 <li>将文本分割成块；</li>
@@ -197,11 +197,11 @@
 <h3 id="数据索引"><a href="#数据索引" class="headerlink" title="数据索引"></a>数据索引</h3><p>经过前面的数据读取和文本分块操作后，接着就需要对处理好的数据进行索引。<strong>索引是一种数据结构，用于快速检索出与用户查询相关的文本内容，是检索增强 LLM 的核心基础组件之一</strong>。</p>
 <p><a target="_blank" rel="noopener" href="https://docs.llamaindex.ai/en/stable/module_guides/indexing/index_guide.html">LlamaIndex</a> 介绍并提供了几种常见的索引结构。</p>
 <ul>
-<li><strong>节点（Node）</strong>：对应于文档中的文本块，LlamaIndex 接收 Document 对象，并在内部将其解析&#x2F;分块为 Node 对象。</li>
+<li><strong>节点（Node）</strong>：对应于文档中的文本块，LlamaIndex 接收 Document 对象，并在内部将其解析/分块为 Node 对象。</li>
 <li><strong>响应合成（Response Synthesis）</strong>：根据检索到的 Node 合成响应。</li>
 </ul>
 <h2 id="抽取存储模块"><a href="#抽取存储模块" class="headerlink" title="抽取存储模块"></a>抽取存储模块</h2><p>抽取服务为每个抽取请求启动一个后台处理子线程。无论启动成功与否，都会直接返回结果。在后台处理子线程中，会依次经过前处理、LLM Agents 抽取信息以及后处理，最后将抽取得到的信息存入数据库。</p>
-<p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/LLM/AugmentedLLM/RAG/RAG%20%E6%8A%BD%E5%8F%96%E6%9C%8D%E5%8A%A1%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg"></p>
+<p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/LLM/AugmentedLLM/RAG/RAG%20%E6%8A%BD%E5%8F%96%E6%9C%8D%E5%8A%A1%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg" alt=""></p>
 <h3 id="后处理环节"><a href="#后处理环节" class="headerlink" title="后处理环节"></a>后处理环节</h3><p>承接 LLM Agents 抽取或者爬虫以及人为标注的内容，对其进行清洗转换、并根据规则或其他 Agents 进行过滤和改写，确保信息的质量和完整。</p>
 <ul>
 <li><a href="https://clvsit.github.io/RAG-%E6%9F%A5%E8%AF%A2%E6%A3%80%E7%B4%A2%E6%A8%A1%E5%9D%97-%E5%90%8E%E5%A4%84%E7%90%86-%E6%B8%85%E6%B4%97%E8%BF%87%E6%BB%A4/">RAG 查询检索模块 - 后处理 - 清洗过滤</a></li>
@@ -216,7 +216,7 @@
 <li>使用相似性度量删除冗余文档（PS：该方法不一定可行，因为相似性较高的两篇文档可能有不同的关键信息，因为绝大部分内容的相似而忽略少数的核心不相似，会遗漏信息，这很考验 sentence embedding 模型的能力）。</li>
 </ul>
 <h2 id="查询检索模块"><a href="#查询检索模块" class="headerlink" title="查询检索模块"></a>查询检索模块</h2><p>检索的难点在于<strong>如何将用户输入的查询文本和抽取到的知识进行关联</strong>。更具性价比的做法是尽可能地让抽取到的知识点信息丰富，去适配业务场景的用户输入，仅通过相似度检索的方式快速地获取匹配的内容。另一种做法是对用户输入的查询做转换，明确要查询的内容，去适配抽取到的知识点。但该做法需要对用户的每个输入做转换，成本和时延都会增加。</p>
-<p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/LLM/AugmentedLLM/RAG/RAG%20%E6%A3%80%E7%B4%A2%E6%9C%8D%E5%8A%A1%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg"></p>
+<p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/LLM/AugmentedLLM/RAG/RAG%20%E6%A3%80%E7%B4%A2%E6%9C%8D%E5%8A%A1%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg" alt=""></p>
 <h3 id="前处理环节"><a href="#前处理环节" class="headerlink" title="前处理环节"></a>前处理环节</h3><p>检索服务收到查询请求对象后，根据查询请求对象内部或配置文件的设置来判断是否要对查询请求对象进行处理，例如查询转换。</p>
 <ul>
 <li><a href="https://clvsit.github.io/RAG-%E6%9F%A5%E8%AF%A2%E6%A3%80%E7%B4%A2%E6%A8%A1%E5%9D%97-%E5%89%8D%E5%A4%84%E7%90%86-%E6%9F%A5%E8%AF%A2%E5%8F%98%E6%8D%A2/">RAG-查询检索模块-前处理-查询变换</a></li>
@@ -232,7 +232,7 @@
 <li>KNN + LLM：在推理中，将两个 next_token 分布进行融合解码，一个分布来自 LLM 自身输出，另一个是来自检索的 top-k token，具体为利用 LLM embedding 方式在外挂知识库中查找与 query token 相似的 token。</li>
 <li>自回归检索 + 解码：先利用 LLM 解码出部分 token，然后检索与该 token 相似的文本，然后拼接在 prompt 中，进行 next tokens 预测，以自回归的方式完成解码。</li>
 </ol>
-<p><img src="https://secure2.wostatic.cn/static/dwtzJJMnKth4suynCZd6hR/image.png?auth_key=1717741230-gaFMAe3SA1GaCHUyZnn8tk-0-c013584da583ce106837258b572d27ef"></p>
+<p><img src="https://secure2.wostatic.cn/static/dwtzJJMnKth4suynCZd6hR/image.png?auth_key=1717741230-gaFMAe3SA1GaCHUyZnn8tk-0-c013584da583ce106837258b572d27ef" alt=""></p>
 <h1 id="评估体系"><a href="#评估体系" class="headerlink" title="评估体系"></a>评估体系</h1><h2 id="评估指标"><a href="#评估指标" class="headerlink" title="评估指标"></a>评估指标</h2><p>RAG 的评估方法多样，主要包括三个质量评分：上下文相关性、答案忠实性和答案相关性。</p>
 <p>关键能力：噪声鲁棒性、拒答能力、信息整合和反事实鲁棒性。</p>
 <h2 id="评估框架"><a href="#评估框架" class="headerlink" title="评估框架"></a>评估框架</h2><p>存在如 RGB 和 RECALL 这样的基准测试，以及 RAGAS、ARES 和 TruLens 等自动化评估工具，它们有助于全面衡量 RAG 模型的表现。</p>
@@ -250,7 +250,7 @@
 </ul>
 <h2 id="辅助工具"><a href="#辅助工具" class="headerlink" title="辅助工具"></a>辅助工具</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://chunkviz.up.railway.app/"><strong>ChunkViz</strong></a>：一个可视化 chunk 的在线工具。</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/jina-ai/reader"><strong>Reader</strong></a>：是一个可以将任何 URL 转换成适合 LLM 输入格式的工具，在 URL 前添加前缀“<a target="_blank" rel="noopener" href="https://r.jina.ai/%E2%80%9D%E6%9D%A5%E5%AE%9E%E7%8E%B0%E3%80%82">https://r.jina.ai/”来实现。</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jina-ai/reader"><strong>Reader</strong></a>：是一个可以将任何 URL 转换成适合 LLM 输入格式的工具，在 URL 前添加前缀“<a target="_blank" rel="noopener" href="https://r.jina.ai/”来实现。">https://r.jina.ai/”来实现。</a></li>
 <li><a target="_blank" rel="noopener" href="https://tiktokenizer.vercel.app/"><strong>Tiktokenizer</strong></a>：在线计算 tokens 的工具。</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/Filimoa/open-parse"><strong>Open-Parse</strong></a>：提供了一个灵活易用的库，能够直观地辨别文档布局并有效地对其进行分块，是任何 RAG 系统的基础。</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/Unstructured-IO/unstructured"><strong>unstructured</strong></a>：非结构化库提供了用于摄取和预处理图像和文本文档（如 PDF、HTML、Word 文档等）的开源组件。非结构化库的用例围绕着简化和优化 LLM 的数据处理工作流程。非结构化库的模块化功能和连接器形成了一个内聚系统，简化了数据摄取和预处理，使其能够适应不同的平台，并高效地将非结构化数据转化为结构化输出。</li>

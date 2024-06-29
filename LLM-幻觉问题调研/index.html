@@ -172,7 +172,7 @@
 <h3 id="修改解码策略"><a href="#修改解码策略" class="headerlink" title="修改解码策略"></a>修改解码策略</h3><p><strong>论文</strong>：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2206.04624">Factuality Enhanced Language Models for Open-Ended Text Generation</a></p>
 <ul>
 <li><strong>原理</strong>：作者认为采样的随机性对生成句子的后半部分比生成前半部分影响更大，因此对事实性的损害也比在句子的开头更大。因为在句子的开始没有前文，所以只要它在语法和上下文上是正确的，大模型就可以生成任何内容。然而，随着生成的进行，前提变得更为确定，候选单词会更少，从而导致句子更容易生成不符合事实的结果。</li>
-<li><strong>方法</strong>：引入事实核心采样算法，该算法在生成每个句子时动态调整 top-p 值，例如生成第 t 个 token 的 top-p 值为$p_t &#x3D; max{\omega, p \times \lambda^{t-1}}$。其中，$\lambda$是 top-p 概率的衰减因子，随着生成 token 数量 t 的增加而逐渐衰减 top-p 的取值。w 是 top-p 值的下限（防止其过小而没有可选的生成）。当一个句子生成完毕后，top-p 值会因为 t 的增加而变得很小；当生成新的句子时，top-p 值能够重置为原始的值。</li>
+<li><strong>方法</strong>：引入事实核心采样算法，该算法在生成每个句子时动态调整 top-p 值，例如生成第 t 个 token 的 top-p 值为$p_t = max{\omega, p \times \lambda^{t-1}}$。其中，$\lambda$是 top-p 概率的衰减因子，随着生成 token 数量 t 的增加而逐渐衰减 top-p 的取值。w 是 top-p 值的下限（防止其过小而没有可选的生成）。当一个句子生成完毕后，top-p 值会因为 t 的增加而变得很小；当生成新的句子时，top-p 值能够重置为原始的值。</li>
 </ul>
 <h3 id="一致性策略"><a href="#一致性策略" class="headerlink" title="一致性策略"></a>一致性策略</h3><p><strong>论文</strong>：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.08896">SELFCHECKGPT: Zero-Resource Black-Box Hallucination Detection for Generative Large Language Models</a></p>
 <ul>

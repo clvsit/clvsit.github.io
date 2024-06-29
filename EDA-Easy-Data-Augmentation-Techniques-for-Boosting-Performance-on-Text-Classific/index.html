@@ -169,25 +169,27 @@
 <li>Random Swap（RS）：从句子中随机挑选两个单词，并交换它们的位置，重复该操作 n 次。</li>
 <li>Random Deletion（RD）：以概率 p 随机删除句子中的每一个单词。</li>
 </ul>
-<p>由于长句比短句有更多的单词，它们可以吸收更多的噪音，同时保持原有的类标签。为了进行补偿，作者提出根据句子的长度 l 来设置 SR、RI、RS 的变化单词数 n，式子如下所示：<br>$$<br>n &#x3D; \alpha l<br>$$<br>其中，α 是一个参数，用以指示句子中需要变动单词的百分比。对于 RD 操作而言，将 α 设置为概率 p。</p>
-<p>此外，对于每个原始句子，都会生成 $$n_{avg}$$ 个增强句子。表 1 显示了增强句子的示例。观察表格可知，同义词替换已经开始被使用，但随机插入，交换和删除尚未得到广泛研究。</p>
+<p>由于长句比短句有更多的单词，它们可以吸收更多的噪音，同时保持原有的类标签。为了进行补偿，作者提出根据句子的长度 l 来设置 SR、RI、RS 的变化单词数 n，式子如下所示：</p>
+<script type="math/tex; mode=display">
+n = \alpha l</script><p>其中，α 是一个参数，用以指示句子中需要变动单词的百分比。对于 RD 操作而言，将 α 设置为概率 p。</p>
+<p>此外，对于每个原始句子，都会生成 <script type="math/tex">n_{avg}</script> 个增强句子。表 1 显示了增强句子的示例。观察表格可知，同义词替换已经开始被使用，但随机插入，交换和删除尚未得到广泛研究。</p>
 <p><img src="https://raw.githubusercontent.com/clvsit/markdown-image/master/nlp/data_augmentation/EDA%20Table1.jpg" alt="Table 1"></p>
 <h2 id="实验设置"><a href="#实验设置" class="headerlink" title="实验设置"></a>实验设置</h2><p>作者选择五个基准文本分类任务和两个网络架构来评估 EDA。</p>
 <h3 id="基线数据集"><a href="#基线数据集" class="headerlink" title="基线数据集"></a>基线数据集</h3><p>作者对五个基准文本分类任务进行了实验：</p>
 <ul>
 <li>SST-2：Stanford Sentiment Treebank；</li>
 <li>CR：customer reviews；</li>
-<li>SUBJ：subjectivity&#x2F;objectivity dataset；</li>
+<li>SUBJ：subjectivity/objectivity dataset；</li>
 <li>TREC：question type dataaset；</li>
 <li>PC：Pro-Con dataset。</li>
 </ul>
-<p>此外，作者假设 EDA 对较小的数据集更有用，因此通过选择以下大小的数据集 $$N_{train} &#x3D; {500, 2000, 5000, \text{所有可用数据}}$$ 来作为完整训练集的随机子集。</p>
+<p>此外，作者假设 EDA 对较小的数据集更有用，因此通过选择以下大小的数据集 <script type="math/tex">N_{train} = {500, 2000, 5000, \text{所有可用数据}}</script> 来作为完整训练集的随机子集。</p>
 <h3 id="文本分类模型"><a href="#文本分类模型" class="headerlink" title="文本分类模型"></a>文本分类模型</h3><p>作者针对文本分类中的两种流行模型进行了实验。 </p>
 <ul>
 <li>递归神经网络（RNN）适用于顺序数据，作者使用 LSTM-RNN。</li>
-<li>卷积神经网络（CNN）也实现了文本分类的高性能。作者按照这篇论文《Convolutional neural networks for sentence classification》中所述实现。</li>
+<li>卷积神经网络（CNN）也实现了文本分类的高性能。作者按照这篇论文《Convolutional neural networks for sentence classification》中所述实现。 </li>
 </ul>
-<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>作者使用 CNNs 和 RNNs 对五个 NLP 任务进行 EDA 测试。对于所有的实验，对来自五个不同的随机种子的结果取平均值。分别对五个数据集运行带有和不带有 EDA 的 CNN  和 RNN 模型，以适应不同的训练集大小。表 2 显示了平均性能（％）。值得注意的是，完整数据集的平均改进为 0.8％，<code>$N_&#123;train&#125; = 500$</code> 的平均改进为 3.0％。</p>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>作者使用 CNNs 和 RNNs 对五个 NLP 任务进行 EDA 测试。对于所有的实验，对来自五个不同的随机种子的结果取平均值。分别对五个数据集运行带有和不带有 EDA 的 CNN  和 RNN 模型，以适应不同的训练集大小。表 2 显示了平均性能（％）。值得注意的是，完整数据集的平均改进为 0.8％，<script type="math/tex">N_{train} = 500</script> 的平均改进为 3.0％。</p>
 <p><img src="https://raw.githubusercontent.com/clvsit/markdown-image/master/nlp/data_augmentation/EDA%20Table2.jpg" alt="Table 2"></p>
 <p>在较小的数据集上进行训练时，过拟合往往会更加严重。通过使用有限数量的可用训练数据进行实验，作者表明 EDA 对于较小的训练集具有更大的改进。作者按照以下训练集分区（％）进行正常训练和 EDA 训练：{1、5、10、20、30、40、50、60、70、80、90、100}。图 1（a）-（e）显示了每个数据集在有 EDA 和没有 EDA 情况下的性能，图1（f）显示了所有数据集的平均性能。</p>
 <ul>
@@ -204,7 +206,7 @@
 </ol>
 <p><img src="https://raw.githubusercontent.com/clvsit/markdown-image/master/nlp/data_augmentation/EDA%20Figure2.jpg" alt="Figure 2"></p>
 <p>观察上图可发现，由 EDA 产生的增强句子的潜在空间表示紧密地包围了原始句子的空间表示，这表明在大多数情况下，使用 EDA 产生的增强句子保留了它们原来句子的标签。</p>
-<h3 id="消融分析：EDA-分解"><a href="#消融分析：EDA-分解" class="headerlink" title="消融分析：EDA 分解"></a>消融分析：EDA 分解</h3><p>到目前为止，我们已经看到了令人鼓舞的实验结果。接下来，作者进行了消融研究，以探索 EDA 中每个操作的效果。先前已经使用了同义词替换，但尚未探索 RI、RS 和 RD 操作。有人可能会认为，EDA 的大部分性能提升都来自于同义词替换，因此作者将每个 EDA 操作隔离，以确定它们各自提高性能的能力，同时更改了增强参数 α&#x3D;{0.05，0.1，0.2，0.3，0.4，0.5} 见下图。</p>
+<h3 id="消融分析：EDA-分解"><a href="#消融分析：EDA-分解" class="headerlink" title="消融分析：EDA 分解"></a>消融分析：EDA 分解</h3><p>到目前为止，我们已经看到了令人鼓舞的实验结果。接下来，作者进行了消融研究，以探索 EDA 中每个操作的效果。先前已经使用了同义词替换，但尚未探索 RI、RS 和 RD 操作。有人可能会认为，EDA 的大部分性能提升都来自于同义词替换，因此作者将每个 EDA 操作隔离，以确定它们各自提高性能的能力，同时更改了增强参数 α={0.05，0.1，0.2，0.3，0.4，0.5} 见下图。</p>
 <p><img src="https://raw.githubusercontent.com/clvsit/markdown-image/master/nlp/data_augmentation/EDA%20Figure3.jpg" alt="Figure 3"></p>
 <p>事实证明，所有四个EDA操作都有助于提高性能。</p>
 <ul>
@@ -213,14 +215,15 @@
 <li>RS：在 α ≤ 0.2 时获得了较高的性能增益，但是在 α ≥ 0.3 时却下降了，因为执行过多的交换等同于改组整个句子。 </li>
 <li>RD：低 α 值具有最高的收益，但是在高 α 值时性能会受到严重损害，因为如果最多删除一半的单词，可能就很难再理解句子的意思。此外，删除一些关键词会对句子的语义造成极大的损失。</li>
 </ul>
-<p>对于所有操作，较小的数据集上的改进更为显著，并且 α &#x3D; 0.1 似乎是全面的“最佳位置”。</p>
-<h3 id="数据增强数量"><a href="#数据增强数量" class="headerlink" title="数据增强数量"></a>数据增强数量</h3><p>接下来，作者通过实验来确定每个原始句子产生的增强句子数量是如何影响性能。在下图中，作者显式了 $n_{avg} &#x3D; {1, 2, 4, 8, 16, 32}$ 所有数据集的平均性能。</p>
+<p>对于所有操作，较小的数据集上的改进更为显著，并且 α = 0.1 似乎是全面的“最佳位置”。</p>
+<h3 id="数据增强数量"><a href="#数据增强数量" class="headerlink" title="数据增强数量"></a>数据增强数量</h3><p>接下来，作者通过实验来确定每个原始句子产生的增强句子数量是如何影响性能。在下图中，作者显式了 $n_{avg} = {1, 2, 4, 8, 16, 32}$ 所有数据集的平均性能。</p>
 <p><img src="https://raw.githubusercontent.com/clvsit/markdown-image/master/nlp/data_augmentation/EDA%20Figure4.jpg" alt="Figure 4"></p>
 <ul>
 <li>对于较小的训练集，过度拟合的可能性更大，因此生成许多增强句子会大大提高性能。 </li>
-<li>对于较大的训练集，每个原始句子添加四个以上的增强句子是无济于事的，因为当大量实际数据可用时，模型往往会适当地泛化（generalize）。</li>
+<li>对于较大的训练集，每个原始句子添加四个以上的增强句子是无济于事的，因为当大量实际数据可用时，模型往往会适当地泛化（generalize）。 </li>
 </ul>
 <p>根据这些结果，作者建议使用下表中的参数。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -229,7 +232,8 @@
 <th>$n_{avg}$</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>500</td>
 <td>0.05</td>
 <td>16</td>
@@ -249,7 +253,9 @@
 <td>0.1</td>
 <td>4</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="相关工作比较"><a href="#相关工作比较" class="headerlink" title="相关工作比较"></a>相关工作比较</h2><p>具体内容请参考论文第 5 节 Comparison with Related Work。</p>
 <h2 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h2><ul>
 <li>当数据充足时，EDA 性能提升可能很小。对于五个分类任务，使用完整数据集进行训练时，EDA 的平均性能提升不到 1％。尽管对于小型数据集，性能提升似乎很明显，但使用预训练模型时，EDA 可能不会产生实质性的改进。一项研究发现，使用 ULMFit 时 EDA 的改进可忽略不计，作者预计在 ELMo 和 BERT 上的结果和 ULMFit 一样——改进效果可忽略不计。 </li>
