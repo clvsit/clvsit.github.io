@@ -74,3 +74,12 @@ CLA：[麻省理工(MIT) | 提出跨层Attention，减少Transformer大模型键
 - **简要介绍**：对不同 Transformer 层采用不同的 kv cache 压缩设置，底层尽量都保留，高层仅保留关键 token 的 kv cache。
 
     ![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/PyramidKV%20Dynamic%20KV%20Cache%20Compression%20based%20on%20Pyramidal%20Information%20Funneling/Figure%203.png)
+
+[MLKV：跨层 KV Cache 共享，降低内存占用](https://mp.weixin.qq.com/s/DKwVaM6F2ltWZezed3kC7g)
+- **论文地址**：https://arxiv.org/abs/2406.09297
+- **发表日期**：2024-06-13
+- **GitHub 仓库**：https://github.com/zaydzuhri/pythia-mlkv
+- **简要介绍**：在上文的调整注意力机制一节中提到了 CLA，一种跨层共享 Attention 的机制。无独有偶，kv cache 也可以有同样的思路。通过跨层共享 kv cache 来减少内存占用量。
+
+    ![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/MLKV%20Multi-Layer%20Key-Value%20Heads%20for%20Memory%20Efficient%20Transformer%20Decoding/Figure%202.png)
+
