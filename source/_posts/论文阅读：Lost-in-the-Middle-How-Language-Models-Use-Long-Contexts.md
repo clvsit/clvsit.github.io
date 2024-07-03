@@ -1,6 +1,7 @@
 ---
 title: '论文阅读：Lost in the Middle: How Language Models Use Long Contexts'
 date: 2024-01-01 15:31:26
+cover: https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Lost%20in%20the%20Middle%20How%20Language%20Models%20Use%20Long%20Contexts/Figure%205.png
 tags:
 - 论文阅读
 - prompt 工程

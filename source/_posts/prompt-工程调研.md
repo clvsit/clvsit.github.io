@@ -24,7 +24,11 @@ SFT + RLHF 的道路是已经被证实可走通，例如 OpenAI 的 GPT 系列�
 
 ### 研究：context 位置研究
 
-- Lost in the Middle: How Language Models Use Long Contexts：模型更善于使用出现在上下文开头（首要偏差）和结尾（回顾偏差）的相关信息，而当被迫使用输入上下文中间的信息时，性能就会下降。并且用实验证明，在使用输入上下文方面，扩展上下文模型并不一定比非扩展上下文模型更好。
+- [Lost in the Middle: How Language Models Use Long Contexts](https://clvsit.github.io/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ALost-in-the-Middle-How-Language-Models-Use-Long-Contexts/)：模型更善于使用出现在上下文开头（首要偏差）和结尾（回顾偏差）的相关信息，而当被迫使用输入上下文中间的信息时，性能就会下降。并且用实验证明，在使用输入上下文方面，扩展上下文模型并不一定比非扩展上下文模型更好。
+
+### 研究：In-Context Learning
+
+- Understanding In-Context Learning from Repetitions：这篇论文对表面特征在文本生成中的作用进行了定量研究，并根据经验确定 token 共现强化的存在，任何两个 token 构成一个 token 强化循环，在该循环中，任何两个 token 都可以通过多次重复出现而形成紧密联系。这是一种基于上下文共现强化两个 token 之间关系的原理。
 
 # 具体实现
 
@@ -48,6 +52,8 @@ prompt 优化分为调整 context，或者在 context 中添加更多的信息�
 
     ![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Structured%20Prompting%20Scaling%20In-Context%20Learning%20to%201000%20Examples/Figure%201.png)
 - **2023-11**：Chain-of-Note：Enhancing Robustness in Retrieval-Augmented Language Models：介绍了一种新颖的方法 CHAIN-OF-NOTING（CoN）框架，核心理念是为每个检索到的文档生成连续的阅读笔记，以深入评估文档与所提问题的相关性，并整合这些信息来形成最终答案。
+- **2023-11**：Thread of Thought Unraveling Chaotic Contexts
+：从人类的认知过程中汲取灵感，推出了“Thread of Thought”（ThoT，思维线索）策略。ThoT 首先通过在 prompt 后加上“Walk me through this context in manageable parts step by step,  summarizing and analyzing as we go”得到核心概要信息（初始化推理）；然后将核心概要信息添加到 prompt 末尾去得到真正的 answer（强化结论）。
 - **2024-02**：In-Context Principle Learning from Mistakes：引入了学习原则（LEAP）。首先，有意诱导模型在这几个示例上犯错误；然后，模型本身会对这些错误进行反思，并从中学习明确的特定任务“原则”，这些原则有助于解决类似问题并避免常见错误；最后，提示模型使用原始的 few-shot 示例和这些学到的一般原则来回答未见过的测试问题。
 
 #### 过滤冗余或错误信息
@@ -73,14 +79,11 @@ prompt 压缩可以缩短原始 prompt，同时尽可能保留最重要的信息
 
 #### 相关方法
 
-[自动压缩机（AutoCompressors）](https://www.wolai.com/rzYNuDmhKUhv6PWkhcmk1b)
+- 自动压缩机（AutoCompressors）
 
 - **2023-04**：Unlocking Context Constrainits of LLMs：Enhancing Context Efficiency of LLMs with Self-Information-Based Content Filtering：引入了“选择性上下文”（Selective Context 技术），通过过滤掉信息量较少的内容，为 LLM 提供了一种更紧凑、更高效的上下文表示法，同时又不影响它们在各种任务中的性能。
 
-    [选择性背景（selective context）](https://www.wolai.com/exWnuyu6GwXTpGmwuV21HP)
 - **2023-10**：LLMLingua：Compressing Prompts for Accelerated Inference of Large Language Models：提出了一种从粗到细的提示压缩方法 LLMLingua，包括一种在高压缩率下保持语义完整性的预算控制器、一种能更好地模拟压缩内容间相互依存关系的 token 级迭代压缩算法，以及一种基于指令调整的语言模型间分布对齐方法。
-
-    [LLMLingua](https://www.wolai.com/nAH6SznVro1aCiLMbXgp5m)
 
 ### 方式：优化指令
 
@@ -112,6 +115,9 @@ CoT 一系列研究，给我的感觉像是将数据结构中的链表、树和�
 
     **理解改进**：核心在于如何选择最一致的答案，在开放式闲聊场景中，使用奖励模型来评分是一个不错的方式，例如生成多条回复，让奖励模型打分，挑选分数最高的回复。
 - **2023-05**：Tree of Thoughts：Deliberate Problem Solving with Large Language Models：还未细看。
+- **2023-06**：RCoT：Detecting and Rectifying Factual Inconsistency in Reasoning by Reversing Chain-of-Thought：提出 RCoT 方法，首先要求 LLM 根据生成的解决方案（响应）重构问题。然后，将原始问题和重构问题进行细粒度拆分，并进行比较，从而发现原始解决方案中的事实不一致之处（条件忽略、幻觉、问题曲解等问题）。最后利用检测到的不一致来指导 LLM 修正原先的解决方案（响应）。
+
+    > 该方法与 APO 优化 prompt 类似，都是从输出中找出问题，然后根据问题去修正结果。区别在于，APO 是修正 prompt；RCoT 是修正原先的输出，期望得到正确的输出。
 - **2023-08**：Better Zero-Shot Reasoning with Role-Play Prompting：提出了一种由两阶段框架组成的新型 zero-shot role-play 提示方法，旨在增强 LLM 的推理能力。实验结果凸显了 role-play 提示作为一种隐性和有效的 CoT 触发器的潜力，从而提高了推理结果。
 
 [CoT-Decoding](https://www.wolai.com/2ws9cBFSm4hinw3GBjNPKS)
@@ -121,6 +127,34 @@ CoT 一系列研究，给我的感觉像是将数据结构中的链表、树和�
 - **2022-10**：Measuring and Narrowing the Compositionality Gap in Language Models：提出了 self-ask 的方式，不断将复杂、多跳问题拆分为子问题，然后依次解决子问题，最后回答完整问题。在解决子问题的过程中，可借助搜索引擎来获取事实性知识。
 - **2022-10**：ReAct: Synergizing Reasoning and Acting in Language Models：提出了 ReAct 框架。
 - **2023-06**：Let's Verify Step by Step：在数学推理领域，过程监督可以用来训练比结果监督更可靠的奖励模型。主动学习可以用来降低人类数据收集的成本。
+
+# 偏见
+
+LLMs 可能会产生带有问题的生成结果，这些结果会对模型在下游任务上的性能产生负面影响，并显示可能会恶化模型性能的偏见。其中一些可以通过有效的 prompt 策略来缓解，但可能需要更高级的解决方案，如调节和过滤。
+
+在 《Calibrate Before Use：Improving Few-Shot Performance of Language Models》论文中提到“方差在更多的数据和更大的模型中持续存在”，而造成高方差的原因是 LLMs 中存在的各种偏差（偏见），例如：
+
+- 在 prompt 中经常出现的答案（多数标签偏差）。
+- 在 prompt 的最后（回顾性偏差）。
+- 在预训练数据中常见的答案（常见 token 偏差）。
+
+## 多数标签偏差
+
+当一个类别更常见时，GPT-3 会严重偏向预测该类别，本质是多数标签严重影响模型预测分布，从而对准确性造成很大影响。
+
+> 理解：1-shot 时，模型预测很大程度上受到这一个训练示例标签的影响，从而输出该训练示例的标签，而非期望得到的标签。
+
+## 回顾性偏差
+
+模型的多数标签偏差因其回顾性偏差而加剧：重复出现在 prompt 结束时的答案的倾向。例如，当两个负例出现在最后，模型将严重倾向于负面的类别。
+
+回顾性偏差也会影响到生成任务。对于 4-shot 的 LAMA，更接近 prompt 结束的训练答案更有可能被模型重复。总的来说，回顾性偏差与多数标签偏差一样，都会影响模型预测的分布。
+
+> 例如，joyland 模型重复问题，很大程度上由于 context 中存在大量重复的回复，尤其是最近几轮相近或相同的回复，加上对话的 prompt 组织格式形似 ICL，这进一步加重回顾性偏差，从而导致当前轮模型回复继续重复。详细研究请参考 [Rethinking Historical Messages](https://fuhgh5u28j.feishu.cn/wiki/KH6iwIWtBi7G7uk5Zo5cru3xnQc)。
+
+## 常见 token 偏差
+
+模型倾向于输出预训练分布中常见的 token，而这可能对下游任务的答案分布来说是次优的。在 LAMA 事实检索数据集上，模型常常预测常见的实体，而 ground truth 的答案却是罕见的实体。在文本分类中也出现了更细微的常见token偏差问题，因为某些标签名称在预训练数据中出现的频率较高，所以模型会对预测某些类别有固有偏见。总的来说，常见 token 偏差解释了标签名称的选择对于模型预测的重要性，以及为什么模型在处理罕见答案时会遇到困难。
 
 # 相关工具
 
