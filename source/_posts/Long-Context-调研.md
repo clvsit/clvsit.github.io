@@ -14,6 +14,19 @@ category:
 - [Transformer 架构中的位置编码](https://clvsit.github.io/Transformer-%E6%9E%B6%E6%9E%84%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81/)
 
 
+# 上下文外推
+
+## 长期记忆外挂
+
+### InfLLM
+
+- GitHub 仓库：[https://github.com/thunlp/InfLLM](https://github.com/thunlp/InfLLM)
+- 论文地址：[https://arxiv.org/abs/2402.04617](https://arxiv.org/abs/2402.04617)
+
+![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/InfLLM%20Training%20Free%20Long%20Context%20Extrapolation%20for%20LLMs%20with%20an%20Efficient%20Context%20%20Memory/Figure%201.png)
+
+InfLLM 将遥远的上下文存储到额外的内存单元中，并采用有效的机制来查找与 token 相关的单元以进行注意力计算。因此，InfLLM 允许 LLM 有效地处理长序列，同时保持捕获长距离依赖性的能力。
+
 
 # 推理优化
 

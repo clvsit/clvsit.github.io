@@ -1,6 +1,7 @@
 ---
 title: 论文阅读：《Sequence can Secretly Tell You What to Discard》，减少推理阶段的 kv cache
 date: 2024-05-04 19:50:09
+cover: https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Sequence%20can%20Secretly%20Tell%20You%20What%20to%20Discard/Figure%202.png
 mathjax: true
 tags:
 - 论文阅读

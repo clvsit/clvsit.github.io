@@ -1,13 +1,12 @@
 ---
 title: 基于 BK 树的中文拼写纠错候选召回
 date: 2021-03-22 23:11:00
-top_img: https://img-blog.csdnimg.cn/20210322223322776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzM3ODM5Ng==,size_16,color_FFFFFF,t_70
 cover: https://img-blog.csdnimg.cn/20210322223322776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzM3ODM5Ng==,size_16,color_FFFFFF,t_70
 mathjax: true
 tags:
 category:
-- 自然语言处理
-- 中文拼写纠错
+- 业务相关
+- 文本纠错
 ---
 
 最近在研究中文拼写纠错，在查阅资料的时候看到了这篇文章《[从编辑距离、BK树到文本纠错 - JadePeng - 博客园](https://www.cnblogs.com/xiaoqi/p/BK-Tree.html)》，觉得 BK 树挺有意思的，决定深入研究一下，并在其基础上重新整理一遍，希望能够对各位读者大大们有所帮助。

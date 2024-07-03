@@ -3,7 +3,7 @@ title: prompt 工程调研
 date: 2024-04-02 23:51:51
 tags:
 category:
-- prompt-engineer
+- prompt 工程
 ---
 
 提示工程（Prompt Engineering）关注提示词开发和优化，帮助用户将大语言模型（Large Language Model，LLM）用于各场景和研究领域。
