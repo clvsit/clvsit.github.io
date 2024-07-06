@@ -1,15 +1,15 @@
 ---
 title: 论文阅读：Self-Alignment with Instruction Backtranslation
-date: 2024-07-06 21:18:03
+date: 2024-01-28 21:13:03
 cover: https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Self%20Alignment%20with%20Instruction%20Backtranslation/Figure%201%60.png
 mathjax: true
 tags:
 - 论文阅读
-- 数据子集挑选
+- 数据合成
 category:
 - LLM
 - 数据增强
-- 数据子集挑选
+- 数据合成
 ---
 
 作者提出了**一种可扩展的方法，通过自动为人类撰写的文本标注相应的指令来建立高质量的指令语言模型**。该方法被命名为“**指令反向翻译**”，首先在少量种子数据和给定网络语料库的基础上对语言模型进行微调。种子模型通过生成网络文档的指令 prompt（自我增强）来构建训练示例，然后从这些候选示例中选择高质量的示例（自我强化）。随后利用这些数据对更强大的模型进行微调。在该方法的两次迭代中对 LLaMA 进行微调，得到的模型优于 Alpaca 排行榜上不依赖蒸馏数据的所有其他基于 LLaMA 的模型，证明了高度有效的自我对齐。
