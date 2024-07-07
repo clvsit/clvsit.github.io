@@ -176,18 +176,17 @@
 </li>
 <li>不断重复上述步骤，直到解码结束。</li>
 </ol>
-<p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/dl/generation/Speculative%20Sampling/Figure%201.png"></p>
+<p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/dl/generation/Speculative%20Sampling/Figure%201.png" alt=""></p>
 <p>步骤 2 中，将 n 个 tokens 和前缀拼接到一块作为目标模型的输入，在预填充阶段并行计算每个 token 的 logits，相比解码阶段要快数倍。通过这种方式，可以快速让目标模型来校验近似模型的生成结果。</p>
 <p>步骤 3 中，无论如何都会让目标模型$M_p$生成一个新的 token，这样即使在最坏情况下，目标模型$M_p$也仅仅是退化为串行执行（解码阶段），运行次数也不会超过常规解码的次数。</p>
 <p>如下图 5 所示，作者提供了一个简单的示例，包含不同$\gamma$（验证的 token 数目），其中紫色为执行目标模型$M_p$的 decoder；蓝色为执行近似模型$M_q$的 decoder；黄色和橙色为调用 encoder。</p>
-<p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/dl/generation/Speculative%20Sampling/Figure%205.png"></p>
+<p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/dl/generation/Speculative%20Sampling/Figure%205.png" alt=""></p>
 <p><strong>问题</strong>：步骤 3 中，如何评价一个 token 生成的效果？</p>
-<p>p 和 q 表示近似模型和目标模型的采样概率，也就是 logits 归一化后的概率分布。如果 q(x) &gt; p(x)，则以 1 - p(x) &#x2F; q(x) 为概率拒绝这个 token 的生成，从一个新的概率分布 p’(x) &#x3D; norm(max(0, p(x) - q(x))) 中重新采样一个 token。</p>
+<p>p 和 q 表示近似模型和目标模型的采样概率，也就是 logits 归一化后的概率分布。如果 q(x) &gt; p(x)，则以 1 - p(x) / q(x) 为概率拒绝这个 token 的生成，从一个新的概率分布 p’(x) = norm(max(0, p(x) - q(x))) 中重新采样一个 token。</p>
 <h1 id="加速效果"><a href="#加速效果" class="headerlink" title="加速效果"></a>加速效果</h1><p>投机采样相比自回归采样之所以有加速效果，因为它减少了目标模型串行调用的次数，将置信度较高且容易生成的内容交给小的近似模型来完成，并利用预填充阶段的并行处理方式对近似模型的生成结果进行校验。因此，当 n 越大，p 和 q 的生成分布月接近，加速的效果越明显，因为目标模型的调用次数越少。</p>
-<p>$$<br>E(#generated \ tokens) &#x3D; \frac{1 - \alpha^{1 + n}}{1 - \alpha}</p>
-<p>$$</p>
-<p>$$<br>E(\alpha)  &#x3D; E(min(p, q))<br>$$</p>
-<p>这里的$\alpha$是反应模型 p 和 q 性质的量。比如使用 argmax（贪婪解码）作为采样策略，LAMDA（137B）和 LAMDA（100M）的$\alpha$是 0.61。</p>
+<script type="math/tex; mode=display">
+E(\#generated \ tokens) = \frac{1 - \alpha^{1 + n}}{1 - \alpha}</script><script type="math/tex; mode=display">
+E(\alpha)  = E(min(p, q))</script><p>这里的$\alpha$是反应模型 p 和 q 性质的量。比如使用 argmax（贪婪解码）作为采样策略，LAMDA（137B）和 LAMDA（100M）的$\alpha$是 0.61。</p>
 <p>更多评测可参阅 HuggingFace 官方的测试结果：<a target="_blank" rel="noopener" href="https://huggingface.co/blog/assisted-generation">https://huggingface.co/blog/assisted-generation</a>。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li>大模型推理妙招—投机采样（Speculative Decoding） - 方佳瑞的文章 - 知乎：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908</a></li>

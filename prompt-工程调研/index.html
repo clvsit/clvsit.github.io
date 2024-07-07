@@ -170,21 +170,17 @@
 <h1 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h1><h2 id="prompt-优化"><a href="#prompt-优化" class="headerlink" title="prompt 优化"></a>prompt 优化</h2><p>prompt 优化分为调整 context，或者在 context 中添加更多的信息，例如错误的信息、或者从错误信息中抽取到的思考、原则等辅助信息，也可以是通过检索得到的世界性知识或者专属知识。</p>
 <h3 id="方式：调整-context"><a href="#方式：调整-context" class="headerlink" title="方式：调整 context"></a>方式：调整 context</h3><h4 id="添加更多的信息"><a href="#添加更多的信息" class="headerlink" title="添加更多的信息"></a>添加更多的信息</h4><p>往 context（prompt）中添加 few-shot 示例、错误的信息（或者从错误信息中抽取得到的思考、原则等辅助信息）。这部分更多与 RAG 结合使用。</p>
 <ul>
-<li><p><strong>2021-01</strong>：What Makes Good In-Context Examples for GPT-3？：提出 KATE 方法，根据测试样本与训练集相似度挑选最佳邻居作为上下文示例。</p>
-</li>
+<li><strong>2021-01</strong>：What Makes Good In-Context Examples for GPT-3？：提出 KATE 方法，根据测试样本与训练集相似度挑选最佳邻居作为上下文示例。</li>
 <li><p><strong>2021-10</strong>：Generated Knowledge Prompting for Commonsense Reasoning：提出生成知识提示，包括从语言模型中生成知识，然后在回答问题时将知识作为额外输入。</p>
 <p>  <strong>理解改进</strong>：将生成知识单独拆分出来，作为填充知识库内容会更好，因为我们无法保证语言模型中生成的知识是否有幻觉，需要通过一系列的方式进行过滤和处理。在回答问题时，通过 RAG 的方式检索高质量的知识作为额外输入可有效减少幻觉和冗余信息的影响。</p>
 <p>  <strong>结合业务</strong>：可通过爬虫或者询问 GPT-4，来丰富现有 joyland 角色的人设，填充更多的信息，后续可通过 RAG 的方式动态拼接人设 prompt。</p>
 </li>
 <li><p><strong>2022-12</strong>：Structured Prompting：Scaling In-Context Learning to 1,000 Examples：探索了如何利用更多的示例来进行语境学习，并提出了结构化 prompt，以在有限的计算复杂度下扩大示例的数量。对每组演示进行独立编码，并通过 rescaled attention 对语言模型的表征进行 prompt。</p>
-<p>  <img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Structured%20Prompting%20Scaling%20In-Context%20Learning%20to%201000%20Examples/Figure%201.png"></p>
+<p>  <img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Structured%20Prompting%20Scaling%20In-Context%20Learning%20to%201000%20Examples/Figure%201.png" alt=""></p>
 </li>
-<li><p><strong>2023-11</strong>：Chain-of-Note：Enhancing Robustness in Retrieval-Augmented Language Models：介绍了一种新颖的方法 CHAIN-OF-NOTING（CoN）框架，核心理念是为每个检索到的文档生成连续的阅读笔记，以深入评估文档与所提问题的相关性，并整合这些信息来形成最终答案。</p>
-</li>
-<li><p><strong>2023-11</strong>：Thread of Thought Unraveling Chaotic Contexts<br>：从人类的认知过程中汲取灵感，推出了“Thread of Thought”（ThoT，思维线索）策略。ThoT 首先通过在 prompt 后加上“Walk me through this context in manageable parts step by step,  summarizing and analyzing as we go”得到核心概要信息（初始化推理）；然后将核心概要信息添加到 prompt 末尾去得到真正的 answer（强化结论）。</p>
-</li>
-<li><p><strong>2024-02</strong>：In-Context Principle Learning from Mistakes：引入了学习原则（LEAP）。首先，有意诱导模型在这几个示例上犯错误；然后，模型本身会对这些错误进行反思，并从中学习明确的特定任务“原则”，这些原则有助于解决类似问题并避免常见错误；最后，提示模型使用原始的 few-shot 示例和这些学到的一般原则来回答未见过的测试问题。</p>
-</li>
+<li><strong>2023-11</strong>：Chain-of-Note：Enhancing Robustness in Retrieval-Augmented Language Models：介绍了一种新颖的方法 CHAIN-OF-NOTING（CoN）框架，核心理念是为每个检索到的文档生成连续的阅读笔记，以深入评估文档与所提问题的相关性，并整合这些信息来形成最终答案。</li>
+<li><strong>2023-11</strong>：Thread of Thought Unraveling Chaotic Contexts<br>：从人类的认知过程中汲取灵感，推出了“Thread of Thought”（ThoT，思维线索）策略。ThoT 首先通过在 prompt 后加上“Walk me through this context in manageable parts step by step,  summarizing and analyzing as we go”得到核心概要信息（初始化推理）；然后将核心概要信息添加到 prompt 末尾去得到真正的 answer（强化结论）。</li>
+<li><strong>2024-02</strong>：In-Context Principle Learning from Mistakes：引入了学习原则（LEAP）。首先，有意诱导模型在这几个示例上犯错误；然后，模型本身会对这些错误进行反思，并从中学习明确的特定任务“原则”，这些原则有助于解决类似问题并避免常见错误；最后，提示模型使用原始的 few-shot 示例和这些学到的一般原则来回答未见过的测试问题。</li>
 </ul>
 <h4 id="过滤冗余或错误信息"><a href="#过滤冗余或错误信息" class="headerlink" title="过滤冗余或错误信息"></a>过滤冗余或错误信息</h4><ul>
 <li><strong>2023-05</strong>：Deliberate then Generate: Enhanced Prompting Framework for Text Generation：提出 DTG 提示方法，通过让模型在可能包含错误的合成文本上检测错误类型，鼓励 LLM 在生成最终结果之前进行深思熟虑。</li>
@@ -216,8 +212,7 @@
 <li><strong>2023-02</strong>：Active Prompting with Chain-of-Thought for Large Language Models：将主动学习的过程应用到 prompt 工程上，主要是流程和工程上面的改进，制定不确定性标准，例如分歧、熵、方差和置信度来评估 prompt 在特定任务上的效果。选择这些效果不佳的 prompt，交给人工去标注，最后进行推断。不断重复上述过程，与主动学习的过程相同。</li>
 </ul>
 <h3 id="方式：定向刺激"><a href="#方式：定向刺激" class="headerlink" title="方式：定向刺激"></a>方式：定向刺激</h3><ul>
-<li><p><strong>2023-02</strong>：Guidling Large Language Models via Directional Stimulus Prompting：提出了一个名为“定向刺激 prompt”（Directional Stimulus Prompting）的新型 prompt 框架，先训练一个经过微调、强化学习后的小型模型，然后使用该小型模型根据用户的查询来生成对应的刺激（文本），将其添加到 prompt 中来引导黑盒大语言模型朝着所需的输出方向前进。</p>
-</li>
+<li><strong>2023-02</strong>：Guidling Large Language Models via Directional Stimulus Prompting：提出了一个名为“定向刺激 prompt”（Directional Stimulus Prompting）的新型 prompt 框架，先训练一个经过微调、强化学习后的小型模型，然后使用该小型模型根据用户的查询来生成对应的刺激（文本），将其添加到 prompt 中来引导黑盒大语言模型朝着所需的输出方向前进。</li>
 <li><p><strong>2023-07</strong>：EmotionPrompt：Leveraging Psychology for Language Models Enhancement via Emotional Stimulus：作者从心理学中汲取灵感，提出 EmotionPrompt（情感提示）来探索情商，以提高 LLM 的性能。具体来说，作者为 LLMs 设计了 11 句情感刺激句子，只需将其添加到原始 prompt 中即可。缺陷在于情绪刺激可能并不适用于其他任务，并且对不同 LLM 的效果无法保证。</p>
 <blockquote>
 <p>在次日留存率时期，该方法效果不佳，很大程度上源于模型较“笨”，只会输出又长又黄的回复，对用户的指令都无法很好地理解，更不用说上下文中的情感提示与刺激。2024-02-20 日之后的模型可以尝试用该方法。</p>
@@ -226,22 +221,19 @@
 </ul>
 <h2 id="连续推理"><a href="#连续推理" class="headerlink" title="连续推理"></a>连续推理</h2><p>将中间的推理步骤一步步思考完整，或者将一整个问题逐步分解成子问题来解决。核心在于需要执行多次或多跳来完成任务。</p>
 <h3 id="方式：CoT-与类-CoT-大家族"><a href="#方式：CoT-与类-CoT-大家族" class="headerlink" title="方式：CoT 与类 CoT 大家族"></a>方式：CoT 与类 CoT 大家族</h3><p>CoT 一系列研究，给我的感觉像是将数据结构中的链表、树和图依次应用到 CoT 中。</p>
-<p><img src="https://fuhgh5u28j.feishu.cn/space/api/box/stream/download/asynccode/?code=NGIxMjgwMGJjOTY4ZGMzZjhhMTAxYzU5Nzg3NjVjNTZfRmoxUllrMXl5OGQ2elRzMFZpR21SYjNPNXVEekp4VlpfVG9rZW46RW95R2JVSEpGb0hRck14bGduQWNNYXNsblVkXzE3MTA3NzE5Mjc6MTcxMDc3NTUyN19WNA"></p>
+<p><img src="https://fuhgh5u28j.feishu.cn/space/api/box/stream/download/asynccode/?code=NGIxMjgwMGJjOTY4ZGMzZjhhMTAxYzU5Nzg3NjVjNTZfRmoxUllrMXl5OGQ2elRzMFZpR21SYjNPNXVEekp4VlpfVG9rZW46RW95R2JVSEpGb0hRck14bGduQWNNYXNsblVkXzE3MTA3NzE5Mjc6MTcxMDc3NTUyN19WNA" alt=""></p>
 <ul>
-<li><p><strong>2022-02</strong>：Chain-of-Thought Prompting Elicits Reasoning in Large Language Models：提出了思维链（CoT）的方法。</p>
-</li>
+<li><strong>2022-02</strong>：Chain-of-Thought Prompting Elicits Reasoning in Large Language Models：提出了思维链（CoT）的方法。</li>
 <li><p><strong>2022-03</strong>：Self-Consistency Improves Chain of Thought Reasoning in Language Models：提出了自我一致性方法，先使用思维链 prompt，然后通过采样等手段获取多条输入，汇总答案（根据投票以及加权等方式），并选择最一致的答案。该方法受限于固定的答案集，并且计算成本较高（多条输出、推理路径）。但在算术和常识推理任务上能够提高准确性。</p>
 <p>  <strong>理解改进</strong>：核心在于如何选择最一致的答案，在开放式闲聊场景中，使用奖励模型来评分是一个不错的方式，例如生成多条回复，让奖励模型打分，挑选分数最高的回复。</p>
 </li>
-<li><p><strong>2023-05</strong>：Tree of Thoughts：Deliberate Problem Solving with Large Language Models：还未细看。</p>
-</li>
+<li><strong>2023-05</strong>：Tree of Thoughts：Deliberate Problem Solving with Large Language Models：还未细看。</li>
 <li><p><strong>2023-06</strong>：RCoT：Detecting and Rectifying Factual Inconsistency in Reasoning by Reversing Chain-of-Thought：提出 RCoT 方法，首先要求 LLM 根据生成的解决方案（响应）重构问题。然后，将原始问题和重构问题进行细粒度拆分，并进行比较，从而发现原始解决方案中的事实不一致之处（条件忽略、幻觉、问题曲解等问题）。最后利用检测到的不一致来指导 LLM 修正原先的解决方案（响应）。</p>
 <blockquote>
 <p>该方法与 APO 优化 prompt 类似，都是从输出中找出问题，然后根据问题去修正结果。区别在于，APO 是修正 prompt；RCoT 是修正原先的输出，期望得到正确的输出。</p>
 </blockquote>
 </li>
-<li><p><strong>2023-08</strong>：Better Zero-Shot Reasoning with Role-Play Prompting：提出了一种由两阶段框架组成的新型 zero-shot role-play 提示方法，旨在增强 LLM 的推理能力。实验结果凸显了 role-play 提示作为一种隐性和有效的 CoT 触发器的潜力，从而提高了推理结果。</p>
-</li>
+<li><strong>2023-08</strong>：Better Zero-Shot Reasoning with Role-Play Prompting：提出了一种由两阶段框架组成的新型 zero-shot role-play 提示方法，旨在增强 LLM 的推理能力。实验结果凸显了 role-play 提示作为一种隐性和有效的 CoT 触发器的潜力，从而提高了推理结果。</li>
 </ul>
 <p><a target="_blank" rel="noopener" href="https://www.wolai.com/2ws9cBFSm4hinw3GBjNPKS">CoT-Decoding</a></p>
 <h3 id="方式：问题拆分"><a href="#方式：问题拆分" class="headerlink" title="方式：问题拆分"></a>方式：问题拆分</h3><ul>
@@ -266,14 +258,16 @@
 <p>例如，joyland 模型重复问题，很大程度上由于 context 中存在大量重复的回复，尤其是最近几轮相近或相同的回复，加上对话的 prompt 组织格式形似 ICL，这进一步加重回顾性偏差，从而导致当前轮模型回复继续重复。详细研究请参考 <a target="_blank" rel="noopener" href="https://fuhgh5u28j.feishu.cn/wiki/KH6iwIWtBi7G7uk5Zo5cru3xnQc">Rethinking Historical Messages</a>。</p>
 </blockquote>
 <h2 id="常见-token-偏差"><a href="#常见-token-偏差" class="headerlink" title="常见 token 偏差"></a>常见 token 偏差</h2><p>模型倾向于输出预训练分布中常见的 token，而这可能对下游任务的答案分布来说是次优的。在 LAMA 事实检索数据集上，模型常常预测常见的实体，而 ground truth 的答案却是罕见的实体。在文本分类中也出现了更细微的常见token偏差问题，因为某些标签名称在预训练数据中出现的频率较高，所以模型会对预测某些类别有固有偏见。总的来说，常见 token 偏差解释了标签名称的选择对于模型预测的重要性，以及为什么模型在处理罕见答案时会遇到困难。</p>
-<h1 id="相关工具"><a href="#相关工具" class="headerlink" title="相关工具"></a>相关工具</h1><table>
+<h1 id="相关工具"><a href="#相关工具" class="headerlink" title="相关工具"></a>相关工具</h1><div class="table-container">
+<table>
 <thead>
 <tr>
 <th><strong>名称</strong></th>
 <th><strong>链接</strong></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>awesome-chatgpt-prompts-zh</td>
 <td><a target="_blank" rel="noopener" href="https://github.com/PlexPt/awesome-chatgpt-prompts-zh">https://github.com/PlexPt/awesome-chatgpt-prompts-zh</a></td>
 </tr>
@@ -305,7 +299,9 @@
 <td>PromptInject</td>
 <td><a target="_blank" rel="noopener" href="https://github.com/agencyenterprise/PromptInject">https://github.com/agencyenterprise/PromptInject</a></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li>工程指南：<a target="_blank" rel="noopener" href="https://www.promptingguide.ai/zh">https://www.promptingguide.ai/zh</a></li>
 <li>prompt 学习：<a target="_blank" rel="noopener" href="https://learningprompt.wiki/">https://learningprompt.wiki/</a></li>
