@@ -68,6 +68,20 @@ CLA：[麻省理工(MIT) | 提出跨层Attention，减少Transformer大模型键
     - **参数和 FLOPs**：CLA 减少了模型参数的数量，因此在前向和反向传播过程中所需的 FLOPs 也降低。
     - **解码延迟**：在推理过程中，虽然通过复制取代矩阵乘法来减少了 FLOPs，但影响很少，核心还是在于减少了 kv cache，能够提供更大的 batch size，从而提升服务的总吞吐量。
 
+Block Transformer：[拆分Transformer注意力，韩国团队让大模型解码提速20倍 - 量子位的文章 - 知乎](https://zhuanlan.zhihu.com/p/706445926)
+- **论文地址**：https://arxiv.org/abs/2406.02657
+- **发表日期**：2024-06-04
+- **简要介绍**：核心思路是将原始 Transformer 的全局注意力分解成**块级注意力**和**块内注意力**，引入 Block Decoder 处理块级注意力，Token Decoder 处理块内注意力，如下图所示。
+
+    ![](https://pic3.zhimg.com/80/v2-f34369bf6d3da2a0c7a437e0d224a02a_720w.webp)
+
+    **工作流程**：
+    1. 先执行序列切块，使用 Embedder 将一个块内的 token embedding 信息汇总到 block embedding（即上图灰色块）。
+    2. Block Decoder 仍然以从左到右关注的方式来处理 block embedding 间的信息交互，捕捉块间的全局依赖。
+    3. Token Decoder 处理块内 token embedding（即上图蓝色块），捕获 token 间的局部依赖。
+    4. 交替执行块级自回归建模和块内自回归解码。
+
+    在推理的 decode 阶段，原先需要 attend 所有的 kv，现在只需要先 attend 块级 kv，然后再 attend 块内 kv，数量大大减少。具体的量取决于块的大小。较大的块可以减少块的数量，从而降低 Block Decoder 的计算复杂度，但每个块包含更多的 token，可能影响局部依赖的建模能力；较小的块包含的 token 更少，可以提高局部依赖的建模能力，但 Block Decoder 需要处理更多的块，会增加计算复杂度。
 
 ### kv cache 压缩
 
