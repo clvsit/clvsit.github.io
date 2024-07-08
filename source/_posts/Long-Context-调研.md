@@ -83,6 +83,10 @@ Block Transformer：[拆分Transformer注意力，韩国团队让大模型解码
 
     在推理的 decode 阶段，原先需要 attend 所有的 kv，现在只需要先 attend 块级 kv，然后再 attend 块内 kv，数量大大减少。具体的量取决于块的大小。较大的块可以减少块的数量，从而降低 Block Decoder 的计算复杂度，但每个块包含更多的 token，可能影响局部依赖的建模能力；较小的块包含的 token 更少，可以提高局部依赖的建模能力，但 Block Decoder 需要处理更多的块，会增加计算复杂度。
 
+    按照论文的说法，Block Transformer 能够提升 20 倍的吞吐量，同时还能保持较低的训练损失。
+
+    ![](https://pic4.zhimg.com/80/v2-b0acf969b860886176af0f3e6226c7b3_720w.webp)
+
 ### kv cache 压缩
 
 [论文阅读：《Sequence can Secretly Tell You What to Discard》，减少推理阶段的 kv cache](https://clvsit.github.io/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9A%E3%80%8ASequence-can-Secretly-Tell-You-What-to-Discard%E3%80%8B%EF%BC%8C%E5%87%8F%E5%B0%91%E6%8E%A8%E7%90%86%E9%98%B6%E6%AE%B5%E7%9A%84-kv-cache/)
