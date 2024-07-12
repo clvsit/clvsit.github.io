@@ -13,9 +13,12 @@ menu:
   归档: /archives/ || fas fa-archive
   标签: /tags/ || fas fa-tags
   分类: /categories/ || fas fa-folder-open
-  # List||fas fa-list:
-  #   Music: /music/ || fas fa-music
-  #   Movie: /movies/ || fas fa-video
+  列表||fas fa-list:
+    # LLM: /LLM || fas fa-archive
+    prompt 工程: /prompt-engineer || fas fa-archive
+    RAG: /RAG || fas fa-archive
+    # Music: /music/ || fas fa-music
+    # Movie: /movies/ || fas fa-video
   链接: /link/ || fas fa-link
   # 关于: /about/ || fas fa-heart
 

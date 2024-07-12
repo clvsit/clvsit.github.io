@@ -51,3 +51,14 @@ category:
     ![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Blending%20Is%20All%20You%20Need%20Cheaper%20Better%20Alternative%20to%20Trillion-Parameters%20LLM/Figure%202.png)
 
     这篇工作比 chai 那篇论文要早，从方法上来说（我个人理解）也更加靠谱一些，但 Gen-Fuser 要怎么做是个比较棘手的问题。并且整体的流程过长（即便是异步调用的方式，整体的时长取决于最后一个输出的耗时，并且不同模型的输出有长有短），在实际的使用过程中要不可避免地要增加时延以及降低服务的总体吞吐。
+
+
+[Aligning to Thousands of Preferences via System Message Generalization](https://arxiv.org/abs/2203.15556)
+- **发布日期**：2024-05-28
+- **GitHub 仓库**：https://github.com/kaistAI/Janus
+- **简要介绍**：介绍了一种新颖的方法，可使 LLM 与不同的用户偏好保持一致，而无需针对每个人的偏好进行持续的再训练。该方法利用独特的 system message，引导 LLM 根据特定、细微的用户偏好做出响应。
+
+    ![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Aligning%20to%20Thousands%20of%20Preferences%20via%20System%20Message%20Generalization/Figure%202.png)
+
+    核心还是在构造数据上，通过在 system message 中整合各方面（Style、Background knowledge、Informativeness、Harmlessness）的偏好，交由 GPT-4 等强 LLM 去生成对应的输出。该方法实际上和 alpaca 根据种子数据去生成指令数据集，以及情感刺激之类的 prompt 工程类似，无非是将用户偏好预置在 system message 内，让 GPT-4 等强 LLM 来生成响应，作为训练数据集，本质上仍然是一种 RLAIF。
+

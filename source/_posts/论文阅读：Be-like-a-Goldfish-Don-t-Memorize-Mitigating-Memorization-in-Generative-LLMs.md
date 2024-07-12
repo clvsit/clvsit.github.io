@@ -23,7 +23,7 @@ category:
 
 # Goldfish Loss：Learning Without Memorizing
 
-LLM 通常使用因果语言建模（CLM）目标进行训练，该目标表示一个 token 的平均对数概率，以之前的所有 token 为条件。对于一个由 L 训练 token 组成的 $x = \{x_i\}$ 序列，可以写成：
+LLM 通常使用因果语言建模（CLM）目标进行训练，该目标表示一个 token 的平均对数概率，以之前的所有 token 为条件。对于一个由 L 个训练 token 组成的 $x = \{x_i\}$ 序列，可以写成：
 
 $$
 L(\theta) = - \frac{1}{L} \sum_{i=1}^L log \ P(x_i | x_{<i}; \theta) \tag{1}
