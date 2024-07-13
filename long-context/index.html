@@ -1,0 +1,336 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>long-context | clvsit 个人博客</title><meta name="author" content="clvsit"><meta name="copyright" content="clvsit"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Transformer 架构中的位置编码  上下文外推长期记忆外挂InfLLM GitHub 仓库：https:&#x2F;&#x2F;github.com&#x2F;thunlp&#x2F;InfLLM 论文地址：https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2402.04617   InfLLM 将遥远的上下文存储到额外的内存单元中，并采用有效的机制来查找与 token 相关的单元以进行注意力计算。因此，InfLLM 允许 LLM">
+<meta property="og:type" content="website">
+<meta property="og:title" content="long-context">
+<meta property="og:url" content="https://clvsit.github.io/long-context/">
+<meta property="og:site_name" content="clvsit 个人博客">
+<meta property="og:description" content="Transformer 架构中的位置编码  上下文外推长期记忆外挂InfLLM GitHub 仓库：https:&#x2F;&#x2F;github.com&#x2F;thunlp&#x2F;InfLLM 论文地址：https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2402.04617   InfLLM 将遥远的上下文存储到额外的内存单元中，并采用有效的机制来查找与 token 相关的单元以进行注意力计算。因此，InfLLM 允许 LLM">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://clvsit.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2024-07-13T13:35:57.000Z">
+<meta property="article:modified_time" content="2024-07-13T13:36:31.354Z">
+<meta property="article:author" content="clvsit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://clvsit.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://clvsit.github.io/long-context/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'long-context',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-07-13 21:36:31'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">81</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">65</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 专题</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/prompt-engineer"><i class="fa-fw fas fa-archive"></i><span> Prompt 工程</span></a></li><li><a class="site-page child" href="/RAG"><i class="fa-fw fas fa-archive"></i><span> RAG</span></a></li><li><a class="site-page child" href="/long-context"><i class="fa-fw fas fa-archive"></i><span> Long Context</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/img/tag_banner.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="clvsit 个人博客"><span class="site-name">clvsit 个人博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 专题</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/prompt-engineer"><i class="fa-fw fas fa-archive"></i><span> Prompt 工程</span></a></li><li><a class="site-page child" href="/RAG"><i class="fa-fw fas fa-archive"></i><span> RAG</span></a></li><li><a class="site-page child" href="/long-context"><i class="fa-fw fas fa-archive"></i><span> Long Context</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">long-context</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/LLM/LongContext/Long%20Context.png"></p>
+<ul>
+<li><a href="https://clvsit.github.io/Transformer-%E6%9E%B6%E6%9E%84%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81/">Transformer 架构中的位置编码</a></li>
+</ul>
+<h1 id="上下文外推"><a href="#上下文外推" class="headerlink" title="上下文外推"></a>上下文外推</h1><h2 id="长期记忆外挂"><a href="#长期记忆外挂" class="headerlink" title="长期记忆外挂"></a>长期记忆外挂</h2><h3 id="InfLLM"><a href="#InfLLM" class="headerlink" title="InfLLM"></a>InfLLM</h3><ul>
+<li>GitHub 仓库：<a target="_blank" rel="noopener" href="https://github.com/thunlp/InfLLM">https://github.com/thunlp/InfLLM</a></li>
+<li>论文地址：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2402.04617">https://arxiv.org/abs/2402.04617</a></li>
+</ul>
+<p><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/InfLLM%20Training%20Free%20Long%20Context%20Extrapolation%20for%20LLMs%20with%20an%20Efficient%20Context%20%20Memory/Figure%201.png"></p>
+<p>InfLLM 将遥远的上下文存储到额外的内存单元中，并采用有效的机制来查找与 token 相关的单元以进行注意力计算。因此，InfLLM 允许 LLM 有效地处理长序列，同时保持捕获长距离依赖性的能力。</p>
+<h1 id="推理优化"><a href="#推理优化" class="headerlink" title="推理优化"></a>推理优化</h1><h2 id="减少-kv-cache"><a href="#减少-kv-cache" class="headerlink" title="减少 kv cache"></a>减少 kv cache</h2><p>随着模型规模的增大，推理需要的时间越来越多。kv cache 作为推理加速的关键技术，通过缓存之前的解码步骤中计算出的 <code>key_states</code> 和 <code>value_states</code> 来避免在后续解码过程中重复计算，从而减少解码时间（起到空间换时间的作用）。</p>
+<p>但是，随着序列长度增大，需要缓存的 kv cache 呈线性增长，占用大量显存。针对这一问题，之前的工作设计策略是调整注意力机制，或者对 kv cache 进行压缩。</p>
+<h3 id="调整注意力机制"><a href="#调整注意力机制" class="headerlink" title="调整注意力机制"></a>调整注意力机制</h3><p>GQA：<a href="https://clvsit.github.io/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AGQA-Training-Generalized-Multi-Query-Transformer-Models-from-Multi-Head-Checkpoints/">论文阅读：GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints</a></p>
+<ul>
+<li><strong>论文地址</strong>：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2305.13245">https://arxiv.org/abs/2305.13245</a></li>
+<li><strong>发表日期</strong>：2023-06-02</li>
+</ul>
+<p>MLA：<a target="_blank" rel="noopener" href="https://kexue.fm/archives/10091">缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA</a></p>
+<blockquote>
+<p>PS：MLA 是深度求索公司 deepseek-v2 论文中提出的注意力机制。个人建议可以先看苏神的这篇博客，深入浅出地从 MHA、MQA、GQA 到 MLA 的发展路径以及 MLA 的思想讲述了一遍。</p>
+</blockquote>
+<ul>
+<li><strong>论文地址</strong>：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.04434">https://arxiv.org/abs/2405.04434</a></li>
+<li><strong>发表日期</strong>：2024-05-07</li>
+<li><strong>GitHub 仓库</strong>：<a target="_blank" rel="noopener" href="https://github.com/deepseek-ai/DeepSeek-V2">https://github.com/deepseek-ai/DeepSeek-V2</a></li>
+<li><strong>代码地址</strong>：<a target="_blank" rel="noopener" href="https://huggingface.co/deepseek-ai/DeepSeek-V2-Chat/blob/main/modeling_deepseek.py">https://huggingface.co/deepseek-ai/DeepSeek-V2-Chat/blob/main/modeling_deepseek.py</a></li>
+</ul>
+<p>CLA：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/699577571">麻省理工(MIT) | 提出跨层Attention，减少Transformer大模型键值(KV)缓存，加快LLM推理！ - NLP自然语言处理的文章 - 知乎</a></p>
+<ul>
+<li><p><strong>论文地址</strong>：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.12981">https://arxiv.org/abs/2405.12981</a></p>
+</li>
+<li><p><strong>发表日期</strong>：2024-05-21</p>
+</li>
+<li><p><strong>简要介绍</strong>：提出了一种新的 Attention 设计方法：跨层注意力（Cross-Layer Attention，CLA），即通过在不同层之间共享 key 和 value 头来减少 kv cache 的存储大小。</p>
+<p>  <img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Reducing%20Transformer%20Key-Value%20Cache%20Size%20with%20Cross-Layer%20Attention/Figure%201.png"></p>
+<p>  可以看到在 CLA 中，只有模型中一部分层会计算 kv Proj，而没有计算 kv Proj 层的 Attention 块会重新使用之前层的 kv Proj。可以理解为若干相邻层共享某一层的 kv Proj。MQA 和 GQA 从 key 和 value 头上做了分组，而 CLA 则在 Attention 块上做了“分组”。因此，CLA 可以和 MQA、GQA 进行组合。</p>
+<blockquote>
+<p>PS：CLA 之于 MHA 等同于 ALBERT 之于 BERT（ALBERT 将 Transformer 层的所有参数共享）。实际上这篇文章并没有什么新鲜的，无非是将 ALBERT 中的 Transformer 层的所有参数共享，改为对 kv Proj“分组”进行共享。</p>
+</blockquote>
+<p>  为了增加论文的工作量，在系统工程角度总结了 CLA 对相关关键指标的影响：</p>
+<ul>
+<li><strong>kv cache</strong>：显著减少了 kv cache 的内存占用量，减少的倍数等于共享因子。</li>
+<li><strong>训练内存占用</strong>：CLA 减少了训练期间 kv Proj 激活值的内存占用。</li>
+<li><strong>模型并行性</strong>：CLA 完全兼容张量并行技术，可用于跨多个加速器分片模型权重。</li>
+<li><strong>参数和 FLOPs</strong>：CLA 减少了模型参数的数量，因此在前向和反向传播过程中所需的 FLOPs 也降低。</li>
+<li><strong>解码延迟</strong>：在推理过程中，虽然通过复制取代矩阵乘法来减少了 FLOPs，但影响很少，核心还是在于减少了 kv cache，能够提供更大的 batch size，从而提升服务的总吞吐量。</li>
+</ul>
+</li>
+</ul>
+<p>Block Transformer：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/706445926">拆分Transformer注意力，韩国团队让大模型解码提速20倍 - 量子位的文章 - 知乎</a></p>
+<ul>
+<li><p><strong>论文地址</strong>：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.02657">https://arxiv.org/abs/2406.02657</a></p>
+</li>
+<li><p><strong>发表日期</strong>：2024-06-04</p>
+</li>
+<li><p><strong>简要介绍</strong>：核心思路是将原始 Transformer 的全局注意力分解成<strong>块级注意力</strong>和<strong>块内注意力</strong>，引入 Block Decoder 处理块级注意力，Token Decoder 处理块内注意力，如下图所示。</p>
+<p>  <img src="https://pic3.zhimg.com/80/v2-f34369bf6d3da2a0c7a437e0d224a02a_720w.webp"></p>
+<p>  <strong>工作流程</strong>：</p>
+<ol>
+<li>先执行序列切块，使用 Embedder 将一个块内的 token embedding 信息汇总到 block embedding（即上图灰色块）。</li>
+<li>Block Decoder 仍然以从左到右关注的方式来处理 block embedding 间的信息交互，捕捉块间的全局依赖。</li>
+<li>Token Decoder 处理块内 token embedding（即上图蓝色块），捕获 token 间的局部依赖。</li>
+<li>交替执行块级自回归建模和块内自回归解码。</li>
+</ol>
+<p>  在推理的 decode 阶段，原先需要 attend 所有的 kv，现在只需要先 attend 块级 kv，然后再 attend 块内 kv，数量大大减少。具体的量取决于块的大小。较大的块可以减少块的数量，从而降低 Block Decoder 的计算复杂度，但每个块包含更多的 token，可能影响局部依赖的建模能力；较小的块包含的 token 更少，可以提高局部依赖的建模能力，但 Block Decoder 需要处理更多的块，会增加计算复杂度。</p>
+<p>  按照论文的说法，Block Transformer 能够提升 20 倍的吞吐量，同时还能保持较低的训练损失。</p>
+<p>  <img src="https://pic4.zhimg.com/80/v2-b0acf969b860886176af0f3e6226c7b3_720w.webp"></p>
+</li>
+</ul>
+<h3 id="kv-cache-压缩"><a href="#kv-cache-压缩" class="headerlink" title="kv cache 压缩"></a>kv cache 压缩</h3><p><a href="https://clvsit.github.io/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9A%E3%80%8ASequence-can-Secretly-Tell-You-What-to-Discard%E3%80%8B%EF%BC%8C%E5%87%8F%E5%B0%91%E6%8E%A8%E7%90%86%E9%98%B6%E6%AE%B5%E7%9A%84-kv-cache/">论文阅读：《Sequence can Secretly Tell You What to Discard》，减少推理阶段的 kv cache</a></p>
+<ul>
+<li><p><strong>论文地址</strong>：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2404.15949">https://arxiv.org/abs/2404.15949</a></p>
+</li>
+<li><p><strong>发表日期</strong>：2024-04-24</p>
+</li>
+<li><p><strong>简要介绍</strong>：研究发现在 LLaMA2 系列模型上：（i）相邻 token 的 query 向量之间的相似度非常高，（ii）当前 query 的注意力计算可以完全依赖于一小部分前面 query 的注意力信息。基于这些观察结果，作者提出了一种无需重新训练的 KV 缓存驱逐策略 CORM，通过重复使用最近的 query 注意力信息来显著减少显存占用。</p>
+<p>  <img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Sequence%20can%20Secretly%20Tell%20You%20What%20to%20Discard/Figure%202.png"></p>
+<blockquote>
+<p>该论文与 StreamingLLM 中提出的 attention sink、Label are anchor 等论文以及 prompt 压缩的可行性都能在理论方面进行印证。但该论文提出的 CORM 方法也存在一个缺陷，是否存在某个 key 与未来一段时间内的 query 的相似度都很低，在这之后才出现较高的相似度。而此时，如果将该 key 认为是不重要而进行丢弃的话，未来的 query 可能获取不到这部分信息。</p>
+</blockquote>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/703313505">2.5%KV缓存保持大模型90%性能，大模型金字塔式信息汇聚模式探秘｜开源 - 量子位的文章 - 知乎</a></p>
+<ul>
+<li><p><strong>论文地址</strong>：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.02069">https://arxiv.org/abs/2406.02069</a></p>
+</li>
+<li><p><strong>发表日期</strong>：2024-06-04</p>
+</li>
+<li><p><strong>GitHub 仓库</strong>：<a target="_blank" rel="noopener" href="https://github.com/Zefan-Cai/PyramidKV">https://github.com/Zefan-Cai/PyramidKV</a></p>
+</li>
+<li><p><strong>简要介绍</strong>：对不同 Transformer 层采用不同的 kv cache 压缩设置，底层尽量都保留，高层仅保留关键 token 的 kv cache。</p>
+<p>  <img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/PyramidKV%20Dynamic%20KV%20Cache%20Compression%20based%20on%20Pyramidal%20Information%20Funneling/Figure%203.png"></p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/DKwVaM6F2ltWZezed3kC7g">MLKV：跨层 KV Cache 共享，降低内存占用</a></p>
+<ul>
+<li><p><strong>论文地址</strong>：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.09297">https://arxiv.org/abs/2406.09297</a></p>
+</li>
+<li><p><strong>发表日期</strong>：2024-06-13</p>
+</li>
+<li><p><strong>GitHub 仓库</strong>：<a target="_blank" rel="noopener" href="https://github.com/zaydzuhri/pythia-mlkv">https://github.com/zaydzuhri/pythia-mlkv</a></p>
+</li>
+<li><p><strong>简要介绍</strong>：在上文的调整注意力机制一节中提到了 CLA，一种跨层共享 Attention 的机制。无独有偶，kv cache 也可以有同样的思路。通过跨层共享 kv cache 来减少内存占用量。</p>
+<p>  <img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/MLKV%20Multi-Layer%20Key-Value%20Heads%20for%20Memory%20Efficient%20Transformer%20Decoding/Figure%202.png"></p>
+</li>
+</ul>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">clvsit</div><div class="author-info__description">人生不是戏剧，而我亦非主角</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">81</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">65</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/clvsit"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/clvsit" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">知乎和 CSDN 同名 clvsit，目前在将本地的笔记逐步迁移到这，所以会看到过去日期的文章不断增多</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ABe-like-a-Goldfish-Don-t-Memorize-Mitigating-Memorization-in-Generative-LLMs/" title="论文阅读：Be like a Goldfish, Don't Memorize! Mitigating Memorization in Generative LLMs"><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/Be%20like%20a%20Goldfish%20Dont%20Memorize%20Mitigating%20Memorization%20in%20Generative%20LLMs/Figure%201.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文阅读：Be like a Goldfish, Don't Memorize! Mitigating Memorization in Generative LLMs"/></a><div class="content"><a class="title" href="/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ABe-like-a-Goldfish-Don-t-Memorize-Mitigating-Memorization-in-Generative-LLMs/" title="论文阅读：Be like a Goldfish, Don't Memorize! Mitigating Memorization in Generative LLMs">论文阅读：Be like a Goldfish, Don't Memorize! Mitigating Memorization in Generative LLMs</a><time datetime="2024-07-08T15:12:03.000Z" title="发表于 2024-07-08 23:12:03">2024-07-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AI-%E6%83%85%E6%84%9F%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B9%8B%E6%97%85%E2%80%94%E2%80%94%E7%9B%B8%E5%85%B3%E8%AE%BA%E6%96%87%E6%94%B6%E9%9B%86/" title="AI-情感聊天机器人之旅——相关论文收集">AI-情感聊天机器人之旅——相关论文收集</a><time datetime="2024-06-20T13:15:26.000Z" title="发表于 2024-06-20 21:15:26">2024-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/PyramidKV/" title="PyramidKV"><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/PyramidKV%20Dynamic%20KV%20Cache%20Compression%20based%20on%20Pyramidal%20Information%20Funneling/Figure%201.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PyramidKV"/></a><div class="content"><a class="title" href="/PyramidKV/" title="PyramidKV">PyramidKV</a><time datetime="2024-06-14T12:27:21.000Z" title="发表于 2024-06-14 20:27:21">2024-06-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vocab-size-%E7%A0%94%E7%A9%B6/" title="vocab size 调研">vocab size 调研</a><time datetime="2024-05-31T15:47:07.000Z" title="发表于 2024-05-31 23:47:07">2024-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ARCoT-Detecting-and-Rectifying-Factual-Inconsistency-in-Reasoning-by-Reversing-Chain-of-Thought/" title="论文阅读：RCoT Detecting and Rectifying Factual Inconsistency in Reasoning by Reversing Chain-of-Thought"><img src="https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/RCoT%EF%BC%9ADetecting%20and%20Rectifying%20Factual%20Inconsistency%20in%20Reasoning%20by%20Reversing%20Chain-of-Thought/Figure%204.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文阅读：RCoT Detecting and Rectifying Factual Inconsistency in Reasoning by Reversing Chain-of-Thought"/></a><div class="content"><a class="title" href="/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ARCoT-Detecting-and-Rectifying-Factual-Inconsistency-in-Reasoning-by-Reversing-Chain-of-Thought/" title="论文阅读：RCoT Detecting and Rectifying Factual Inconsistency in Reasoning by Reversing Chain-of-Thought">论文阅读：RCoT Detecting and Rectifying Factual Inconsistency in Reasoning by Reversing Chain-of-Thought</a><time datetime="2024-05-17T13:37:04.000Z" title="发表于 2024-05-17 21:37:04">2024-05-17</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a>
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LLM/"><span class="card-category-list-name">LLM</span><span class="card-category-list-count">15</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LLM/LLM-%E5%8E%8B%E7%BC%A9/"><span class="card-category-list-name">LLM 压缩</span><span class="card-category-list-count">1</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LLM/LLM-%E5%8E%8B%E7%BC%A9/kv-cache-%E5%8E%8B%E7%BC%A9/"><span class="card-category-list-name">kv cache 压缩</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LLM/SFT/"><span class="card-category-list-name">SFT</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LLM/%E6%8E%A8%E7%90%86%E7%9B%B8%E5%85%B3/"><span class="card-category-list-name">推理相关</span><span class="card-category-list-count">4</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LLM/%E6%8E%A8%E7%90%86%E7%9B%B8%E5%85%B3/%E6%8E%A8%E7%90%86%E6%9C%8D%E5%8A%A1/"><span class="card-category-list-name">推理服务</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LLM/%E6%8E%A8%E7%90%86%E7%9B%B8%E5%85%B3/%E6%8E%A8%E7%90%86%E6%A1%86%E6%9E%B6/"><span class="card-category-list-name">推理框架</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LLM/%E6%8E%A8%E7%90%86%E7%9B%B8%E5%85%B3/%E6%98%BE%E5%8D%A1%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%84/"><span class="card-category-list-name">显卡性能测评</span><span class="card-category-list-count">1</span></a></li></ul></li></ul></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E6%9F%A5%E8%AF%A2%E5%8F%98%E6%8D%A2/" style="font-size: 1.1em; color: #999">查询变换</a> <a href="/tags/%E5%AD%90%E8%AF%8D%E6%A8%A1%E5%9E%8B/" style="font-size: 1.1em; color: #999">子词模型</a> <a href="/tags/%E6%8F%90%E5%89%8D%E9%80%80%E5%87%BA/" style="font-size: 1.18em; color: #999ca1">提前退出</a> <a href="/tags/LLM-%E6%8E%A8%E7%90%86%E7%9B%B8%E5%85%B3/" style="font-size: 1.18em; color: #999ca1">LLM 推理相关</a> <a href="/tags/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA/" style="font-size: 1.1em; color: #999">检索增强</a> <a href="/tags/vLLM-%E6%A1%86%E6%9E%B6/" style="font-size: 1.18em; color: #999ca1">vLLM 框架</a> <a href="/tags/%E6%8E%A8%E7%90%86%E6%A1%86%E6%9E%B6/" style="font-size: 1.1em; color: #999">推理框架</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E6%9E%84%E9%80%A0/" style="font-size: 1.1em; color: #999">数据构造</a> <a href="/tags/RAG/" style="font-size: 1.42em; color: #99a6b7">RAG</a> <a href="/tags/%E9%87%8D%E6%8E%92/" style="font-size: 1.1em; color: #999">重排</a> <a href="/tags/%E8%A7%A3%E7%A0%81%E7%AD%96%E7%95%A5/" style="font-size: 1.1em; color: #999">解码策略</a> <a href="/tags/%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB/" style="font-size: 1.1em; color: #999">层次聚类</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/" style="font-size: 1.1em; color: #999">文本分类</a> <a href="/tags/%E7%A1%AC%E4%BB%B6/" style="font-size: 1.18em; color: #999ca1">硬件</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%AD%90%E9%9B%86%E6%8C%91%E9%80%89/" style="font-size: 1.1em; color: #999">数据子集挑选</a> <a href="/tags/%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/" style="font-size: 1.18em; color: #999ca1">注意力机制</a> <a href="/tags/%E6%8E%A8%E7%90%86%E5%8A%A0%E9%80%9F/" style="font-size: 1.1em; color: #999">推理加速</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AE%B9/" style="font-size: 1.26em; color: #999fa8">工作内容</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/" style="font-size: 1.18em; color: #999ca1">数据增强</a> <a href="/tags/prompt-%E5%8E%8B%E7%BC%A9/" style="font-size: 1.1em; color: #999">prompt 压缩</a> <a href="/tags/%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2/" style="font-size: 1.1em; color: #999">混合检索</a> <a href="/tags/SFT/" style="font-size: 1.1em; color: #999">SFT</a> <a href="/tags/%E5%8F%82%E6%95%B0%E4%B8%8E%E6%98%BE%E5%AD%98%E5%88%86%E6%9E%90/" style="font-size: 1.1em; color: #999">参数与显存分析</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%90%88%E6%88%90/" style="font-size: 1.18em; color: #999ca1">数据合成</a> <a href="/tags/LLM-%E6%8E%A8%E7%90%86%E6%9C%8D%E5%8A%A1/" style="font-size: 1.1em; color: #999">LLM 推理服务</a> <a href="/tags/%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F/" style="font-size: 1.18em; color: #999ca1">知识蒸馏</a> <a href="/tags/prompt-%E5%B7%A5%E7%A8%8B/" style="font-size: 1.34em; color: #99a3b0">prompt 工程</a> <a href="/tags/%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B/" style="font-size: 1.26em; color: #999fa8">预训练模型</a> <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" style="font-size: 1.5em; color: #99a9bf">论文阅读</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%B9%B6%E8%A1%8C%E8%AE%AD%E7%BB%83/" style="font-size: 1.1em; color: #999">分布式并行训练</a> <a href="/tags/%E5%B9%BB%E8%A7%89%E9%97%AE%E9%A2%98/" style="font-size: 1.1em; color: #999">幻觉问题</a> <a href="/tags/%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81/" style="font-size: 1.26em; color: #999fa8">位置编码</a> <a href="/tags/long-context/" style="font-size: 1.18em; color: #999ca1">long context</a> <a href="/tags/kv-cache-%E5%8E%8B%E7%BC%A9/" style="font-size: 1.1em; color: #999">kv cache 压缩</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/06/"><span class="card-archive-list-date">六月 2024</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/05/"><span class="card-archive-list-date">五月 2024</span><span class="card-archive-list-count">9</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/04/"><span class="card-archive-list-date">四月 2024</span><span class="card-archive-list-count">7</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">三月 2024</span><span class="card-archive-list-count">7</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/02/"><span class="card-archive-list-date">二月 2024</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/01/"><span class="card-archive-list-date">一月 2024</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">十二月 2023</span><span class="card-archive-list-count">2</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">81</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">219.8k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-07-13T13:38:02.496Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/tag_banner.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By clvsit</div><div class="footer_custom_text">城南芳草城北溪，池塘烟柳归鸟栖。忽听窗外风吹雨，一梦花落月近西。</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/music/"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
