@@ -1,12 +1,6 @@
 ---
-title: Long Context 调研
-date: 2024-06-10 22:43:57
-tags:
-- 调研
-- long context
-category:
-- 研究方向
-- long context
+title: long-context
+date: 2024-07-13 21:35:57
 ---
 
 ![](https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/LLM/LongContext/Long%20Context.png)

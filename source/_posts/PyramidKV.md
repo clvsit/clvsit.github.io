@@ -1,6 +1,7 @@
 ---
 title: PyramidKV
 date: 2024-06-14 20:27:21
+cover: https://markdown-picture-clvsit.oss-cn-hangzhou.aliyuncs.com/nlp/paper/PyramidKV%20Dynamic%20KV%20Cache%20Compression%20based%20on%20Pyramidal%20Information%20Funneling/Figure%201.png
 tags:
 - kv cache 压缩
 category:
