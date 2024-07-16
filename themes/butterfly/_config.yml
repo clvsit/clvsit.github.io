@@ -20,6 +20,8 @@ menu:
     Long Context: /long-context || fas fa-archive
     # Music: /music/ || fas fa-music
     # Movie: /movies/ || fas fa-video
+  LLM||fas fa-list:
+    幻觉问题: /LLM-幻觉问题 || fas fa-archive
   链接: /link/ || fas fa-link
   # 关于: /about/ || fas fa-heart
 
